@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_ROOMS 10
-#define MIN_ROOMS 1
+#define MAX_ROOMS 8 
+#define MIN_ROOMS 4  
 #define MIN_SIZE 4
 #define MAX_SIZE 10
-#define MAP_WIDTH 80
-#define MAP_HEIGHT 21
+#define MAP_WIDTH 80 
+#define MAP_HEIGHT 21 
 
 typedef struct Room
 {
