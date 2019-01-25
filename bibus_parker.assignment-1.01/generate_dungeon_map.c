@@ -3,7 +3,7 @@
 #include <time.h>
 
 #define MAX_ROOMS 8 
-#define MIN_ROOMS 4  
+#define MIN_ROOMS 6  
 #define MIN_SIZE 4
 #define MAX_SIZE 10
 #define MAP_WIDTH 80 
@@ -35,7 +35,6 @@ int check_room(Room room, unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
 	int x_counter, y_counter;
 	for(y_counter = -1; y_counter <= room.y_size; y_counter++){
 		for(x_counter = -1; x_counter <= room.x_size; x_counter++){
-			//If the room spot is not open
 			if(map[y_counter + room.y_pos][x_counter + room.x_pos] != ' '){ 
 				return 1;
 			}
@@ -60,14 +59,12 @@ int add_rooms(int random_num, unsigned char map[MAP_HEIGHT][MAP_WIDTH], Room roo
 			total_attempts++;
 			individual_attempts++;
 			if(individual_attempts > 10000){
-				printf("Can't place room\n");
 				random_num = random_num*2654435761 % 4294967295;
 				individual_attempts = 1;
 			}	
 		}
 		//Add in the room to the map
 		room_list[generated_rooms] = room_holder;
-		printf("%d %d %d %d %d\n", room_holder.x_pos, room_holder.y_pos, room_holder.x_size, room_holder.y_size, individual_attempts);	
 		unsigned int x_incr, y_incr;
 		for(x_incr = 0; x_incr < room_holder.x_size; x_incr++){
 			for(y_incr = 0; y_incr < room_holder.y_size; y_incr++){
@@ -110,7 +107,6 @@ int main(int argc, char *argv[]){
 	unsigned char map[MAP_HEIGHT][MAP_WIDTH];
 	Room room_list[number_rooms];
 
-	printf("ROOMS: %d\n", number_rooms);
 	printf("Random seed: %d\n", RAND_SEED);
 	create_map_base(map);
 	add_rooms(rand(), map, room_list, number_rooms);
