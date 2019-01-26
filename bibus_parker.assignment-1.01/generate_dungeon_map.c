@@ -110,6 +110,44 @@ int add_corridors(unsigned char map[MAP_HEIGHT][MAP_WIDTH], Room room_list[], un
 	return 0;
 }
 
+int add_ladders(unsigned char map[MAP_HEIGHT][MAP_WIDTH], int random_seed){
+	srand(random_seed);
+	int num_up_ladders, num_down_ladders, x_pos, y_pos;
+	num_up_ladders = rand() % 3 + 1;
+	num_down_ladders = rand() % 3 + 1;
+	char map_pos;
+	while(num_up_ladders > 0){
+		y_pos = rand() % (MAP_HEIGHT - 2) + 1;
+		x_pos = rand() % (MAP_WIDTH - 2) + 1;
+		map_pos = map[y_pos][x_pos];
+		if(map_pos == '.' || map_pos == '#' ||(map_pos == ' ' && 
+		  (map[y_pos][x_pos + 1] == '.' || map[y_pos][x_pos - 1] == '.' ||
+		   map[y_pos + 1][x_pos] == '.' || map[y_pos - 1][x_pos] == '.' || 
+		   map[y_pos][x_pos + 1] == '#' || map[y_pos][x_pos - 1] == '#' ||
+		   map[y_pos + 1][x_pos] == '#' || map[y_pos - 1][x_pos] == '#' ))){
+		
+			map[y_pos][x_pos] = '<';
+			num_up_ladders--;
+		}
+	}
+	
+	while(num_down_ladders > 0){
+		y_pos = rand() % (MAP_HEIGHT - 2) + 1;
+		x_pos = rand() % (MAP_WIDTH - 2) + 1;
+		map_pos = map[y_pos][x_pos];
+		if(map_pos == '.' || map_pos == '#' ||(map_pos == ' ' && 
+		  (map[y_pos][x_pos + 1] == '.' || map[y_pos][x_pos - 1] == '.' ||
+		   map[y_pos + 1][x_pos] == '.' || map[y_pos - 1][x_pos] == '.' || 
+		   map[y_pos][x_pos + 1] == '#' || map[y_pos][x_pos - 1] == '#' ||
+		   map[y_pos + 1][x_pos] == '#' || map[y_pos - 1][x_pos] == '#' ))){
+		
+			map[y_pos][x_pos] = '>';
+			num_down_ladders--;
+		}
+	}
+	return 0;
+}
+
 
 /* Methods used for initializing the map and printing the map */
 int create_map_base(unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
@@ -148,6 +186,7 @@ int main(int argc, char *argv[]){
 	create_map_base(map);
 	add_rooms(rand(), map, room_list, number_rooms);
 	add_corridors(map, room_list, number_rooms, RAND_SEED);
+	add_ladders(map, RAND_SEED);
 	print_map(map);
 	return 0;
 }
