@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_ROOMS 8 
+#define MAX_ROOMS 10 
 #define MIN_ROOMS 6  
 #define MIN_SIZE 4
 #define MAX_SIZE 10
@@ -17,6 +17,9 @@ typedef struct Room
 
 int print_map(unsigned char map[MAP_HEIGHT][MAP_WIDTH]);
 
+
+
+/* Methods used for generating and adding rooms to the map */
 int generate_room(Room * room, unsigned int random_num, unsigned int attempts){
 	room->x_pos = random_num % ((MAP_WIDTH - MAX_SIZE - attempts) ? (MAP_WIDTH - MAX_SIZE - attempts) : 1);
 	room->y_pos = random_num % ((MAP_HEIGHT - MAX_SIZE - attempts) ? (MAP_HEIGHT - MAX_SIZE - attempts) : 1);
@@ -61,7 +64,8 @@ int add_rooms(int random_num, unsigned char map[MAP_HEIGHT][MAP_WIDTH], Room roo
 			if(individual_attempts > 10000){
 				random_num = random_num*2654435761 % 4294967295;
 				individual_attempts = 1;
-			}	
+			}
+			if(total_attempts > 1000000000) return generated_rooms;	
 		}
 		//Add in the room to the map
 		room_list[generated_rooms] = room_holder;
@@ -75,6 +79,39 @@ int add_rooms(int random_num, unsigned char map[MAP_HEIGHT][MAP_WIDTH], Room roo
 	return 0;
 }
 
+
+/* Methods used for adding corridors, stairs, etc */
+int add_corridors(unsigned char map[MAP_HEIGHT][MAP_WIDTH], Room room_list[], unsigned int num_rooms, int random_seed){
+	srand(random_seed);
+	char direction;
+	unsigned int iterator;
+	unsigned int x_start, x_goal, y_start, y_goal, x_current, y_current;
+	for(iterator = 0; iterator < num_rooms - 1; iterator++){
+		x_start = room_list[iterator].x_pos + rand() % room_list[iterator].x_size;
+		x_goal = room_list[iterator + 1].x_pos + rand() % room_list[iterator + 1].x_size;
+		y_start = room_list[iterator].y_pos + rand() % room_list[iterator].y_size;
+		y_goal = room_list[iterator + 1].y_pos + rand() % room_list[iterator + 1].y_size;
+
+		direction = (x_start < x_goal)? 1 :- 1;
+		for(x_current = x_start; x_current != x_goal + direction; x_current = x_current + direction){
+			if(map[y_start][x_current] == ' '){
+				map[y_start][x_current] = '#';
+			}
+		}
+		
+		direction = (y_start < y_goal)? 1 : -1;
+		for(y_current = y_start; y_current != y_goal; y_current = y_current + direction){
+			if(map[y_current][x_goal] == ' '){
+				map[y_current][x_goal] = '#';
+			}
+		}
+	}
+
+	return 0;
+}
+
+
+/* Methods used for initializing the map and printing the map */
 int create_map_base(unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
 	unsigned char iteratorX, iteratorY;
 	for(iteratorY = 0; iteratorY < MAP_HEIGHT; iteratorY++){
@@ -100,7 +137,7 @@ int print_map(unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
 
 
 int main(int argc, char *argv[]){
-	unsigned int RAND_SEED =  time(NULL);
+	unsigned int RAND_SEED = time(NULL);
 	if(argc > 1) sscanf(argv[1], "%d", &RAND_SEED);
 	srand(RAND_SEED);
 	unsigned int number_rooms = MIN_ROOMS + rand() % (MAX_ROOMS - MIN_ROOMS + 1);
@@ -110,6 +147,7 @@ int main(int argc, char *argv[]){
 	printf("Random seed: %d\n", RAND_SEED);
 	create_map_base(map);
 	add_rooms(rand(), map, room_list, number_rooms);
+	add_corridors(map, room_list, number_rooms, RAND_SEED);
 	print_map(map);
 	return 0;
 }
