@@ -1,0 +1,55 @@
+commit 8752064814b3fbfe010894626ec6a709a0a9155e
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 20:33:24 2019 -0600
+
+    Filled out the README and changed how the seed arugment works pertaining to choosing a specific seed and printing out the seed.
+
+commit df35990a30d1384e8f3b7b6fb2182cf9931ffd42
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 19:34:57 2019 -0600
+
+    Added in, implemented, and activated the method for adding stairs. This means that each dungeon will have at least one up and down ladder with all ladders being accessible.
+
+commit dcd66ff3bb140f6255456c3dce70313a22fae81b
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 19:01:21 2019 -0600
+
+    Added in the corridor generator code that generates and connects the corridors.
+
+commit a89bafb5e9c54c4e95f6df637136e2f9aeb60f9f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 17:39:23 2019 -0600
+
+    Get the rooms working correctly and made sure they are up to the specification for number of rooms and sizes.
+
+commit b221ea9d179aab419d1e5c63bf916a241d8763ed
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 15:46:56 2019 -0600
+
+    Changed the min and max amount of rooms.
+
+commit ddeb64775bb426ab3eca0788557965a894f24d73
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 14:28:25 2019 -0600
+
+    Finished the room generating code and got the code to create dungeon rooms successfully most of the time(all the time)?
+
+commit 7c5e2b2474f4601be284fa935ddf16d440f1113f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Jan 24 23:11:14 2019 -0600
+
+    Made progress in setting up what I plan on having.
+    
+    Made progress in setting up what I plan on having. Currently have methods and basic setup for adding and generating rooms, but I am currently getting a illegal instruction core dump. :(
+
+commit bca3c9e9d994831463c8a5bd4603dfd9bbf4aa89
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Jan 24 21:48:33 2019 -0600
+
+    Created the Makefile and generator file. Currently getting a random number and creating the base dungeon with spaces for rocks and a border.
+
+commit 0d0a8e9bc3e6602fd9e4405d298d0b8c5f3f1f8d
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Jan 24 19:26:57 2019 -0600
+
+    Initial commit
