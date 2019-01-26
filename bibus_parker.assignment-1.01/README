@@ -1,0 +1,8 @@
+This program generates a dungeon according to the specifications given in the spec doc. This generator meets the requirements of being written in C, creating a dungeon of size 80X21, minimum of 6 rooms being added, rooms being at least 4X3, rooms being at least 1 space apart, immutable outer-cells, proper characters for different spots, full connectedness, and the corridors not extending into the rooms. 
+To make the file run make, a make clean is included.
+To run:
+./generate_dungeon_map
+or
+./generate_dungeon_map 0 (to print out the seed number)
+or
+./generate_dungeon_map <seed_number> (seed number > 0)

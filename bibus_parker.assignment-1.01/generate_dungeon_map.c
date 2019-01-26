@@ -176,13 +176,17 @@ int print_map(unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
 
 int main(int argc, char *argv[]){
 	unsigned int RAND_SEED = time(NULL);
-	if(argc > 1) sscanf(argv[1], "%d", &RAND_SEED);
+	unsigned int user_input;
+	if(argc > 1){
+	       	sscanf(argv[1], "%d", &user_input);
+		if(user_input == 0) printf("Random seed: %d\n", RAND_SEED);
+		else RAND_SEED = user_input;
+	}
 	srand(RAND_SEED);
 	unsigned int number_rooms = MIN_ROOMS + rand() % (MAX_ROOMS - MIN_ROOMS + 1);
 	unsigned char map[MAP_HEIGHT][MAP_WIDTH];
 	Room room_list[number_rooms];
 
-	printf("Random seed: %d\n", RAND_SEED);
 	create_map_base(map);
 	add_rooms(rand(), map, room_list, number_rooms);
 	add_corridors(map, room_list, number_rooms, RAND_SEED);
