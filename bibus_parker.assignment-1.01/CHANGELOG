@@ -1,3 +1,15 @@
+commit 1aa0195b8bbc1c1675367a7c38fb195cd5cb9318
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:23:09 2019 -0600
+
+    Added slight error checking to ensure that the generation doesn't go on forever, also added some comments to clear up what the methods do. Next I will reflect these changes in the CHANGELOG.
+
+commit a804e9121a2a3f239d56bc7022a75e214f812c2d
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:10:40 2019 -0600
+
+    updated changelog to point where I can turn it in, this commit will not be included.
+
 commit 37bceb67aed8070ec12f76a499ded861fc80d845
 Author: Parker Bibus <pbibus@hotmail.com>
 Date:   Fri Jan 25 23:09:10 2019 -0600
