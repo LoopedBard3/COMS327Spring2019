@@ -20,6 +20,8 @@ int print_map(unsigned char map[MAP_HEIGHT][MAP_WIDTH]);
 
 
 /* Methods used for generating and adding rooms to the map */
+
+//Generates the sizes and placement of the rooms
 int generate_room(Room * room, unsigned int random_num, unsigned int attempts){
 	room->x_pos = random_num % ((MAP_WIDTH - MAX_SIZE - attempts) ? (MAP_WIDTH - MAX_SIZE - attempts) : 1);
 	room->y_pos = random_num % ((MAP_HEIGHT - MAX_SIZE - attempts) ? (MAP_HEIGHT - MAX_SIZE - attempts) : 1);
@@ -34,6 +36,7 @@ int generate_room(Room * room, unsigned int random_num, unsigned int attempts){
 	return 0;
 }
 
+//Check to make sure the room can be placed legally on the map
 int check_room(Room room, unsigned char map[MAP_HEIGHT][MAP_WIDTH]){	
 	int x_counter, y_counter;
 	for(y_counter = -1; y_counter <= room.y_size; y_counter++){
@@ -46,7 +49,7 @@ int check_room(Room room, unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
 	return 0;
 }
 
-
+//Coordinates the generation, checking, and adding of the rooms
 int add_rooms(int random_num, unsigned char map[MAP_HEIGHT][MAP_WIDTH], Room room_list[], unsigned int num_rooms){
 	unsigned int generated_rooms;
 	unsigned int individual_attempts, total_attempts;
@@ -80,7 +83,10 @@ int add_rooms(int random_num, unsigned char map[MAP_HEIGHT][MAP_WIDTH], Room roo
 }
 
 
+
 /* Methods used for adding corridors, stairs, etc */
+
+//Adds the cooridors to the map
 int add_corridors(unsigned char map[MAP_HEIGHT][MAP_WIDTH], Room room_list[], unsigned int num_rooms, int random_seed){
 	srand(random_seed);
 	char direction;
@@ -110,6 +116,7 @@ int add_corridors(unsigned char map[MAP_HEIGHT][MAP_WIDTH], Room room_list[], un
 	return 0;
 }
 
+//Adds the ladders to the map
 int add_ladders(unsigned char map[MAP_HEIGHT][MAP_WIDTH], int random_seed){
 	srand(random_seed);
 	int num_up_ladders, num_down_ladders, x_pos, y_pos;
@@ -150,6 +157,8 @@ int add_ladders(unsigned char map[MAP_HEIGHT][MAP_WIDTH], int random_seed){
 
 
 /* Methods used for initializing the map and printing the map */
+
+//Initializes the map and adds the border
 int create_map_base(unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
 	unsigned char iteratorX, iteratorY;
 	for(iteratorY = 0; iteratorY < MAP_HEIGHT; iteratorY++){
@@ -162,6 +171,7 @@ int create_map_base(unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
 	return 0;
 }
 
+//Prints the map based on the specified height
 int print_map(unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
 	unsigned char column, row;
 	for(row = 0; row < MAP_HEIGHT; row++){
@@ -173,7 +183,7 @@ int print_map(unsigned char map[MAP_HEIGHT][MAP_WIDTH]){
 	return 0;
 }
 
-
+//Starts the random generation and coordinates between the inputs and different add methods
 int main(int argc, char *argv[]){
 	unsigned int RAND_SEED = time(NULL);
 	unsigned int user_input;
@@ -188,7 +198,7 @@ int main(int argc, char *argv[]){
 	Room room_list[number_rooms];
 
 	create_map_base(map);
-	add_rooms(rand(), map, room_list, number_rooms);
+	while(add_rooms(rand(), map, room_list, number_rooms)){}
 	add_corridors(map, room_list, number_rooms, RAND_SEED);
 	add_ladders(map, RAND_SEED);
 	print_map(map);
