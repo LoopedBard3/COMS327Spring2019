@@ -728,16 +728,27 @@ int main(int argc, char *argv[])
   dungeon_t d;
   struct timeval tv;
   uint32_t seed;
+  int save=0,load=0,seeded=0,i;
 
   UNUSED(in_room);
 
-  if (argc == 2) {
-    seed = atoi(argv[1]);
-  } else {
+  for (i = 1; i < argc; i++)  
+    {
+        if (strcmp(argv[i], "--save") == 0){
+            save = 1; 
+        }else if (strcmp(argv[i], "--load") == 0){
+            load = 1;
+	}else{
+            seeded = 1;
+            seed = atoi(argv[i]);
+	}
+    }
+  
+  if (!seeded) {
     gettimeofday(&tv, NULL);
     seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
   }
-
+  printf("Save: %d, Load: %d, Seed: %d\n", save, load, seed),
   printf("Using seed: %u\n", seed);
   srand(seed);
 
