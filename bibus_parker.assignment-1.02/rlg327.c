@@ -723,14 +723,23 @@ void init_dungeon(dungeon_t *d)
   empty_dungeon(d);
 }
 
+void load_dungeon(dungeon_t *d, char * filePath){
+  printf("Load dungeon\n");
+}
+
+void save_dungeon(dungeon_t *d, char * filePath){
+  printf("Save dungeon\n");
+}
+
 int main(int argc, char *argv[])
 {
   dungeon_t d;
   struct timeval tv;
-  uint32_t seed;
-  int save=0,load=0,seeded=0,i;
-
+  uint32_t seed,save=0,load=0,seeded=0,i;
   UNUSED(in_room);
+
+  char * homeDir = getenv("HOME");
+  char * filePath = strcat(homeDir, "/.rlg327/dungeon");
 
   for (i = 1; i < argc; i++)  
     {
@@ -748,14 +757,14 @@ int main(int argc, char *argv[])
     gettimeofday(&tv, NULL);
     seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
   }
-  printf("Save: %d, Load: %d, Seed: %d\n", save, load, seed),
   printf("Using seed: %u\n", seed);
+  printf("%s\n", filePath);
   srand(seed);
 
   init_dungeon(&d);
-  gen_dungeon(&d);
+  (load)?load_dungeon(&d, filePath):gen_dungeon(&d);
   render_dungeon(&d);
+  if(save){save_dungeon(&d, filePath);}
   delete_dungeon(&d);
-
   return 0;
 }
