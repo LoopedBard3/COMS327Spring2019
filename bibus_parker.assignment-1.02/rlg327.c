@@ -39,12 +39,12 @@ typedef enum dim {
   num_dims
 } dim_t;
 
-typedef int16_t pair_t[num_dims];
+typedef int8_t pair_t[num_dims];
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
 #define MIN_ROOMS              6
-#define MAX_ROOMS              10
+#define MAX_ROOMS              30
 #define ROOM_MIN_X             4
 #define ROOM_MIN_Y             3
 #define ROOM_MAX_X             20
@@ -64,7 +64,9 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_floor_hall,
   ter_stairs,
   ter_stairs_up,
-  ter_stairs_down
+  ter_stairs_down,
+  ter_place_intermediate,
+  ter_player
 } terrain_type_t;
 
 typedef struct room {
@@ -73,7 +75,10 @@ typedef struct room {
 } room_t;
 
 typedef struct dungeon {
-  uint32_t num_rooms;
+  uint32_t version; //Added by Parker
+  uint32_t fileSize; //Added by Parker
+  uint16_t num_rooms; 
+  uint8_t xPCPos, yPCPos, numbUpStairs, numbDownStairs; //Added all but num_rooms  
   room_t rooms[MAX_ROOMS];
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   /* Since hardness is usually not used, it would be expensive to pull it *
@@ -706,6 +711,9 @@ void render_dungeon(dungeon_t *d)
       case ter_stairs_down:
         putchar('>');
         break;
+	  case ter_player:
+		putchar('@');
+		break;
       default:
         break;
       }
@@ -727,12 +735,15 @@ int load_dungeon(dungeon_t *d, char * filePath){
   
   FILE *file;
   if((file = fopen(filePath, "r"))){
+	  int i, x;
 	  char marker[13];
 	  marker[12] = '\0';
 	  uint32_t version, fileSize;
 	  uint8_t xPCPos, yPCPos, hardnessArray[DUNGEON_Y][DUNGEON_X], numbRooms, numbUpStairs, numbDownStairs;
 	  room_t *roomArray; 
 	  pair_t *upStairsArray, *downStairsArray;
+	  
+	  /* Read in all of the data */
 	  fread(marker, sizeof(char), 12, file);
 	  fread(&version, sizeof(uint32_t), 1, file);
 	  fread(&fileSize, sizeof(uint32_t), 1, file);
@@ -752,8 +763,60 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  downStairsArray = (pair_t *)malloc(numbDownStairs * sizeof(pair_t));
 	  fread(downStairsArray, sizeof(pair_t), numbDownStairs, file);
 	  
-	  printf("Marker: %s, version: %d, size: %d, xPOS: %d, yPOS: %d, Rooms: %d\n", marker, be32toh(version), be32toh(fileSize), xPCPos, yPCPos, numbRooms);
+	  /* Save the data to the dungeon variable */
+	  d->num_rooms = (uint16_t) numbRooms;
+	  d->version = version;
+	  d->fileSize = fileSize;
+	  d->xPCPos = xPCPos;
+	  d->yPCPos = yPCPos;
+	  d->numbUpStairs = numbUpStairs; 
+	  d->numbDownStairs = numbDownStairs;
 	  
+	  
+	  for(i = 0; i < d->num_rooms; i++){
+		d->rooms[i] = roomArray[i];	
+	  }
+	  
+	  for(i = 0; i < DUNGEON_Y; i++){
+		for(x = 0; x < DUNGEON_X; x++){
+			d->hardness[i][x] = hardnessArray[i][x];
+			d->map[i][x] = ter_place_intermediate;
+		}
+	  }
+	  
+	  /* Place rooms, floors, stairs, then hardness stuff */
+	  int xHold, yHold;
+	  for(i = 0; i < numbRooms; i++){
+		for(yHold = 0; yHold < d->rooms[i].size[dim_y]; yHold++){
+			for(xHold = 0; xHold < d->rooms[i].size[dim_x]; xHold++){
+				d->map[roomArray[i].position[dim_y] + yHold][roomArray[i].position[dim_x] + xHold] = ter_floor_room;
+			}
+		}
+	  }
+	  
+	  for(i = 0; i < numbUpStairs; i++){
+		d->map[upStairsArray[i][dim_y]][upStairsArray[i][dim_x]] = ter_stairs_up; 
+	  }
+	  
+	  for(i = 0; i < numbDownStairs; i++){
+		d->map[downStairsArray[i][dim_y]][downStairsArray[i][dim_x]] = ter_stairs_down; 
+	  }
+	  
+	  d->map[yPCPos][xPCPos] = ter_player;
+	  
+	  for(i = 0; i < DUNGEON_Y; i++){
+		for(x = 0; x < DUNGEON_X; x++){
+			if(d->map[i][x] == ter_place_intermediate){
+				if(d->hardness[i][x] == 0){
+					d->map[i][x] = ter_floor_hall;
+				}else if(d->hardness[i][x] == 255){
+					d->map[i][x] = ter_wall_immutable;
+				}else{
+					d->map[i][x] = ter_wall;
+				}
+			}
+		}
+	  }	  
 	  return 0;
   }
   return -1;
