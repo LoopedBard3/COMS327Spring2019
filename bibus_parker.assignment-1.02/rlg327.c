@@ -44,7 +44,7 @@ typedef int8_t pair_t[num_dims];
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
 #define MIN_ROOMS              6
-#define MAX_ROOMS              30
+#define MAX_ROOMS              10
 #define ROOM_MIN_X             4
 #define ROOM_MIN_Y             3
 #define ROOM_MAX_X             20
@@ -77,8 +77,8 @@ typedef struct room {
 typedef struct dungeon {
   uint32_t version; //Added by Parker
   uint32_t fileSize; //Added by Parker
-  uint16_t num_rooms; 
-  uint8_t xPCPos, yPCPos, numbUpStairs, numbDownStairs; //Added all but num_rooms  
+  uint16_t num_rooms, numbUpStairs, numbDownStairs; 
+  uint8_t xPCPos, yPCPos; 
   room_t rooms[MAX_ROOMS];
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   /* Since hardness is usually not used, it would be expensive to pull it *
@@ -739,7 +739,8 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  char marker[13];
 	  marker[12] = '\0';
 	  uint32_t version, fileSize;
-	  uint8_t xPCPos, yPCPos, hardnessArray[DUNGEON_Y][DUNGEON_X], numbRooms, numbUpStairs, numbDownStairs;
+	  uint16_t numbRooms, numbUpStairs, numbDownStairs;
+	  uint8_t xPCPos, yPCPos, hardnessArray[DUNGEON_Y][DUNGEON_X];
 	  room_t *roomArray; 
 	  pair_t *upStairsArray, *downStairsArray;
 	  
@@ -751,20 +752,24 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  fread(&yPCPos, sizeof(uint8_t), 1, file);
 	  fread(hardnessArray, sizeof(uint8_t), 1680, file);
 	  
-	  fread(&numbRooms, sizeof(uint8_t), 1, file);
+	  fread(&numbRooms, sizeof(uint16_t), 1, file);
+	  numbRooms = be16toh(numbRooms);
 	  roomArray = (room_t *)malloc(numbRooms * sizeof(room_t));
 	  fread(roomArray, sizeof(room_t), numbRooms, file);
 	  
-	  fread(&numbUpStairs, sizeof(uint8_t), 1, file);
+	  fread(&numbUpStairs, sizeof(uint16_t), 1, file);
+	  numbUpStairs = be16toh(numbUpStairs);
 	  upStairsArray = (pair_t *)malloc(numbUpStairs * sizeof(pair_t));
 	  fread(upStairsArray, sizeof(pair_t), numbUpStairs, file);
 	  
-	  fread(&numbDownStairs, sizeof(uint8_t), 1, file);
+	  fread(&numbDownStairs, sizeof(uint16_t), 1, file);
+	  numbDownStairs = be16toh(numbDownStairs);
 	  downStairsArray = (pair_t *)malloc(numbDownStairs * sizeof(pair_t));
 	  fread(downStairsArray, sizeof(pair_t), numbDownStairs, file);
 	  
+	  printf("%d %d %d\n", numbRooms, numbUpStairs, numbDownStairs);
 	  /* Save the data to the dungeon variable */
-	  d->num_rooms = (uint16_t) numbRooms;
+	  d->num_rooms = numbRooms;
 	  d->version = version;
 	  d->fileSize = fileSize;
 	  d->xPCPos = xPCPos;
