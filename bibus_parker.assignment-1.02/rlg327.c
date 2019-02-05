@@ -837,15 +837,16 @@ int load_dungeon(dungeon_t *d, char * filePath){
 
 /* Saves a dungeon to the specified file location */
 int save_dungeon(dungeon_t *d, char * filePath){
-  struct stat st = {0};
+	//Causing issues with file open
+/*   struct stat st = {0};
   char * homeDir = getenv("HOME");
   char * fileDir = strcat(homeDir, "/.rlg327/");
   if (stat(fileDir, &st) == -1) {
     mkdir(fileDir, 0777);
-  }
+  } */
   
   FILE *file;
-  if((file = fopen(filePath, "wb"))){
+  if((file = fopen(filePath, "rb"))){
 	  int y, x;
 	  char * marker;
 	  marker = "RLG327-S2019\0";
@@ -867,6 +868,8 @@ int save_dungeon(dungeon_t *d, char * filePath){
 		}
 		upStairsArray = (pair_t *)malloc(d->numbUpStairs * sizeof(pair_t));
 	    downStairsArray = (pair_t *)malloc(d->numbDownStairs * sizeof(pair_t));
+		d->numbDownStairs = htobe16(d->numbDownStairs);
+		d->numbUpStairs = htobe16(d->numbUpStairs);
 		int upHold, downHold;
 		upHold = 0;
 		downHold = 0;
@@ -903,12 +906,17 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	  }
 	  
 	  //FileSize
-	  d->fileSize = htobe32(1704 + d->num_rooms * 4 + 2 + d->numbDownStairs * 2 + 2 +d->numbUpStairs * 2);
+	  d->fileSize = htobe32((uint32_t)1704 + be16toh(d->num_rooms) * 4 + 2 + be16toh(d->numbDownStairs) * 2 + 2 + be16toh(d->numbUpStairs) * 2);
 	  printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(d->version), be32toh(d->fileSize));	  
+	  
+	  
+	  //Write data to the file
+	  
+	  
 	  fclose(file);	
       return 0;
   }
-  
+
   return -1;
 }
 
