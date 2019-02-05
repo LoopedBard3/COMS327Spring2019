@@ -729,12 +729,19 @@ void delete_dungeon(dungeon_t *d)
 void init_dungeon(dungeon_t *d)
 {
   empty_dungeon(d);
+  d->numbDownStairs = 0;
+  d->numbUpStairs = 0;
+  d->version = htobe32(9999);
+  d->fileSize = 0;
+  d->xPCPos = 0;
+  d->yPCPos = 0;
 }
 
+/* Loads a dungeon from file system */
 int load_dungeon(dungeon_t *d, char * filePath){
   
   FILE *file;
-  if((file = fopen(filePath, "r"))){
+  if((file = fopen(filePath, "rb"))){
 	  int i, x;
 	  char marker[13];
 	  marker[12] = '\0';
@@ -767,7 +774,6 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  downStairsArray = (pair_t *)malloc(numbDownStairs * sizeof(pair_t));
 	  fread(downStairsArray, sizeof(pair_t), numbDownStairs, file);
 	  
-	  printf("%d %d %d\n", numbRooms, numbUpStairs, numbDownStairs);
 	  /* Save the data to the dungeon variable */
 	  d->num_rooms = numbRooms;
 	  d->version = version;
@@ -777,7 +783,7 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  d->numbUpStairs = numbUpStairs; 
 	  d->numbDownStairs = numbDownStairs;
 	  
-	  
+	  //TODO:Check if we can just assign the roomArray to the rooms.
 	  for(i = 0; i < d->num_rooms; i++){
 		d->rooms[i] = roomArray[i];	
 	  }
@@ -827,10 +833,64 @@ int load_dungeon(dungeon_t *d, char * filePath){
   return -1;
 }
 
+/* Saves a dungeon to the specified file location */
 int save_dungeon(dungeon_t *d, char * filePath){
-  printf("Save dungeon\n");
-  return 0;
+  struct stat st = {0};
+  char * homeDir = getenv("HOME");
+  char * fileDir = strcat(homeDir, "/.rlg327/");
+  if (stat(fileDir, &st) == -1) {
+    mkdir(fileDir, 0777);
+  }
+  
+  FILE *file;
+  if((file = fopen(filePath, "wb"))){
+	  int y, x;
+	  char * marker;
+	  marker = "RLG327-S2019\0";
+	  uint32_t version, fileSize;
+	  pair_t *upStairsArray, *downStairsArray;
+	  if(d->version == htobe32(9999)){ d->version = htobe32(0); }
+	  d->num_rooms = htobe16(d->num_rooms);
+	  
+	  if(d->numbUpStairs == 0 || d->numbDownStairs == 0){
+		for(y = 0; y < DUNGEON_Y; y++){
+			for(x = 0; x < DUNGEON_X; x++){
+				if(d->map[y][x] == ter_stairs_up){
+				  d->numbUpStairs = d->numbUpStairs + 1;
+				}else if(d->map[y][x] == ter_stairs_down){
+				  d->numbDownStairs = d->numbDownStairs + 1;
+				}
+			}
+		}
+		upStairsArray = (pair_t *)malloc(d->numbUpStairs * sizeof(pair_t));
+	    downStairsArray = (pair_t *)malloc(d->numbDownStairs * sizeof(pair_t));
+		int upHold, downHold;
+		upHold = 0;
+		downHold = 0;
+	    for(y = 0; y < DUNGEON_Y; y++){
+		 	for(x = 0; x < DUNGEON_X; x++){
+				if(d->map[y][x] == ter_stairs_up){
+				  upStairsArray[upHold++][dim_y] = y;
+				  upStairsArray[upHold++][dim_x] = x;
+				}else if(d->map[y][x] == ter_stairs_down){
+				  downStairsArray[downHold++][dim_y] = y;
+				  downStairsArray[downHold++][dim_x] = x;
+				}
+			}
+		  }
+	    }
+	  
+	  
+	  
+	  
+	  if(marker || version || fileSize){}
+	  
+      return 0;
+  }
+  return -1;
 }
+
+
 
 int main(int argc, char *argv[])
 {
