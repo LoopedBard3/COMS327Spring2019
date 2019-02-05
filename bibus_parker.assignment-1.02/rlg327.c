@@ -79,7 +79,7 @@ typedef struct dungeon {
   uint32_t fileSize; //Added by Parker
   uint16_t num_rooms, numbUpStairs, numbDownStairs; 
   uint8_t xPCPos, yPCPos; 
-  room_t rooms[MAX_ROOMS];
+  room_t *rooms;
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   /* Since hardness is usually not used, it would be expensive to pull it *
    * into cache every time we need a map cell, so we store it in a        *
@@ -650,7 +650,7 @@ static int make_rooms(dungeon_t *d)
 {
   uint32_t i;
 
-  memset(d->rooms, 0, sizeof (d->rooms));
+  memset(d->rooms, 0, sizeof(room_t) * MAX_ROOMS);
 
   for (i = MIN_ROOMS; i < MAX_ROOMS && rand_under(5, 8); i++)
     ;
@@ -735,6 +735,7 @@ void init_dungeon(dungeon_t *d)
   d->fileSize = 0;
   d->xPCPos = 0;
   d->yPCPos = 0;
+  d->rooms = (room_t *)malloc(MAX_ROOMS * sizeof(room_t));	
 }
 
 /* Loads a dungeon from file system */
@@ -784,9 +785,9 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  d->numbDownStairs = numbDownStairs;
 	  
 	  //TODO:Check if we can just assign the roomArray to the rooms.
-	  for(i = 0; i < d->num_rooms; i++){
-		d->rooms[i] = roomArray[i];	
-	  }
+	  //for(i = 0; i < d->num_rooms; i++){
+		d->rooms = roomArray;	
+	  //}
 	  
 	  for(i = 0; i < DUNGEON_Y; i++){
 		for(x = 0; x < DUNGEON_X; x++){
