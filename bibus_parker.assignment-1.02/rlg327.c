@@ -781,8 +781,8 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  d->fileSize = fileSize;
 	  d->xPCPos = xPCPos;
 	  d->yPCPos = yPCPos;
-	  d->numbUpStairs = numbUpStairs; 
-	  d->numbDownStairs = numbDownStairs;
+	  d->numbUpStairs = be16toh(numbUpStairs); 
+	  d->numbDownStairs = be16toh(numbDownStairs);
 	  free(d->rooms);
 	  d->rooms = roomArray;	
 	  
@@ -904,10 +904,9 @@ int save_dungeon(dungeon_t *d, char * filePath){
 		    d->xPCPos = d->rooms->position[dim_x];
 		}
 	  }
-	  
 	  //FileSize
-	  d->fileSize = htobe32((uint32_t)1704 + be16toh(d->num_rooms) * 4 + 2 + be16toh(d->numbDownStairs) * 2 + 2 + be16toh(d->numbUpStairs) * 2);
-	  printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(d->version), be32toh(d->fileSize));	  
+	  d->fileSize = htobe32((uint32_t)(1704 + be16toh(d->num_rooms) * 4 + 2 + be16toh(d->numbDownStairs) * 2 + 2 + be16toh(d->numbUpStairs) * 2));
+	  printf("Marker: %s, version: %d, size: %d, %d, %d, %d\n", marker, be32toh(d->version), be32toh(d->fileSize), be16toh(d->numbDownStairs), be16toh(d->numbUpStairs),be16toh(d->num_rooms));	  
 	  
 	  
 	  //Write data to the file
