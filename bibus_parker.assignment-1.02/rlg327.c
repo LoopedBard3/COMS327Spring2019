@@ -783,11 +783,8 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  d->yPCPos = yPCPos;
 	  d->numbUpStairs = numbUpStairs; 
 	  d->numbDownStairs = numbDownStairs;
-	  
-	  //TODO:Check if we can just assign the roomArray to the rooms.
-	  //for(i = 0; i < d->num_rooms; i++){
-		d->rooms = roomArray;	
-	  //}
+	  free(d->rooms);
+	  d->rooms = roomArray;	
 	  
 	  for(i = 0; i < DUNGEON_Y; i++){
 		for(x = 0; x < DUNGEON_X; x++){
@@ -828,7 +825,11 @@ int load_dungeon(dungeon_t *d, char * filePath){
 				}
 			}
 		}
-	  }	  
+	  }
+      free(downStairsArray);
+	  free(upStairsArray);
+      printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(version), be32toh(fileSize));
+	  fclose(file);	  
 	  return 0;
   }
   return -1;
@@ -848,11 +849,12 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	  int y, x;
 	  char * marker;
 	  marker = "RLG327-S2019\0";
-	  uint32_t version, fileSize;
 	  pair_t *upStairsArray, *downStairsArray;
+	  
 	  if(d->version == htobe32(9999)){ d->version = htobe32(0); }
 	  d->num_rooms = htobe16(d->num_rooms);
 	  
+	  //Stairs
 	  if(d->numbUpStairs == 0 || d->numbDownStairs == 0){
 		for(y = 0; y < DUNGEON_Y; y++){
 			for(x = 0; x < DUNGEON_X; x++){
@@ -878,16 +880,35 @@ int save_dungeon(dungeon_t *d, char * filePath){
 				  downStairsArray[downHold++][dim_x] = x;
 				}
 			}
-		  }
-	    }
+		}
+	  }
 	  
+	  //PC
+	  int playerFound = 0;
+	  if(d->xPCPos == 0 || d->yPCPos == 0){
+	    for(y = 0; y < DUNGEON_Y; y++){
+		 	for(x = 0; x < DUNGEON_X; x++){
+				if(d->map[y][x] == ter_player){
+				  d->yPCPos = y;
+				  d->xPCPos = x;
+				  playerFound = 1;
+				  break;
+				}
+			}
+		}
+		if(!playerFound){
+			d->yPCPos = d->rooms->position[dim_y];
+		    d->xPCPos = d->rooms->position[dim_x];
+		}
+	  }
 	  
-	  
-	  
-	  if(marker || version || fileSize){}
-	  
+	  //FileSize
+	  d->fileSize = htobe32(1704 + d->num_rooms * 4 + 2 + d->numbDownStairs * 2 + 2 +d->numbUpStairs * 2);
+	  printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(d->version), be32toh(d->fileSize));	  
+	  fclose(file);	
       return 0;
   }
+  
   return -1;
 }
 
@@ -897,7 +918,10 @@ int main(int argc, char *argv[])
 {
   dungeon_t d;
   struct timeval tv;
-  uint32_t seed,save=0,load=0,seeded=0,i=0,loadFailed=0,saveFailed=0;
+  uint32_t seed,save,load,seeded,i,loadFailed,saveFailed;
+  save = 0;
+  load = 0;
+  seeded = 0;
   UNUSED(in_room);
 
   char * homeDir = getenv("HOME");
@@ -933,11 +957,13 @@ int main(int argc, char *argv[])
   
   render_dungeon(&d);
   
-  if(save){saveFailed = save_dungeon(&d, filePath);}
-  if(saveFailed){
-	printf("Could not save dungeon\n");
-	return -1;
+  if(save){saveFailed = save_dungeon(&d, filePath);
+	if(saveFailed){
+	  printf("Could not save dungeon\n");
+	  return -1;
+	}
   }
+  
   
   delete_dungeon(&d);
   return 0;
