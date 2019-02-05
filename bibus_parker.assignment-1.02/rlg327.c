@@ -723,19 +723,52 @@ void init_dungeon(dungeon_t *d)
   empty_dungeon(d);
 }
 
-void load_dungeon(dungeon_t *d, char * filePath){
-  printf("Load dungeon\n");
+int load_dungeon(dungeon_t *d, char * filePath){
+  
+  FILE *file;
+  if((file = fopen(filePath, "r"))){
+	  char marker[13];
+	  marker[12] = '\0';
+	  uint32_t version, fileSize;
+	  uint8_t xPCPos, yPCPos, hardnessArray[DUNGEON_Y][DUNGEON_X], numbRooms, numbUpStairs, numbDownStairs;
+	  room_t *roomArray; 
+	  pair_t *upStairsArray, *downStairsArray;
+	  fread(marker, sizeof(char), 12, file);
+	  fread(&version, sizeof(uint32_t), 1, file);
+	  fread(&fileSize, sizeof(uint32_t), 1, file);
+	  fread(&xPCPos, sizeof(uint8_t), 1, file);
+	  fread(&yPCPos, sizeof(uint8_t), 1, file);
+	  fread(hardnessArray, sizeof(uint8_t), 1680, file);
+	  
+	  fread(&numbRooms, sizeof(uint8_t), 1, file);
+	  roomArray = (room_t *)malloc(numbRooms * sizeof(room_t));
+	  fread(roomArray, sizeof(room_t), numbRooms, file);
+	  
+	  fread(&numbUpStairs, sizeof(uint8_t), 1, file);
+	  upStairsArray = (pair_t *)malloc(numbUpStairs * sizeof(pair_t));
+	  fread(upStairsArray, sizeof(pair_t), numbUpStairs, file);
+	  
+	  fread(&numbDownStairs, sizeof(uint8_t), 1, file);
+	  downStairsArray = (pair_t *)malloc(numbDownStairs * sizeof(pair_t));
+	  fread(downStairsArray, sizeof(pair_t), numbDownStairs, file);
+	  
+	  printf("Marker: %s, version: %d, size: %d, xPOS: %d, yPOS: %d, Rooms: %d\n", marker, be32toh(version), be32toh(fileSize), xPCPos, yPCPos, numbRooms);
+	  
+	  return 0;
+  }
+  return -1;
 }
 
-void save_dungeon(dungeon_t *d, char * filePath){
+int save_dungeon(dungeon_t *d, char * filePath){
   printf("Save dungeon\n");
+  return 0;
 }
 
 int main(int argc, char *argv[])
 {
   dungeon_t d;
   struct timeval tv;
-  uint32_t seed,save=0,load=0,seeded=0,i;
+  uint32_t seed,save=0,load=0,seeded=0,i=0,loadFailed=0,saveFailed=0;
   UNUSED(in_room);
 
   char * homeDir = getenv("HOME");
@@ -747,7 +780,7 @@ int main(int argc, char *argv[])
             save = 1; 
         }else if (strcmp(argv[i], "--load") == 0){
             load = 1;
-	}else{
+	    }else{
             seeded = 1;
             seed = atoi(argv[i]);
 	}
@@ -762,9 +795,21 @@ int main(int argc, char *argv[])
   srand(seed);
 
   init_dungeon(&d);
-  (load)?load_dungeon(&d, filePath):gen_dungeon(&d);
+  
+  loadFailed = (load)?load_dungeon(&d, filePath):gen_dungeon(&d);
+  if(loadFailed){
+	printf("Could not load dungeon\n");
+	return -1;
+  }
+  
   render_dungeon(&d);
-  if(save){save_dungeon(&d, filePath);}
+  
+  if(save){saveFailed = save_dungeon(&d, filePath);}
+  if(saveFailed){
+	printf("Could not save dungeon\n");
+	return -1;
+  }
+  
   delete_dungeon(&d);
   return 0;
 }
