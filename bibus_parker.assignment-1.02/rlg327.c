@@ -939,7 +939,10 @@ int main(int argc, char *argv[])
   UNUSED(in_room);
 
   char * homeDir = getenv("HOME");
-  char * filePath = strcat(homeDir, "/.rlg327/dungeon");
+  char * filePath;
+  filePath = malloc(strlen(homeDir) + strlen("/.rlg327/dungeon") + 1);
+  strcpy(filePath, homeDir);
+  strcat(filePath, "/.rlg327/dungeon");
 
   for (i = 1; i < argc; i++)  
     {
