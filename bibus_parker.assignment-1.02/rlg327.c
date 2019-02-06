@@ -831,7 +831,7 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  }
       free(downStairsArray);
 	  free(upStairsArray);
-      //printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(version), be32toh(fileSize));
+      printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(version), be32toh(fileSize));
 	  fclose(file);	  
 	  return 0;
   }
@@ -860,6 +860,8 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	  
 	  //Stairs
 	  //if(d->numbUpStairs == 0 || d->numbDownStairs == 0){
+		d->numbDownStairs = 0;
+		d->numbUpStairs = 0;
 		for(y = 0; y < DUNGEON_Y; y++){
 			for(x = 0; x < DUNGEON_X; x++){
 				if(d->map[y][x] == ter_stairs_up){
