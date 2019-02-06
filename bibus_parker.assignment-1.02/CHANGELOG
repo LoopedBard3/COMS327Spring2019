@@ -1,0 +1,205 @@
+commit 38d76d52efd24ddb30218f827c5a03fa5887eb75
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 21:12:45 2019 -0600
+
+    Commented/Removed all debugging code and more testing.
+    
+    Commented/Removed all debugging code and tested some more to ensure everything seemed to be working properly.
+
+commit 019adbf5a09c59ea85341f1c7f479a215f5591fa
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 20:48:55 2019 -0600
+
+    Finished fixing the bug with save and load at the same time.
+    
+    Finished fixing the bug with save and load at the same time. Now I have to take out the debugging code.
+
+commit 3d481afc4b54538a4a08f9250c4b1ccced8d23e5
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 20:18:22 2019 -0600
+
+    Made it so that the --save actually saves
+    
+    Made it so that the --save actually saves and is loadable with --load. But I am currently running into an issue when I load and save in the same session.
+
+commit 388b4520cdcd1650bd27a45b76bf6a160cd304e3
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Tue Feb 5 14:31:56 2019 -0600
+
+    Fixed the data conversion issues so that the endianness is correct
+    
+    Fixed the data conversion issues so that the endianness is correct. This means that the variables should be ready to write to the file.
+
+commit 8fd2c0bc09b964e6fe160c008257eb088520677e
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 13:46:19 2019 -0600
+
+    Figured out why the save couldn't open the file. And started debugging filesize
+    
+    Figured out why the save couldn't open the file and commented it out. Also started debugging filesize and everyother variable now before actually writing out to the file.
+
+commit 26312e3e7eed9e668b66004adc2e8986ade87a29
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 13:26:52 2019 -0600
+
+    added in some frees and file closes
+    
+    added in some frees and file closes. Also seemingly finished getting the data setup finished for saving.
+
+commit 747dd45e5abbf237f23536799df62fd5775be5b1
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 12:55:00 2019 -0600
+
+    Changed the rooms variable in the struct to a pointer
+    
+    Changed the rooms variable in the struct to a pointer to allow for unlimited rooms while also allowing the previous implementation to still work with some changes.
+
+commit 7a488ac2898151c39c8cde5fb5dc687c306aec18
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 12:34:04 2019 -0600
+
+    Made good progress on saving dungeons
+    
+    Made good progress on saving dungeons. Got the start of saving the needed values that will be written to the file.
+
+commit 4f6c88e7d1d58662409ffc3b110d4193fec24566
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 11:53:02 2019 -0600
+
+    Updated the types of the number of rooms and stairs.
+    
+    Updated the types of the number of rooms and stairs to match with the new specification. This includes making the load dungeon work with the new sizes.
+
+commit 42bf85046ff01f967cc6cf8ebae0903dc80fa652
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 00:31:27 2019 -0600
+
+    Finished the load dungeon method
+    
+    Finished the load dungeon method including changing the sizes of some types and the data contained in some types, especially in the dungeon struct, pair struct, and the floor enums.
+
+commit 171070c49581156164d9d999ef75e71860ddad40
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 4 22:46:49 2019 -0600
+
+    Updated the make file to also delete .pgm files
+    
+    Updated the make file to also delete .pgm files
+
+commit f68c53b9c0fa47a18e5d8437d262b8ef915abf0e
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 4 22:45:37 2019 -0600
+
+    Added in save and load success checks. Also have load dungeon reading all of the data that will be read.
+    
+    Added in save and load success checks. Also have load dungeon reading all of the data that will be read using the specified structs and mallocing everything.
+
+commit e9e14e00b68aec3c396d947abbee5a539f48db42
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Mon Feb 4 17:05:56 2019 -0600
+
+    Added in functions holders for loading and saving dungeons and put them where they should interact in main. Also added a filePath variable of the file location
+    
+    Added in functions holders for loading and saving dungeons and put them where they should interact in main. Also added a filePath variable of the file location.
+
+commit d4bc963ab6cbf443fd52bca0422b5c80302617e3
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Mon Feb 4 16:39:29 2019 -0600
+
+    Added in command line argument reading for the load save and seed
+    
+    Added in command line argument reading for the load save and seed using a for loop.
+
+commit a37fbf0cf4c9f2ac8482e646b936a47ce5d3afaa
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Mon Feb 4 16:15:40 2019 -0600
+
+    Obtained instructor code to use for assignment 1.02
+    
+    Obtained instructor code to use for assignment 1.02.
+
+commit 291c835bb1b04d8ee81dd1cd2549c4d4a5339423
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Mon Feb 4 16:05:16 2019 -0600
+
+    Starting assignment 2
+
+commit c65a54dcef6eb1a74878b637f418d0d9b166dc42
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:24:20 2019 -0600
+
+    CHANGELOG update.
+
+commit 1aa0195b8bbc1c1675367a7c38fb195cd5cb9318
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:23:09 2019 -0600
+
+    Added slight error checking to ensure that the generation doesn't go on forever, also added some comments to clear up what the methods do. Next I will reflect these changes in the CHANGELOG.
+
+commit a804e9121a2a3f239d56bc7022a75e214f812c2d
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:10:40 2019 -0600
+
+    updated changelog to point where I can turn it in, this commit will not be included.
+
+commit 37bceb67aed8070ec12f76a499ded861fc80d845
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:09:10 2019 -0600
+
+    Updated the CHANGELOG file
+
+commit 8752064814b3fbfe010894626ec6a709a0a9155e
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 20:33:24 2019 -0600
+
+    Filled out the README and changed how the seed arugment works pertaining to choosing a specific seed and printing out the seed.
+
+commit df35990a30d1384e8f3b7b6fb2182cf9931ffd42
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 19:34:57 2019 -0600
+
+    Added in, implemented, and activated the method for adding stairs. This means that each dungeon will have at least one up and down ladder with all ladders being accessible.
+
+commit dcd66ff3bb140f6255456c3dce70313a22fae81b
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 19:01:21 2019 -0600
+
+    Added in the corridor generator code that generates and connects the corridors.
+
+commit a89bafb5e9c54c4e95f6df637136e2f9aeb60f9f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 17:39:23 2019 -0600
+
+    Get the rooms working correctly and made sure they are up to the specification for number of rooms and sizes.
+
+commit b221ea9d179aab419d1e5c63bf916a241d8763ed
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 15:46:56 2019 -0600
+
+    Changed the min and max amount of rooms.
+
+commit ddeb64775bb426ab3eca0788557965a894f24d73
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 14:28:25 2019 -0600
+
+    Finished the room generating code and got the code to create dungeon rooms successfully most of the time(all the time)?
+
+commit 7c5e2b2474f4601be284fa935ddf16d440f1113f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Jan 24 23:11:14 2019 -0600
+
+    Made progress in setting up what I plan on having.
+    
+    Made progress in setting up what I plan on having. Currently have methods and basic setup for adding and generating rooms, but I am currently getting a illegal instruction core dump. :(
+
+commit bca3c9e9d994831463c8a5bd4603dfd9bbf4aa89
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Jan 24 21:48:33 2019 -0600
+
+    Created the Makefile and generator file. Currently getting a random number and creating the base dungeon with spaces for rocks and a border.
+
+commit 0d0a8e9bc3e6602fd9e4405d298d0b8c5f3f1f8d
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Jan 24 19:26:57 2019 -0600
+
+    Initial commit

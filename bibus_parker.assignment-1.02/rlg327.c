@@ -917,7 +917,9 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	  fwrite(upStairsArray, sizeof(pair_t), be16toh(d->numbUpStairs), file);
 	  fwrite(&d->numbDownStairs, sizeof(uint16_t), 1, file);
 	  fwrite(downStairsArray, sizeof(pair_t), be16toh(d->numbDownStairs), file);
-	  fclose(file);	
+	  fclose(file);
+	  free(upStairsArray);
+	  free(downStairsArray);
       return 0;
   }
 

@@ -1,0 +1,7 @@
+This program meets the requirements of assignment 1.02. This means that it can load and save dungeons, in the specified format, from and to the $HOME/.rlg327/dungeon file.
+
+To use this program, first run make in the folder with the program. This should generate a few files including rlg327.
+Then for usage:
+./rlg327 [ <seed integer> | --load | --save ]
+
+You can specify multiple of these arguments, but if you load and seed at the same time, the seed will be ignored. 
