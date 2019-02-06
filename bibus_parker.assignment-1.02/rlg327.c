@@ -39,7 +39,7 @@ typedef enum dim {
   num_dims
 } dim_t;
 
-typedef int8_t pair_t[num_dims];
+typedef uint8_t pair_t[num_dims];
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
@@ -831,7 +831,7 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  }
       free(downStairsArray);
 	  free(upStairsArray);
-      printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(version), be32toh(fileSize));
+      //printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(version), be32toh(fileSize));
 	  fclose(file);	  
 	  return 0;
   }
@@ -840,14 +840,6 @@ int load_dungeon(dungeon_t *d, char * filePath){
 
 /* Saves a dungeon to the specified file location */
 int save_dungeon(dungeon_t *d, char * filePath){
-	//Causing issues with file open
-/*   struct stat st = {0};
-  char * homeDir = getenv("HOME");
-  char * fileDir = strcat(homeDir, "/.rlg327/");
-  if (stat(fileDir, &st) == -1) {
-    mkdir(fileDir, 0777);
-  } */
-  
   FILE *file;
   if((file = fopen(filePath, "wb"))){
 	  int y, x;
@@ -858,8 +850,6 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	  if(d->version == htobe32(9999)){ d->version = htobe32(0); }
 	  d->num_rooms = htobe16(d->num_rooms);
 	  
-	  //Stairs
-	  //if(d->numbUpStairs == 0 || d->numbDownStairs == 0){
 		d->numbDownStairs = 0;
 		d->numbUpStairs = 0;
 		for(y = 0; y < DUNGEON_Y; y++){
@@ -875,7 +865,7 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	    downStairsArray = (pair_t *)malloc(d->numbDownStairs * sizeof(pair_t));
 		d->numbDownStairs = htobe16(d->numbDownStairs);
 		d->numbUpStairs = htobe16(d->numbUpStairs);
-		printf("Stair num %d %d\n", be16toh(d->numbDownStairs), be16toh(d->numbUpStairs));
+		//printf("Stair num %d %d\n", be16toh(d->numbDownStairs), be16toh(d->numbUpStairs));
 		int upHold, downHold;
 		upHold = 0;
 		downHold = 0;
@@ -890,7 +880,6 @@ int save_dungeon(dungeon_t *d, char * filePath){
 				}
 			}
 		}
-	  //}
 	  
 	  //PC
 	  int playerFound = 0;
@@ -910,9 +899,10 @@ int save_dungeon(dungeon_t *d, char * filePath){
 		    d->xPCPos = d->rooms->position[dim_x];
 		}
 	  }
+	  
 	  //FileSize
 	  d->fileSize = htobe32((uint32_t)(1704 + be16toh(d->num_rooms) * 4 + 2 + be16toh(d->numbDownStairs) * 2 + 2 + be16toh(d->numbUpStairs) * 2));
-	  printf("Marker: %s, version: %d, size: %d, %d, %d, %d\n", marker, be32toh(d->version), be32toh(d->fileSize), be16toh(d->numbDownStairs), be16toh(d->numbUpStairs),be16toh(d->num_rooms));	  
+	  //printf("Marker: %s, version: %d, size: %d, %d, %d, %d\n", marker, be32toh(d->version), be32toh(d->fileSize), be16toh(d->numbDownStairs), be16toh(d->numbUpStairs),be16toh(d->num_rooms));	  
 	  
 	  //Write data to the file
 	  fwrite(marker, sizeof(char), 12, file);
@@ -928,12 +918,6 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	  fwrite(&d->numbDownStairs, sizeof(uint16_t), 1, file);
 	  fwrite(downStairsArray, sizeof(pair_t), be16toh(d->numbDownStairs), file);
 	  fclose(file);	
-	  for(y = 0; y < be16toh(d->numbUpStairs); y++){
-		  printf("upStair %d %d\n", upStairsArray[y][dim_x], upStairsArray[y][dim_y]);
-	  }
-	  for(y = 0; y < be16toh(d->numbDownStairs); y++){
-		  printf("downStair %d %d\n", downStairsArray[y][dim_x], downStairsArray[y][dim_y]);
-	  }
       return 0;
   }
 
@@ -973,7 +957,7 @@ int main(int argc, char *argv[])
 	if(!load){ printf("Using seed: %u\n", seed); }
   }
   
-  printf("%s\n", filePath);
+  //printf("%s\n", filePath);
   srand(seed);
 
   init_dungeon(&d);
