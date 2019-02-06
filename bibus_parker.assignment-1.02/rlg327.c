@@ -679,6 +679,10 @@ int gen_dungeon(dungeon_t *d)
   } while (place_rooms(d));
   connect_rooms(d);
   place_stairs(d);
+  d->yPCPos = d->rooms->position[dim_y];
+  d->xPCPos = d->rooms->position[dim_x];
+  d->map[d->yPCPos][d->xPCPos] = ter_player;
+		
 
   return 0;
 }
@@ -686,7 +690,6 @@ int gen_dungeon(dungeon_t *d)
 void render_dungeon(dungeon_t *d)
 {
   pair_t p;
-
   for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
     for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
       switch (mappair(p)) {
@@ -828,7 +831,7 @@ int load_dungeon(dungeon_t *d, char * filePath){
 	  }
       free(downStairsArray);
 	  free(upStairsArray);
-      printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(version), be32toh(fileSize));
+      //printf("Marker: %s, version: %d, size: %d\n", marker, be32toh(version), be32toh(fileSize));
 	  fclose(file);	  
 	  return 0;
   }
@@ -846,7 +849,7 @@ int save_dungeon(dungeon_t *d, char * filePath){
   } */
   
   FILE *file;
-  if((file = fopen(filePath, "rb"))){
+  if((file = fopen(filePath, "wb"))){
 	  int y, x;
 	  char * marker;
 	  marker = "RLG327-S2019\0";
@@ -856,7 +859,7 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	  d->num_rooms = htobe16(d->num_rooms);
 	  
 	  //Stairs
-	  if(d->numbUpStairs == 0 || d->numbDownStairs == 0){
+	  //if(d->numbUpStairs == 0 || d->numbDownStairs == 0){
 		for(y = 0; y < DUNGEON_Y; y++){
 			for(x = 0; x < DUNGEON_X; x++){
 				if(d->map[y][x] == ter_stairs_up){
@@ -870,21 +873,22 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	    downStairsArray = (pair_t *)malloc(d->numbDownStairs * sizeof(pair_t));
 		d->numbDownStairs = htobe16(d->numbDownStairs);
 		d->numbUpStairs = htobe16(d->numbUpStairs);
+		printf("Stair num %d %d\n", be16toh(d->numbDownStairs), be16toh(d->numbUpStairs));
 		int upHold, downHold;
 		upHold = 0;
 		downHold = 0;
 	    for(y = 0; y < DUNGEON_Y; y++){
 		 	for(x = 0; x < DUNGEON_X; x++){
 				if(d->map[y][x] == ter_stairs_up){
-				  upStairsArray[upHold++][dim_y] = y;
+				  upStairsArray[upHold][dim_y] = y;
 				  upStairsArray[upHold++][dim_x] = x;
 				}else if(d->map[y][x] == ter_stairs_down){
-				  downStairsArray[downHold++][dim_y] = y;
+				  downStairsArray[downHold][dim_y] = y;
 				  downStairsArray[downHold++][dim_x] = x;
 				}
 			}
 		}
-	  }
+	  //}
 	  
 	  //PC
 	  int playerFound = 0;
@@ -908,11 +912,26 @@ int save_dungeon(dungeon_t *d, char * filePath){
 	  d->fileSize = htobe32((uint32_t)(1704 + be16toh(d->num_rooms) * 4 + 2 + be16toh(d->numbDownStairs) * 2 + 2 + be16toh(d->numbUpStairs) * 2));
 	  printf("Marker: %s, version: %d, size: %d, %d, %d, %d\n", marker, be32toh(d->version), be32toh(d->fileSize), be16toh(d->numbDownStairs), be16toh(d->numbUpStairs),be16toh(d->num_rooms));	  
 	  
-	  
 	  //Write data to the file
-	  
-	  
+	  fwrite(marker, sizeof(char), 12, file);
+	  fwrite(&d->version, sizeof(uint32_t), 1, file);
+	  fwrite(&d->fileSize, sizeof(uint32_t), 1, file);
+	  fwrite(&d->xPCPos, sizeof(uint8_t), 1, file);
+	  fwrite(&d->yPCPos, sizeof(uint8_t), 1, file);
+	  fwrite(d->hardness, sizeof(uint8_t), 1680, file);
+	  fwrite(&d->num_rooms, sizeof(uint16_t), 1, file);
+	  fwrite(d->rooms, sizeof(room_t), be16toh(d->num_rooms), file);
+	  fwrite(&d->numbUpStairs, sizeof(uint16_t), 1, file);
+	  fwrite(upStairsArray, sizeof(pair_t), be16toh(d->numbUpStairs), file);
+	  fwrite(&d->numbDownStairs, sizeof(uint16_t), 1, file);
+	  fwrite(downStairsArray, sizeof(pair_t), be16toh(d->numbDownStairs), file);
 	  fclose(file);	
+	  for(y = 0; y < be16toh(d->numbUpStairs); y++){
+		  printf("upStair %d %d\n", upStairsArray[y][dim_x], upStairsArray[y][dim_y]);
+	  }
+	  for(y = 0; y < be16toh(d->numbDownStairs); y++){
+		  printf("downStair %d %d\n", downStairsArray[y][dim_x], downStairsArray[y][dim_y]);
+	  }
       return 0;
   }
 
@@ -949,8 +968,9 @@ int main(int argc, char *argv[])
   if (!seeded) {
     gettimeofday(&tv, NULL);
     seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
+	if(!load){ printf("Using seed: %u\n", seed); }
   }
-  printf("Using seed: %u\n", seed);
+  
   printf("%s\n", filePath);
   srand(seed);
 
