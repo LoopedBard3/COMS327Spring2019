@@ -982,7 +982,7 @@ int main(int argc, char *argv[])
 	}
   }
   
-  
+  free(filePath);
   delete_dungeon(&d);
   return 0;
 }

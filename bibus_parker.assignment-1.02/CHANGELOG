@@ -1,3 +1,17 @@
+commit 4c5be1959232dbacc527ac51028e669a4e912907
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Wed Feb 6 15:31:17 2019 -0600
+
+    Fixed the obtainment of the home variable so it doesn't destroy data after it.
+
+commit 371eb909e7f816cfe560cb5aa99529305e800096
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 22:41:59 2019 -0600
+
+    Small update to the readme and changelog, also adding in the compressed folder of the assignment.
+    
+    Small update to the readme and changelog, also adding in the compressed folder of the assignment.
+
 commit 5a08bf30d240be555490426796126e80f2d37731
 Author: Parker Bibus <pbibus@hotmail.com>
 Date:   Tue Feb 5 22:25:55 2019 -0600
