@@ -1,3 +1,11 @@
+commit 5a08bf30d240be555490426796126e80f2d37731
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 22:25:55 2019 -0600
+
+    Added changelog and readme, and small memory management update
+    
+    Added changelog and readme, and small memory management update by freeing the stair arrays in the save method.
+
 commit 38d76d52efd24ddb30218f827c5a03fa5887eb75
 Author: Parker Bibus <pbibus@hotmail.com>
 Date:   Tue Feb 5 21:12:45 2019 -0600
@@ -122,7 +130,7 @@ commit 291c835bb1b04d8ee81dd1cd2549c4d4a5339423
 Author: LoopedBard3 <pbibus@hotmail.com>
 Date:   Mon Feb 4 16:05:16 2019 -0600
 
-    Starting assignment 2
+    Starting assignmen 2
 
 commit c65a54dcef6eb1a74878b637f418d0d9b166dc42
 Author: Parker Bibus <pbibus@hotmail.com>

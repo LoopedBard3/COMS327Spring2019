@@ -1,4 +1,4 @@
-This program meets the requirements of assignment 1.02. This means that it can load and save dungeons, in the specified format, from and to the $HOME/.rlg327/dungeon file.
+This program meets the requirements of assignment 1.02. This means that it can load and save dungeons, in the specified data locations and in big endian, from and to the $HOME/.rlg327/dungeon file.
 
 To use this program, first run make in the folder with the program. This should generate a few files including rlg327.
 Then for usage:
