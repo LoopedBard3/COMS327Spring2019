@@ -1,3 +1,2 @@
 This program meets the specifications for assignment 1.03. This includes making a distance mod 10 map for both ground and tunneling monsters.
-
 This program demonstrates these requirements by printing out the desired maps. The first map printed out is the normal dungeon map view, the second map printed out is the ground monster distance map, and the final map is the tunneling monster map.
