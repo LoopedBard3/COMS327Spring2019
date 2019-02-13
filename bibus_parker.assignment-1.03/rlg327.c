@@ -107,8 +107,8 @@ typedef struct dungeon
    * of overhead to the memory system.                                    */
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   pair_t pc;
-  open_finding_path_t * floor_path;
-  open_finding_path_t * all_path;
+  open_finding_path_t floor_path[DUNGEON_Y][DUNGEON_X];
+  open_finding_path_t all_path[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;
 
 static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
@@ -1451,6 +1451,8 @@ static void dijkstra_path_all_space(dungeon_t *d)
     {
       if(hardnessxy(x, y) != 255){
               path[y][x].hn = heap_insert(&h, &path[y][x]);
+      }else{
+        path[y][x].hn = NULL;
       }
     }
   }
@@ -1608,7 +1610,7 @@ static void dijkstra_path_all_space(dungeon_t *d)
     printf("\n");
   }
 
-  d->all_path = *path;
+  memcpy(d->all_path, path, sizeof(path));  //Save the path
 }
 
 
@@ -1815,7 +1817,8 @@ static void dijkstra_path_open_space(dungeon_t *d)
     }
     printf("\n");
   }
-  d->floor_path = *path;
+  memcpy(d->floor_path, path, sizeof(path));  //Save the path
+
 }
 
 int main(int argc, char *argv[])
