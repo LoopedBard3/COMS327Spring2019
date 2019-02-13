@@ -1462,10 +1462,10 @@ static void dijkstra_path_all_space(dungeon_t *d)
     //Y-1 X-1
     if ((path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].hn) &&
         (path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].cost >
-         p->cost + 1 + hardnessxy(x-1,y-1)/85))
+         p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85))
     {
       path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].cost =
-          p->cost + 1 + hardnessxy(x-1,y-1)/85;
+          p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85;
       path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].from[dim_y] = p->pos[dim_y];
       path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].from[dim_x] = p->pos[dim_x];
       heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1]
@@ -1476,10 +1476,10 @@ static void dijkstra_path_all_space(dungeon_t *d)
     //Y-1 X
     if ((path[p->pos[dim_y] - 1][p->pos[dim_x]].hn) &&
         (path[p->pos[dim_y] - 1][p->pos[dim_x]].cost >
-         p->cost + 1 + hardnessxy(x,y-1)/85))
+         p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85))
     {
       path[p->pos[dim_y] - 1][p->pos[dim_x]].cost =
-          p->cost + 1 + hardnessxy(x,y-1)/85;
+          p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85;
       path[p->pos[dim_y] - 1][p->pos[dim_x]].from[dim_y] = p->pos[dim_y];
       path[p->pos[dim_y] - 1][p->pos[dim_x]].from[dim_x] = p->pos[dim_x];
       heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1]
@@ -1490,10 +1490,10 @@ static void dijkstra_path_all_space(dungeon_t *d)
     //Y-1 X+1
     if ((path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].hn) &&
         (path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].cost >
-         p->cost + 1 + hardnessxy(x+1,y-1)/85))
+         p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85))
     {
       path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].cost =
-          p->cost + 1 + hardnessxy(x+1,y-1)/85;
+          p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85;
       path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].from[dim_y] = p->pos[dim_y];
       path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].from[dim_x] = p->pos[dim_x];
       heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1]
@@ -1504,10 +1504,10 @@ static void dijkstra_path_all_space(dungeon_t *d)
     //Y X-1
     if ((path[p->pos[dim_y]][p->pos[dim_x] - 1].hn) &&
         (path[p->pos[dim_y]][p->pos[dim_x] - 1].cost >
-         p->cost + 1 + hardnessxy(x-1,y)/85))
+         p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85))
     {
       path[p->pos[dim_y]][p->pos[dim_x] - 1].cost =
-          p->cost + 1 + hardnessxy(x-1,y)/85;
+          p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85;
       path[p->pos[dim_y]][p->pos[dim_x] - 1].from[dim_y] = p->pos[dim_y];
       path[p->pos[dim_y]][p->pos[dim_x] - 1].from[dim_x] = p->pos[dim_x];
       heap_decrease_key_no_replace(&h, path[p->pos[dim_y]]
@@ -1518,10 +1518,10 @@ static void dijkstra_path_all_space(dungeon_t *d)
     //Y X
     if ((path[p->pos[dim_y]][p->pos[dim_x]].hn) &&
         (path[p->pos[dim_y]][p->pos[dim_x]].cost >
-         p->cost + 1 + hardnessxy(x,y)/85))
+         p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85))
     {
       path[p->pos[dim_y]][p->pos[dim_x]].cost =
-          p->cost + 1 + hardnessxy(x,y)/85;
+          p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85;
       path[p->pos[dim_y]][p->pos[dim_x]].from[dim_y] = p->pos[dim_y];
       path[p->pos[dim_y]][p->pos[dim_x]].from[dim_x] = p->pos[dim_x];
       heap_decrease_key_no_replace(&h, path[p->pos[dim_y]]
@@ -1532,10 +1532,10 @@ static void dijkstra_path_all_space(dungeon_t *d)
     //Y X+1
     if ((path[p->pos[dim_y]][p->pos[dim_x] + 1].hn) &&
         (path[p->pos[dim_y]][p->pos[dim_x] + 1].cost >
-         p->cost + 1 + hardnessxy(x+1,y)/85))
+         p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85))
     {
       path[p->pos[dim_y]][p->pos[dim_x] + 1].cost =
-          p->cost + 1 + hardnessxy(x+1,y)/85;
+          p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85;
       path[p->pos[dim_y]][p->pos[dim_x] + 1].from[dim_y] = p->pos[dim_y];
       path[p->pos[dim_y]][p->pos[dim_x] + 1].from[dim_x] = p->pos[dim_x];
       heap_decrease_key_no_replace(&h, path[p->pos[dim_y]]
@@ -1546,10 +1546,10 @@ static void dijkstra_path_all_space(dungeon_t *d)
     //Y+1 X-1
     if ((path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].hn) &&
         (path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].cost >
-         p->cost + 1 + hardnessxy(x-1,y+1)/85))
+         p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85))
     {
       path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].cost =
-          p->cost + 1 + hardnessxy(x+1,y+1)/85;
+          p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85;
       path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].from[dim_y] = p->pos[dim_y];
       path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].from[dim_x] = p->pos[dim_x];
       heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1]
@@ -1560,10 +1560,10 @@ static void dijkstra_path_all_space(dungeon_t *d)
     //Y+1 X
     if ((path[p->pos[dim_y] + 1][p->pos[dim_x]].hn) &&
         (path[p->pos[dim_y] + 1][p->pos[dim_x]].cost >
-         p->cost + 1 + hardnessxy(x,y+1)/85))
+         p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85))
     {
       path[p->pos[dim_y] + 1][p->pos[dim_x]].cost =
-          p->cost + 1 + hardnessxy(x,y+1)/85;
+          p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85;
       path[p->pos[dim_y] + 1][p->pos[dim_x]].from[dim_y] = p->pos[dim_y];
       path[p->pos[dim_y] + 1][p->pos[dim_x]].from[dim_x] = p->pos[dim_x];
       heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1]
@@ -1574,10 +1574,10 @@ static void dijkstra_path_all_space(dungeon_t *d)
     //Y+1 X+1
     if ((path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].hn) &&
         (path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].cost >
-         p->cost + 1 + hardnessxy(x+1,y+1)/85))
+         p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85))
     {
       path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].cost =
-          p->cost + 1 + hardnessxy(x+1,y+1)/85;
+          p->cost + 1 + hardnessxy(p->pos[dim_x],p->pos[dim_y])/85;
       path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].from[dim_y] = p->pos[dim_y];
       path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].from[dim_x] = p->pos[dim_x];
       heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1]
