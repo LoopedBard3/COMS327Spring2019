@@ -1943,7 +1943,7 @@ int main(int argc, char *argv[])
     d.pc[dim_x] = d.rooms[0].position[dim_x];
     d.pc[dim_y] = d.rooms[0].position[dim_y];
   }
-
+  printf("\nThe PC is at (y,x): (%d, %d)\n", d.pc[dim_y], d.pc[dim_x]);
   render_dungeon(&d);
   dijkstra_path_open_space(&d);
   dijkstra_path_all_space(&d);
