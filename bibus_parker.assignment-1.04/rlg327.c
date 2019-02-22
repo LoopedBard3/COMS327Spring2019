@@ -39,7 +39,8 @@ static void turn_init(dungeon_t *d, heap_t *h){
 }
 
 //Does a turn and returns true if it was the PC's turn.
-int do_turn(dungeon_t *d, heap_t *h){
+static int do_turn(dungeon_t *d, heap_t *h){
+
   return 1;
 }
 
@@ -220,7 +221,8 @@ int main(int argc, char *argv[])
     d.pc.position[dim_y] = (d.rooms[0].position[dim_y] +
                             (rand() % d.rooms[0].size[dim_y]));
   }
-
+  d.pc.is_player = 1;
+  d.pc.breaker = 0;
   gen_monsters(&d);
   turn_init(&d, &heap);
   printf("PC is at (y, x): %d, %d\n",

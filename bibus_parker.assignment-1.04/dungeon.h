@@ -41,12 +41,12 @@ typedef struct room
   pair_t size;
 } room_t;
 
-typedef struct pc
-{
-  heap_node_t *hn;
-  pair_t position;
-  char alive;
-} pc_t;
+// typedef struct pc
+// {
+//   heap_node_t *hn;
+//   pair_t position;
+//   char alive;
+// } pc_t;
 
 typedef enum __attribute__((__packed__)) monster_trait
 {
@@ -62,12 +62,13 @@ monster_trait_t;
   heap_node_t *hn;
   pair_t position;
   pair_t last_spotted;
+  char is_player;
   char traits;
   char speed;
   char alive;
   int breaker;
   int next_turn;
-} monster_t;
+} monster_t, pc_t;
 
     typedef struct dungeon
 {

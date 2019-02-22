@@ -1449,6 +1449,7 @@ void gen_monsters(dungeon_t *d)
     mon_hold.breaker = counter + 1;
     mon_hold.next_turn = 0;
     mon_hold.alive = 1;
+    mon_hold.is_player = 0;
     pos_room = rand() % (d->num_rooms - 1) + 1;
 
     //Find an open position
