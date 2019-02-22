@@ -170,7 +170,6 @@ int main(int argc, char *argv[])
   srand(seed);
 
   init_dungeon(&d);
-  gen_monsters(&d);
 
   if (do_load)
   {
@@ -193,6 +192,8 @@ int main(int argc, char *argv[])
     d.pc.position[dim_y] = (d.rooms[0].position[dim_y] +
                             (rand() % d.rooms[0].size[dim_y]));
   }
+
+    gen_monsters(&d);
 
   printf("PC is at (y, x): %d, %d\nNumber of monsters is: %d",
          d.pc.position[dim_y], d.pc.position[dim_x], d.num_monsters);

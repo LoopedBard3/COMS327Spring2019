@@ -711,16 +711,28 @@ int gen_dungeon(dungeon_t *d)
 void render_dungeon(dungeon_t *d)
 {
   pair_t p;
-
+  uint32_t counter;
+  char placed;
   for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++)
   {
     for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++)
     {
-      if (d->pc.position[dim_x] == p[dim_x] && d->pc.position[dim_y] == p[dim_y])
+      placed = 0;
+      for (counter = 0; counter < d->num_monsters; counter++)
+      {
+        if (d->monsters[counter].position[dim_x] == p[dim_x] && d->monsters[counter].position[dim_y] == p[dim_y])
+        {
+          printf("%x", d->monsters[counter].traits);
+          placed = 1;
+          break;
+        }
+      }
+      if (!placed && d->pc.position[dim_x] == p[dim_x] && d->pc.position[dim_y] == p[dim_y])
       {
         putchar('@');
+        placed = 1;
       }
-      else
+      else if (!placed)
       {
         switch (mappair(p))
         {
@@ -1424,14 +1436,39 @@ void render_tunnel_distance_map(dungeon_t *d)
   }
 }
 
-void gen_monsters(dungeon_t *d){
+void gen_monsters(dungeon_t *d)
+{
   uint32_t counter = 0;
+  uint8_t pos_room, pos_x, pos_y, pos_full = 0;
   monster_t mon_hold;
-  for(counter = 0; counter < d->num_monsters; counter++){
-    mon_hold.traits = rand()&(trait_int|trait_tele|trait_tunnel|trait_erratic);
-    mon_hold.speed = rand()%20 + 1;
+  for (counter = 0; !pos_full && counter < d->num_monsters; counter++)
+  {
+    mon_hold.traits = rand() & (trait_int | trait_tele | trait_tunnel | trait_erratic);
+    mon_hold.speed = rand() % 20 + 1;
     mon_hold.breaker = counter + 1;
+    mon_hold.alive = 1;
+    pos_room = rand() % (d->num_rooms - 1) + 1;
+    pos_x = (d->rooms[pos_room].position[dim_x] +
+               (rand() % d->rooms[pos_room].size[dim_x]));
+    pos_y = (d->rooms[pos_room].position[dim_y] +
+               (rand() % d->rooms[pos_room].size[dim_y]));
+      // for (iterator = 0; iterator < counter; iterator++)
+      // {
+      //   if(pos_x != d->monsters[iterator].position[dim_x] && pos_y != d->monsters[iterator].position[dim_y]){
+      //     pos_full = 0;
+      //     break;
+      //   }
+      // }
+
+    if (!pos_full)
+    {
+      mon_hold.position[dim_x] = pos_x;
+      mon_hold.position[dim_y] = pos_y;
+      printf("Monster: %d, Trait: %x, Speed: %d, Breaker: %d, Pos: %d %d %d\n", counter, mon_hold.traits, mon_hold.speed, mon_hold.breaker, mon_hold.position[dim_x], mon_hold.position[dim_y], pos_full);
+    } else {
+      d->num_monsters = counter;
+    }
+
     d->monsters[counter] = mon_hold;
-    printf("Monster: %d, Trait: %x, Speed: %d, Breaker %d\n", counter, mon_hold.traits, mon_hold.speed, mon_hold.breaker);
   }
 }

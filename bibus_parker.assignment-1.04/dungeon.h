@@ -60,6 +60,7 @@ monster_trait_t;
   pair_t position;
   char traits;
   char speed;
+  char alive;
   int breaker;
 } monster_t;
 
