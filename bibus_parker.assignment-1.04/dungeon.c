@@ -1447,6 +1447,7 @@ void gen_monsters(dungeon_t *d)
     mon_hold.traits = rand() & (trait_int | trait_tele | trait_tunnel | trait_erratic);
     mon_hold.speed = rand() % 20 + 1;
     mon_hold.breaker = counter + 1;
+    mon_hold.next_turn = 0;
     mon_hold.alive = 1;
     pos_room = rand() % (d->num_rooms - 1) + 1;
 

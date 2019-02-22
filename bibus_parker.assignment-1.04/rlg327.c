@@ -2,6 +2,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "dungeon.h"
 #include "path.h"
@@ -17,9 +18,36 @@ void usage(char *name)
   exit(-1);
 }
 
+static int32_t turn_cmp(const void *key, const void *with) {
+  char turn_stat = ((int32_t) ((monster_t *) key)->next_turn -
+          (int32_t) ((monster_t *) with)->next_turn);
+  if(!turn_stat){
+    return ((int32_t) ((monster_t *) key)->breaker -
+          (int32_t) ((monster_t *) with)->breaker);
+  }else {
+    return turn_stat;
+  }
+}
+
+static void turn_init(dungeon_t *d, heap_t *h){
+  int counter;
+  heap_init(h, turn_cmp, NULL);
+  for(counter = 0; counter < d->num_monsters; counter++){
+    d->monsters[counter].hn = heap_insert(h, &(d->monsters[counter]));
+  }
+  d->pc.hn = heap_insert(h, &(d->pc.hn));
+}
+
+//Does a turn and returns true if it was the PC's turn.
+int do_turn(dungeon_t *d, heap_t *h){
+  return 1;
+}
+
+
 int main(int argc, char *argv[])
 {
   dungeon_t d;
+  heap_t heap;
   time_t seed;
   struct timeval tv;
   uint32_t i;
@@ -194,14 +222,19 @@ int main(int argc, char *argv[])
   }
 
   gen_monsters(&d);
-
+  turn_init(&d, &heap);
   printf("PC is at (y, x): %d, %d\n",
          d.pc.position[dim_y], d.pc.position[dim_x]);
 
   //Do the movement and monster turn code.
-  render_dungeon(&d);
-  dijkstra(&d);
-  dijkstra_tunnel(&d);
+  while(d.pc.alive){
+    if(do_turn(&d, &heap)){
+      render_dungeon(&d);
+      dijkstra(&d);
+      dijkstra_tunnel(&d);
+      usleep(250000);
+    }
+  }
 
   if (do_save)
   {

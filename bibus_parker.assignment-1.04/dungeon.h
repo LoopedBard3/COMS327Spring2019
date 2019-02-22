@@ -43,6 +43,7 @@ typedef struct room
 
 typedef struct pc
 {
+  heap_node_t *hn;
   pair_t position;
   char alive;
 } pc_t;
@@ -58,12 +59,14 @@ monster_trait_t;
 
     typedef struct monster
 {
+  heap_node_t *hn;
   pair_t position;
   pair_t last_spotted;
   char traits;
   char speed;
   char alive;
   int breaker;
+  int next_turn;
 } monster_t;
 
     typedef struct dungeon
