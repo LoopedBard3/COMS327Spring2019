@@ -45,7 +45,7 @@ static int do_turn(dungeon_t *d, heap_t *h){
   if(ter_floor_room == mapxy(mon->position[dim_x], mon->position[dim_y] + 1)){
     mon->position[dim_y] = mon->position[dim_y] + 1;
   }
-  mon->next_turn = mon->next_turn + (1000/(mon->speed+1));
+  mon->next_turn = mon->next_turn + (1000/(mon->speed));
   printf("NT: %d\n", mon->next_turn); 
   mon->hn = heap_insert(h, mon);
   return mon->is_player;
