@@ -59,6 +59,7 @@ monster_trait_t;
     typedef struct monster
 {
   pair_t position;
+  pair_t last_spotted;
   char traits;
   char speed;
   char alive;

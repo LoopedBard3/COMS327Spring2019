@@ -1440,9 +1440,9 @@ void render_tunnel_distance_map(dungeon_t *d)
 void gen_monsters(dungeon_t *d)
 {
   uint32_t counter = 0;
-  uint8_t pos_room, pos_x, pos_y, pos_full = 0;
+  uint8_t pos_room, pos_x, pos_y;
   monster_t mon_hold;
-  for (counter = 0; !pos_full && counter < d->num_monsters; counter++)
+  for (counter = 0; counter < d->num_monsters; counter++)
   {
     mon_hold.traits = rand() & (trait_int | trait_tele | trait_tunnel | trait_erratic);
     mon_hold.speed = rand() % 20 + 1;
@@ -1452,18 +1452,15 @@ void gen_monsters(dungeon_t *d)
 
     //Find an open position
     pos_x = (d->rooms[pos_room].position[dim_x] +
-               (rand() % d->rooms[pos_room].size[dim_x]));
+             (rand() % d->rooms[pos_room].size[dim_x]));
     pos_y = (d->rooms[pos_room].position[dim_y] +
-               (rand() % d->rooms[pos_room].size[dim_y]));
+             (rand() % d->rooms[pos_room].size[dim_y]));
 
-    if (!pos_full)
-    {
-      mon_hold.position[dim_x] = pos_x;
-      mon_hold.position[dim_y] = pos_y;
-      //printf("Monster: %d, Trait: %x, Speed: %d, Breaker: %d, Pos: %d %d %d\n", counter, mon_hold.traits, mon_hold.speed, mon_hold.breaker, mon_hold.position[dim_x], mon_hold.position[dim_y], pos_full);
-    } else {
-      d->num_monsters = counter;
-    }
+    mon_hold.position[dim_x] = pos_x;
+    mon_hold.position[dim_y] = pos_y;
+    mon_hold.last_spotted[dim_x] = pos_x;
+    mon_hold.last_spotted[dim_y] = pos_y;
+    //printf("Monster: %d, Trait: %x, Speed: %d, Breaker: %d, Pos: %d %d %d\n", counter, mon_hold.traits, mon_hold.speed, mon_hold.breaker, mon_hold.position[dim_x], mon_hold.position[dim_y], pos_full);
 
     d->monsters[counter] = mon_hold;
   }
