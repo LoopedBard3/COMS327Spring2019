@@ -87,6 +87,8 @@ monster_trait_t;
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   uint8_t pc_distance[DUNGEON_Y][DUNGEON_X];
   uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
+  //Possibly add another map for mapping the characters
+  monster_t* char_pos[DUNGEON_Y][DUNGEON_X];
 
   pc_t pc;
   monster_t *monsters;
