@@ -19,7 +19,7 @@ void usage(char *name)
 }
 
 static int32_t turn_cmp(const void *key, const void *with) {
-  char turn_stat = ((int32_t) ((monster_t *) key)->next_turn -
+  uint32_t turn_stat = ((int32_t) ((monster_t *) key)->next_turn -
           (int32_t) ((monster_t *) with)->next_turn);
   if(!turn_stat){
     return ((int32_t) ((monster_t *) key)->breaker -
@@ -40,8 +40,15 @@ static void turn_init(dungeon_t *d, heap_t *h){
 
 //Does a turn and returns true if it was the PC's turn.
 static int do_turn(dungeon_t *d, heap_t *h){
-
-  return 1;
+  static monster_t *mon;
+  mon = heap_remove_min(h);
+  if(ter_floor_room == mapxy(mon->position[dim_x], mon->position[dim_y] + 1)){
+    mon->position[dim_y] = mon->position[dim_y] + 1;
+  }
+  mon->next_turn = mon->next_turn + (1000/(mon->speed+1));
+  printf("NT: %d\n", mon->next_turn); 
+  mon->hn = heap_insert(h, mon);
+  return mon->is_player;
 }
 
 
@@ -223,6 +230,7 @@ int main(int argc, char *argv[])
   }
   d.pc.is_player = 1;
   d.pc.breaker = 0;
+  d.pc.speed = 10;
   gen_monsters(&d);
   turn_init(&d, &heap);
   printf("PC is at (y, x): %d, %d\n",
