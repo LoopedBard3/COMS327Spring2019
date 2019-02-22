@@ -48,12 +48,12 @@ typedef struct pc
 
 typedef enum __attribute__((__packed__)) monster_trait
 {
-  trait_int = 0x1;
-  trait_tele = 0x2;
-  trait_tunnel = 0x4;
-  trait_erratic = 0x8;
+  trait_int = 0x1,
+  trait_tele = 0x2,
+  trait_tunnel = 0x4,
+  trait_erratic = 0x8,
 }
-monster_trait_t
+monster_trait_t;
 
     typedef struct monster
 {
@@ -61,7 +61,7 @@ monster_trait_t
   char traits;
   char speed;
   int breaker;
-} monster_t
+} monster_t;
 
     typedef struct dungeon
 {
