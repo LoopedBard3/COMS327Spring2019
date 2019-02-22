@@ -597,6 +597,7 @@ static int empty_dungeon(dungeon_t *d)
     }
   }
   d->monsters = malloc(sizeof(*d->monsters) * d->num_monsters);
+  d->pc.alive = 1;
   return 0;
 }
 

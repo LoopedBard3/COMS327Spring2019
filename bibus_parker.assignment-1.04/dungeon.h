@@ -44,6 +44,7 @@ typedef struct room
 typedef struct pc
 {
   pair_t position;
+  char alive;
 } pc_t;
 
 typedef enum __attribute__((__packed__)) monster_trait
