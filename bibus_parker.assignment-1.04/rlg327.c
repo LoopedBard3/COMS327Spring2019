@@ -18,39 +18,155 @@ void usage(char *name)
   exit(-1);
 }
 
-static int32_t turn_cmp(const void *key, const void *with) {
-  uint32_t turn_stat = ((int32_t) ((monster_t *) key)->next_turn -
-          (int32_t) ((monster_t *) with)->next_turn);
-  if(!turn_stat){
-    return ((int32_t) ((monster_t *) key)->breaker -
-          (int32_t) ((monster_t *) with)->breaker);
-  }else {
+static int32_t turn_cmp(const void *key, const void *with)
+{
+  uint32_t turn_stat = ((int32_t)((monster_t *)key)->next_turn -
+                        (int32_t)((monster_t *)with)->next_turn);
+  if (!turn_stat)
+  {
+    return ((int32_t)((monster_t *)key)->breaker -
+            (int32_t)((monster_t *)with)->breaker);
+  }
+  else
+  {
     return turn_stat;
   }
 }
 
-static void turn_init(dungeon_t *d, heap_t *h){
+static void turn_init(dungeon_t *d, heap_t *h)
+{
   int counter;
   heap_init(h, turn_cmp, NULL);
-  for(counter = 0; counter < d->num_monsters; counter++){
+  for (counter = 0; counter < d->num_monsters; counter++)
+  {
     d->monsters[counter].hn = heap_insert(h, &(d->monsters[counter]));
   }
   d->pc.hn = heap_insert(h, &(d->pc.hn));
 }
 
-//Does a turn and returns true if it was the PC's turn.
-static int do_turn(dungeon_t *d, heap_t *h){
-  static monster_t *mon;
-  mon = heap_remove_min(h);
-  if(ter_floor_room == mapxy(mon->position[dim_x], mon->position[dim_y] + 1)){
-    mon->position[dim_y] = mon->position[dim_y] + 1;
+int space_valid(dungeon_t *d, uint8_t pos_x, uint8_t pos_y, char tunneling)
+{
+  if (hardnessxy(pos_x, pos_y) == 0)
+  {
+    return 1;
   }
-  mon->next_turn = mon->next_turn + (1000/(mon->speed));
-  printf("NT: %d\n", mon->next_turn); 
-  mon->hn = heap_insert(h, mon);
-  return mon->is_player;
+  else if (tunneling && hardnessxy(pos_x, pos_y) != 255)
+  {
+    return 1;
+  }
+  return 0;
 }
 
+//Does a turn and returns true if it was the PC's turn.
+static int do_turn(dungeon_t *d, heap_t *h)
+{
+  static monster_t *mon;
+  //int goal_x, goal_y;
+  mon = heap_remove_min(h);
+  //mon = heap_peek_min(h);
+
+  //Do the movement stuff and killing of monsters
+  // if (mon->traits & trait_int)
+  // {
+  //   if (mon->traits & trait_tele)
+  //   {
+  //     if (mon->traits & trait_tunnel)
+  //     {
+  //       if (mon->traits & trait_erratic && rand() % 2)
+  //       {
+  //         goal_x = mon->position[dim_x] + 1;
+  //       }
+  //     }
+  //     else
+  //     {
+  //       if (mon->traits & trait_erratic && rand() % 2)
+  //       {
+  //         goal_y = mon->position[dim_y] + 1;
+  //       }
+  //     }
+  //   }
+  //   else
+  //   {
+  //     if (mon->traits & trait_tunnel)
+  //     {
+  //       if (mon->traits & trait_erratic && rand() % 2)
+  //       {
+  //         goal_x = mon->position[dim_x] - 1;
+  //       }
+  //     }
+  //     else
+  //     {
+  //       if (mon->traits & trait_erratic && rand() % 2)
+  //       {
+  //         goal_y = mon->position[dim_y] - 1;
+  //       }
+  //     }
+  //   }
+  // }
+  // else
+  // {
+  //   if (mon->traits & trait_tele)
+  //   {
+  //     if (mon->traits & trait_tunnel)
+  //     {
+  //       if (mon->traits & trait_erratic && rand() % 2)
+  //       {
+  //         goal_x = mon->position[dim_x] + 1;
+  //       }
+  //     }
+  //     else
+  //     {
+  //       if (mon->traits & trait_erratic && rand() % 2)
+  //       {
+  //         goal_y = mon->position[dim_y] + 1;
+  //       }
+  //     }
+  //   }
+  //   else
+  //   {
+  //     if (mon->traits & trait_tunnel)
+  //     {
+  //       if (mon->traits & trait_erratic && rand() % 2)
+  //       {
+  //         goal_x = mon->position[dim_x] - 1;
+  //       }
+  //     }
+  //     else
+  //     {
+  //       if (mon->traits & trait_erratic && rand() % 2)
+  //       {
+  //         goal_y = mon->position[dim_y] - 1;
+  //       }
+  //     }
+  //   }
+  // }
+
+    
+
+  if(space_valid(d, mon->position[dim_x]+1, mon->position[dim_y], mon->traits & trait_tunnel)){
+    mon->position[dim_x] = mon->position[dim_x] + 1;
+  }
+
+  if(space_valid(d, mon->position[dim_x], mon->position[dim_y] + 1, mon->traits & trait_tunnel)){
+    mon->position[dim_y] = mon->position[dim_y] + 1;
+  }
+
+  // if(space_valid(d, mon->position[dim_x], goal_y, mon->traits & trait_tunnel)){
+  //   mon->position[dim_y] = goal_y;
+  // }
+
+  // if(!mon->is_player){
+
+  // }else{
+
+  // }
+
+  mon->next_turn = mon->next_turn + (1000 / (mon->speed));
+  printf("NT: %d\n", mon->next_turn);
+  mon->hn = heap_insert(h, mon);
+  //heap_decrease_key_no_replace(h, mon->hn);
+  return mon->is_player;
+}
 
 int main(int argc, char *argv[])
 {
@@ -182,7 +298,7 @@ int main(int argc, char *argv[])
              * we use it to set the number of monsters.    */
             d.num_monsters = atoi(argv[++i]);
           }
-          break;  
+          break;
         default:
           usage(argv[0]);
         }
@@ -237,14 +353,19 @@ int main(int argc, char *argv[])
          d.pc.position[dim_y], d.pc.position[dim_x]);
 
   //Do the movement and monster turn code.
-  while(d.pc.alive){
-    if(do_turn(&d, &heap)){
+  while (d.pc.alive)
+  {
+    //if (do_turn(&d, &heap))
+    {
+      do_turn(&d, &heap);
       render_dungeon(&d);
       dijkstra(&d);
       dijkstra_tunnel(&d);
       usleep(250000);
     }
   }
+
+  printf("You have perished a very untimely death!");
 
   if (do_save)
   {
