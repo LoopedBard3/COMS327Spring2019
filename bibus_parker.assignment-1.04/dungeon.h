@@ -1,28 +1,29 @@
 #ifndef DUNGEON_H
-# define DUNGEON_H
+#define DUNGEON_H
 
-# include "heap.h"
-# include "dims.h"
+#include "heap.h"
+#include "dims.h"
 
-#define DUNGEON_X              80
-#define DUNGEON_Y              21
-#define MIN_ROOMS              6
-#define MAX_ROOMS              10
-#define ROOM_MIN_X             4
-#define ROOM_MIN_Y             3
-#define ROOM_MAX_X             20
-#define ROOM_MAX_Y             15
-#define SAVE_DIR               ".rlg327"
-#define DUNGEON_SAVE_FILE      "dungeon"
-#define DUNGEON_SAVE_SEMANTIC  "RLG327-" TERM
-#define DUNGEON_SAVE_VERSION   0U
+#define DUNGEON_X 80
+#define DUNGEON_Y 21
+#define MIN_ROOMS 6
+#define MAX_ROOMS 10
+#define ROOM_MIN_X 4
+#define ROOM_MIN_Y 3
+#define ROOM_MAX_X 20
+#define ROOM_MAX_Y 15
+#define SAVE_DIR ".rlg327"
+#define DUNGEON_SAVE_FILE "dungeon"
+#define DUNGEON_SAVE_SEMANTIC "RLG327-" TERM
+#define DUNGEON_SAVE_VERSION 0U
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
 #define hardnessxy(x, y) (d->hardness[y][x])
 
-typedef enum __attribute__ ((__packed__)) terrain_type {
+typedef enum __attribute__((__packed__)) terrain_type
+{
   ter_debug,
   ter_wall,
   ter_wall_immutable,
@@ -34,30 +35,36 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_stairs_down
 } terrain_type_t;
 
-typedef struct room {
+typedef struct room
+{
   pair_t position;
   pair_t size;
 } room_t;
 
-typedef struct pc {
+typedef struct pc
+{
   pair_t position;
 } pc_t;
 
-typedef enum __attribute__ ((__packed__)) monster_trait {
+typedef enum __attribute__((__packed__)) monster_trait
+{
   trait_int = 0x1;
   trait_tele = 0x2;
   trait_tunnel = 0x4;
   trait_erratic = 0x8;
-} monster_trait_t
+}
+monster_trait_t
 
-typedef struct monster {
+    typedef struct monster
+{
   pair_t position;
   char traits;
   char speed;
   int breaker;
 } monster_t
 
-typedef struct dungeon {
+    typedef struct dungeon
+{
   uint32_t num_rooms;
   room_t *rooms;
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
