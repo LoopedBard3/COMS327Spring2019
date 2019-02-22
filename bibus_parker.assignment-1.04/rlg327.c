@@ -10,7 +10,8 @@ void usage(char *name)
 {
   fprintf(stderr,
           "Usage: %s [-r|--rand <seed>] [-l|--load [<file>]]\n"
-          "          [-s|--save [<file>]] [-i|--image <pgm file>]\n",
+          "          [-s|--save [<file>]] [-i|--image <pgm file>]\n"
+          "          [-n|--nummon <number of monsters>]\n",
           name);
 
   exit(-1);
@@ -35,6 +36,7 @@ int main(int argc, char *argv[])
    * and don't write to disk.                                      */
   do_load = do_save = do_image = do_save_seed = do_save_image = 0;
   do_seed = 1;
+  d.num_monsters = 10; //Set the default number of monsters
   save_file = load_file = NULL;
 
   /* The project spec requires '--load' and '--save'.  It's common  *
@@ -131,6 +133,20 @@ int main(int argc, char *argv[])
             pgm_file = argv[++i];
           }
           break;
+
+        case 'n':
+          if ((!long_arg && argv[i][2]) ||
+              (long_arg && strcmp(argv[i], "-nummon")))
+          {
+            usage(argv[0]);
+          }
+          if ((argc > i + 1) && argv[i + 1][0] != '-')
+          {
+            /* There is another argument, and it's not a switch, so *
+             * we use it to set the number of monsters.    */
+            d.num_monsters = atoi(argv[++i]);
+          }
+          break;  
         default:
           usage(argv[0]);
         }
@@ -177,8 +193,8 @@ int main(int argc, char *argv[])
                             (rand() % d.rooms[0].size[dim_y]));
   }
 
-  printf("PC is at (y, x): %d, %d\n",
-         d.pc.position[dim_y], d.pc.position[dim_x]);
+  printf("PC is at (y, x): %d, %d\nNumber of monsters is: %d",
+         d.pc.position[dim_y], d.pc.position[dim_x], d.num_monsters);
 
   //Do the movement and monster turn code.
   render_dungeon(&d);
