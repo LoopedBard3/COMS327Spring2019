@@ -66,8 +66,8 @@ monster_trait_t;
   char traits;
   char speed;
   char alive;
-  uint32_t breaker;
-  uint32_t next_turn;
+  int32_t breaker;
+  int32_t next_turn;
 } monster_t, pc_t;
 
     typedef struct dungeon

@@ -66,88 +66,64 @@ static int do_turn(dungeon_t *d, heap_t *h)
   //mon = heap_peek_min(h);
 
   //Do the movement stuff and killing of monsters
-  // if (mon->traits & trait_int)
-  // {
-  //   if (mon->traits & trait_tele)
-  //   {
-  //     if (mon->traits & trait_tunnel)
-  //     {
-  //       if (mon->traits & trait_erratic && rand() % 2)
-  //       {
-  //         goal_x = mon->position[dim_x] + 1;
-  //       }
-  //     }
-  //     else
-  //     {
-  //       if (mon->traits & trait_erratic && rand() % 2)
-  //       {
-  //         goal_y = mon->position[dim_y] + 1;
-  //       }
-  //     }
-  //   }
-  //   else
-  //   {
-  //     if (mon->traits & trait_tunnel)
-  //     {
-  //       if (mon->traits & trait_erratic && rand() % 2)
-  //       {
-  //         goal_x = mon->position[dim_x] - 1;
-  //       }
-  //     }
-  //     else
-  //     {
-  //       if (mon->traits & trait_erratic && rand() % 2)
-  //       {
-  //         goal_y = mon->position[dim_y] - 1;
-  //       }
-  //     }
-  //   }
-  // }
-  // else
-  // {
-  //   if (mon->traits & trait_tele)
-  //   {
-  //     if (mon->traits & trait_tunnel)
-  //     {
-  //       if (mon->traits & trait_erratic && rand() % 2)
-  //       {
-  //         goal_x = mon->position[dim_x] + 1;
-  //       }
-  //     }
-  //     else
-  //     {
-  //       if (mon->traits & trait_erratic && rand() % 2)
-  //       {
-  //         goal_y = mon->position[dim_y] + 1;
-  //       }
-  //     }
-  //   }
-  //   else
-  //   {
-  //     if (mon->traits & trait_tunnel)
-  //     {
-  //       if (mon->traits & trait_erratic && rand() % 2)
-  //       {
-  //         goal_x = mon->position[dim_x] - 1;
-  //       }
-  //     }
-  //     else
-  //     {
-  //       if (mon->traits & trait_erratic && rand() % 2)
-  //       {
-  //         goal_y = mon->position[dim_y] - 1;
-  //       }
-  //     }
-  //   }
-  // }
+  switch (mon->traits)
+  {
+  case 0:
+    break;
 
-    
+  case trait_int:
+    break;
 
-  if(space_valid(d, mon->position[dim_x]+1, mon->position[dim_y], mon->traits & trait_tunnel)){
+  case trait_tele:
+    break;
+
+  case trait_tunnel:
+    break;
+
+  case trait_erratic:
+    break;
+
+  case trait_int|trait_tele:
+    break;
+
+  case trait_int|trait_tunnel:
+    break;
+
+  case trait_int|trait_erratic:
+    break;
+
+  case trait_tele|trait_tunnel:
+    break;
+
+  case trait_tele|trait_erratic:
+    break;
+
+  case trait_tunnel|trait_erratic:
+    break;
+
+  case trait_int|trait_tele|trait_tunnel:
+    break;
+
+  case trait_int|trait_tele|trait_erratic:
+    break;
+
+  case trait_int|trait_tunnel|trait_erratic:
+    break;
+
+  case trait_tele|trait_tunnel|trait_erratic:
+    break;
+
+  case trait_int|trait_tele|trait_tunnel|trait_erratic:
+    break;
+  }
+
+  if (space_valid(d, mon->position[dim_x] + 1, mon->position[dim_y], mon->traits & trait_tunnel))
+  {
     mon->position[dim_x] = mon->position[dim_x] + 1;
   }
 
-  if(space_valid(d, mon->position[dim_x], mon->position[dim_y] + 1, mon->traits & trait_tunnel)){
+  if (space_valid(d, mon->position[dim_x], mon->position[dim_y] + 1, mon->traits & trait_tunnel))
+  {
     mon->position[dim_y] = mon->position[dim_y] + 1;
   }
 
@@ -164,7 +140,7 @@ static int do_turn(dungeon_t *d, heap_t *h)
   mon->next_turn = mon->next_turn + (1000 / (mon->speed));
   printf("NT: %d\n", mon->next_turn);
   mon->hn = heap_insert(h, mon);
-  //heap_decrease_key_no_replace(h, mon->hn);
+  //heap_decrease_key_no_replace(h, ((*mon).hn));
   return mon->is_player;
 }
 
