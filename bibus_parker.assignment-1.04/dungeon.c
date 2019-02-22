@@ -720,7 +720,7 @@ void render_dungeon(dungeon_t *d)
       placed = 0;
       for (counter = 0; counter < d->num_monsters; counter++)
       {
-        if (d->monsters[counter].position[dim_x] == p[dim_x] && d->monsters[counter].position[dim_y] == p[dim_y])
+        if (d->monsters[counter].alive && d->monsters[counter].position[dim_x] == p[dim_x] && d->monsters[counter].position[dim_y] == p[dim_y])
         {
           printf("%x", d->monsters[counter].traits);
           placed = 1;
@@ -1448,23 +1448,18 @@ void gen_monsters(dungeon_t *d)
     mon_hold.breaker = counter + 1;
     mon_hold.alive = 1;
     pos_room = rand() % (d->num_rooms - 1) + 1;
+
+    //Find an open position
     pos_x = (d->rooms[pos_room].position[dim_x] +
                (rand() % d->rooms[pos_room].size[dim_x]));
     pos_y = (d->rooms[pos_room].position[dim_y] +
                (rand() % d->rooms[pos_room].size[dim_y]));
-      // for (iterator = 0; iterator < counter; iterator++)
-      // {
-      //   if(pos_x != d->monsters[iterator].position[dim_x] && pos_y != d->monsters[iterator].position[dim_y]){
-      //     pos_full = 0;
-      //     break;
-      //   }
-      // }
 
     if (!pos_full)
     {
       mon_hold.position[dim_x] = pos_x;
       mon_hold.position[dim_y] = pos_y;
-      printf("Monster: %d, Trait: %x, Speed: %d, Breaker: %d, Pos: %d %d %d\n", counter, mon_hold.traits, mon_hold.speed, mon_hold.breaker, mon_hold.position[dim_x], mon_hold.position[dim_y], pos_full);
+      //printf("Monster: %d, Trait: %x, Speed: %d, Breaker: %d, Pos: %d %d %d\n", counter, mon_hold.traits, mon_hold.speed, mon_hold.breaker, mon_hold.position[dim_x], mon_hold.position[dim_y], pos_full);
     } else {
       d->num_monsters = counter;
     }

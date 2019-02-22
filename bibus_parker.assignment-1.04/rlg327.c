@@ -193,10 +193,10 @@ int main(int argc, char *argv[])
                             (rand() % d.rooms[0].size[dim_y]));
   }
 
-    gen_monsters(&d);
+  gen_monsters(&d);
 
-  printf("PC is at (y, x): %d, %d\nNumber of monsters is: %d",
-         d.pc.position[dim_y], d.pc.position[dim_x], d.num_monsters);
+  printf("PC is at (y, x): %d, %d\n",
+         d.pc.position[dim_y], d.pc.position[dim_x]);
 
   //Do the movement and monster turn code.
   render_dungeon(&d);
