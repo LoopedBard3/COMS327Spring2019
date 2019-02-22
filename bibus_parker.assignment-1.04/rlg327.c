@@ -154,9 +154,7 @@ static int do_turn(dungeon_t *d, heap_t *h)
 
   // }
 
-  printf("PNT: %d\n", mon->next_turn);
   mon->next_turn = mon->next_turn + (1000 / (mon->speed));
-  printf("NT: %d\n", mon->next_turn);
   mon->hn = heap_insert(h, mon);
   }
   //heap_decrease_key_no_replace(h, ((*mon).hn));

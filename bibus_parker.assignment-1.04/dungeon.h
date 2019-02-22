@@ -57,7 +57,7 @@ typedef enum __attribute__((__packed__)) monster_trait
 }
 monster_trait_t;
 
-    typedef struct monster
+typedef struct monster
 {
   heap_node_t *hn;
   pair_t position;
@@ -70,9 +70,10 @@ monster_trait_t;
   int32_t next_turn;
 } monster_t, pc_t;
 
-    typedef struct dungeon
+typedef struct dungeon
 {
   uint32_t num_rooms;
+  uint32_t num_room_spots;
   uint32_t num_monsters;
   room_t *rooms;
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
@@ -91,7 +92,7 @@ monster_trait_t;
   monster_t* char_pos[DUNGEON_Y][DUNGEON_X];
 
   pc_t pc;
-  monster_t *monsters;
+  monster_t* monsters;
 } dungeon_t;
 
 void init_dungeon(dungeon_t *d);

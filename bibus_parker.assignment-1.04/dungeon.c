@@ -597,7 +597,7 @@ static int empty_dungeon(dungeon_t *d)
       }
     }
   }
-  d->monsters = malloc(sizeof(*d->monsters) * d->num_monsters);
+  d->num_room_spots = 0;
   d->pc.alive = 1;
   return 0;
 }
@@ -637,6 +637,7 @@ static int place_rooms(dungeon_t *d)
           {
             mappair(p) = ter_floor_room;
             hardnesspair(p) = 0;
+            if(i != 0) d->num_room_spots++;
           }
         }
       }
@@ -1084,6 +1085,7 @@ int read_rooms(dungeon_t *d, FILE *f)
            x < d->rooms[i].position[dim_x] + d->rooms[i].size[dim_x];
            x++)
       {
+        if(i != 0) d->num_room_spots++;
         mapxy(x, y) = ter_floor_room;
       }
     }
@@ -1443,6 +1445,8 @@ void gen_monsters(dungeon_t *d)
   uint32_t counter = 0;
   uint8_t pos_room, pos_x, pos_y;
   monster_t mon_hold;
+  if(d->num_monsters >= d->num_room_spots) d->num_monsters = d->num_room_spots; 
+  d->monsters = malloc(sizeof(*d->monsters) * d->num_monsters);
   for (counter = 0; counter < d->num_monsters; counter++)
   {
     mon_hold.traits = rand() & (trait_int | trait_tele | trait_tunnel | trait_erratic);
@@ -1458,6 +1462,14 @@ void gen_monsters(dungeon_t *d)
              (rand() % d->rooms[pos_room].size[dim_x]));
     pos_y = (d->rooms[pos_room].position[dim_y] +
              (rand() % d->rooms[pos_room].size[dim_y]));
+    while (d->char_pos[pos_y][pos_x] != 0)
+    {
+      pos_room = rand() % (d->num_rooms - 1) + 1;
+      pos_x = (d->rooms[pos_room].position[dim_x] +
+               (rand() % d->rooms[pos_room].size[dim_x]));
+      pos_y = (d->rooms[pos_room].position[dim_y] +
+               (rand() % d->rooms[pos_room].size[dim_y]));
+    }
 
     mon_hold.position[dim_x] = pos_x;
     mon_hold.position[dim_y] = pos_y;
