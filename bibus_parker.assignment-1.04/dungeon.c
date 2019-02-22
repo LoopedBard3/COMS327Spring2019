@@ -596,7 +596,7 @@ static int empty_dungeon(dungeon_t *d)
       }
     }
   }
-
+  d->monsters = malloc(sizeof(*d->monsters) * d->num_monsters);
   return 0;
 }
 
@@ -757,6 +757,7 @@ void render_dungeon(dungeon_t *d)
 void delete_dungeon(dungeon_t *d)
 {
   free(d->rooms);
+  free(d->monsters);
 }
 
 void init_dungeon(dungeon_t *d)
@@ -1420,5 +1421,17 @@ void render_tunnel_distance_map(dungeon_t *d)
       }
     }
     putchar('\n');
+  }
+}
+
+void gen_monsters(dungeon_t *d){
+  uint32_t counter = 0;
+  monster_t mon_hold;
+  for(counter = 0; counter < d->num_monsters; counter++){
+    mon_hold.traits = rand()&(trait_int|trait_tele|trait_tunnel|trait_erratic);
+    mon_hold.speed = rand()%20 + 1;
+    mon_hold.breaker = counter + 1;
+    d->monsters[counter] = mon_hold;
+    printf("Monster: %d, Trait: %x, Speed: %d, Breaker %d\n", counter, mon_hold.traits, mon_hold.speed, mon_hold.breaker);
   }
 }

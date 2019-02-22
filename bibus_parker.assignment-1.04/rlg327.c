@@ -170,6 +170,7 @@ int main(int argc, char *argv[])
   srand(seed);
 
   init_dungeon(&d);
+  gen_monsters(&d);
 
   if (do_load)
   {
