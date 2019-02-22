@@ -43,6 +43,20 @@ typedef struct pc {
   pair_t position;
 } pc_t;
 
+typedef enum __attribute__ ((__packed__)) monster_trait {
+  trait_int = 0x1;
+  trait_tele = 0x2;
+  trait_tunnel = 0x4;
+  trait_erratic = 0x8;
+} monster_trait_t
+
+typedef struct monster {
+  pair_t position;
+  char traits;
+  char speed;
+  int breaker;
+} monster_t
+
 typedef struct dungeon {
   uint32_t num_rooms;
   room_t *rooms;
@@ -58,7 +72,9 @@ typedef struct dungeon {
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   uint8_t pc_distance[DUNGEON_Y][DUNGEON_X];
   uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
+
   pc_t pc;
+  monster_t *monsters;
 } dungeon_t;
 
 void init_dungeon(dungeon_t *d);
