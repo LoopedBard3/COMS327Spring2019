@@ -211,6 +211,8 @@ int do_turn(dungeon_t *d, heap_t *h)
         }
         else
         {
+            change[dim_x] = -1;
+            change[dim_y] = -1;
             //Do the movement stuff and killing of monsters
             switch (mon->traits)
             {
@@ -221,6 +223,7 @@ int do_turn(dungeon_t *d, heap_t *h)
                     mon->move_goal[dim_y] = d->pc.position[dim_y];
                     get_basic_move(d, mon, &change);
                 }
+                printf("%x, C0\n", mon->traits);
                 break;
 
             case trait_int:
@@ -231,20 +234,22 @@ int do_turn(dungeon_t *d, heap_t *h)
                     get_advanced_move(d, mon, &change);
                 }
                 get_basic_move(d, mon, &change);
+                printf("%x, C1\n", mon->traits);
                 break;
 
             case trait_tele:
                 mon->move_goal[dim_x] = d->pc.position[dim_x];
                 mon->move_goal[dim_y] = d->pc.position[dim_y];
                 get_basic_move(d, mon, &change);
+                printf("%x, C2\n", mon->traits);
                 break;
 
             case trait_int | trait_tele:
                 mon->move_goal[dim_x] = d->pc.position[dim_x];
                 mon->move_goal[dim_y] = d->pc.position[dim_y];
                 get_advanced_move(d, mon, &change);
+                printf("%x, C3\n", mon->traits);
                 break;
-
             }
 
             if(mon->traits & trait_erratic && rand() & 0x1){

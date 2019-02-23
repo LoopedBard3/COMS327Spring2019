@@ -1,0 +1,5 @@
+This program meets the specifications for assignment 1.04. This includes spawning the specified or default number of monsters, having monsters follow their movement characteristics, and having a turn based event system that uses the speed of characters to determine their turns. This program demonstrates these requirements by providing a --nummon <int> switch, printing out the dungeon every player turn, having unique moving monsters, and having the turns of entities being based on their speed.  
+
+Usage: ./rlg327 [-r|--rand <seed>] [-l|--load [<file>]]
+        [-s|--save [<file>]] [-i|--image <pgm file>]
+        [-n|--nummon <number of monsters>]

@@ -204,18 +204,19 @@ int main(int argc, char *argv[])
   printf("PC is at (y, x): %d, %d\n",
          d.pc.position[dim_y], d.pc.position[dim_x]);
 
-  render_hardness_map(&d);
+  dijkstra(&d);
+  dijkstra_tunnel(&d);
   render_distance_map(&d);
   render_tunnel_distance_map(&d);
   //Do the movement and monster turn code.
   while (d.pc.alive)
   {
-    //if (do_turn(&d, &heap_turns))
+    if (do_turn(&d, &heap_turns))
     {
-      do_turn(&d, &heap_turns); //Used for testing individual monster turns
+      //do_turn(&d, &heap_turns); //Used for testing individual monster turns
       render_dungeon(&d);
-      render_distance_map(&d);
-      render_tunnel_distance_map(&d);
+      //render_distance_map(&d);
+      //render_tunnel_distance_map(&d);
       dijkstra(&d);
       dijkstra_tunnel(&d);
       usleep(250000);
