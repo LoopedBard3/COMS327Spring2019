@@ -22,32 +22,39 @@ static int32_t turn_cmp(const void *key, const void *with)
     }
 }
 
-int sees_player(dungeon_t *d, monster_t *mon){
+int sees_player(dungeon_t *d, monster_t *mon)
+{
     pair_t point1, point2;
     int new, error, x_hold, y_hold;
     //Ensure we draw left to right
-    if(mon->position[dim_x] < d->pc.position[dim_x]){
+    if (mon->position[dim_x] < d->pc.position[dim_x])
+    {
         point1[dim_x] = mon->position[dim_x];
         point1[dim_y] = mon->position[dim_y];
         point2[dim_x] = d->pc.position[dim_x];
         point2[dim_y] = d->pc.position[dim_y];
-    }else{
+    }
+    else
+    {
         point1[dim_x] = d->pc.position[dim_x];
         point1[dim_y] = d->pc.position[dim_y];
         point2[dim_x] = mon->position[dim_x];
         point2[dim_y] = mon->position[dim_y];
     }
-    
-    new = 2*(point2[dim_y]- point1[dim_y]);
+
+    new = 2 * (point2[dim_y] - point1[dim_y]);
     error = new - (point2[dim_x] - point1[dim_x]);
 
-    for(x_hold = 0, y_hold = 0; x_hold <= point2[dim_x]; x_hold++){
+    for (x_hold = 0, y_hold = 0; x_hold <= point2[dim_x]; x_hold++)
+    {
         //Increment y once the slope error is enough
-        if(error >= 0){
+        if (error >= 0)
+        {
             y_hold++;
-            error -= 2*(point2[dim_x] - point1[dim_x]);
+            error -= 2 * (point2[dim_x] - point1[dim_x]);
         }
-        if(hardnessxy(x_hold, y_hold) != 0){
+        if (hardnessxy(x_hold, y_hold) != 0)
+        {
             return 0;
         }
         //Add slope error
@@ -56,21 +63,37 @@ int sees_player(dungeon_t *d, monster_t *mon){
     return 1;
 }
 
-void get_basic_move(dungeon_t *d, monster_t *mon, pair_t *change){
-  if(mon->move_goal[dim_x] - mon->position[dim_x] == 0){
-    (*change)[dim_x] = 0;
-  }else if(mon->move_goal[dim_x] - mon->position[dim_x] < 0){
-    (*change)[dim_x] = -1;
-  }else{
-    (*change)[dim_x] = 1;
-  }
-  if(mon->move_goal[dim_y] - mon->position[dim_y] == 0){
-    (*change)[dim_y] = 0;
-  }else if(mon->move_goal[dim_y] - mon->position[dim_y] < 0){
-    (*change)[dim_y] = -1;
-  }else{
-    (*change)[dim_y] = 1;
-  }
+void get_basic_move(dungeon_t *d, monster_t *mon, pair_t *change)
+{
+    if (mon->move_goal[dim_x] - mon->position[dim_x] == 0)
+    {
+        (*change)[dim_x] = 0;
+    }
+    else if (mon->move_goal[dim_x] - mon->position[dim_x] < 0)
+    {
+        (*change)[dim_x] = -1;
+    }
+    else
+    {
+        (*change)[dim_x] = 1;
+    }
+    if (mon->move_goal[dim_y] - mon->position[dim_y] == 0)
+    {
+        (*change)[dim_y] = 0;
+    }
+    else if (mon->move_goal[dim_y] - mon->position[dim_y] < 0)
+    {
+        (*change)[dim_y] = -1;
+    }
+    else
+    {
+        (*change)[dim_y] = 1;
+    }
+}
+
+void get_random_move(pair_t* change){
+    (*change)[dim_x] = rand() % 3 - 1;
+    (*change)[dim_y] = rand() % 3 - 1;
 }
 
 void turn_init(dungeon_t *d, heap_t *h)
@@ -95,7 +118,8 @@ void kill_spot(dungeon_t *d, monster_t *mon, uint8_t pos_x, uint8_t pos_y)
 void attempt_move(dungeon_t *d, monster_t *mon, uint8_t pos_x, uint8_t pos_y)
 {
     //Check if valid, if not, turn gets skipped because something went wrong.
-    if(!(pos_x - (mon->position[dim_x] - 1) <= 2) || !(pos_y - (mon->position[dim_y] - 1) <= 2) ){
+    if (!(pos_x - (mon->position[dim_x] - 1) <= 2) || !(pos_y - (mon->position[dim_y] - 1) <= 2))
+    {
         return;
     }
     if (hardnessxy(pos_x, pos_y) == 0)
@@ -147,25 +171,40 @@ int do_turn(dungeon_t *d, heap_t *h)
             switch (mon->traits)
             {
             case 0:
-                if(sees_player(d, mon)){
-                    change[dim_x] = d->pc.position[dim_x];
-                    change[dim_y] = d->pc.position[dim_y];
+            case trait_tunnel:
+                if (sees_player(d, mon))
+                {
+                    mon->move_goal[dim_x] = d->pc.position[dim_x];
+                    mon->move_goal[dim_y] = d->pc.position[dim_y];
                     get_basic_move(d, mon, &change);
                 }
                 break;
 
             case trait_int:
+                if (sees_player(d, mon))
+                {
+                    mon->move_goal[dim_x] = d->pc.position[dim_x];
+                    mon->move_goal[dim_y] = d->pc.position[dim_y];
+                }
+                //get_basic_move(d, mon, &change);
                 break;
 
             case trait_tele:
-                change[dim_x] = 1;
-                change[dim_y] = 1;
-                break;
-
-            case trait_tunnel:
+                mon->move_goal[dim_x] = d->pc.position[dim_x];
+                mon->move_goal[dim_y] = d->pc.position[dim_y];
+                get_basic_move(d, mon, &change);
                 break;
 
             case trait_erratic:
+                if (sees_player(d, mon))
+                {
+                    mon->move_goal[dim_x] = d->pc.position[dim_x];
+                    mon->move_goal[dim_y] = d->pc.position[dim_y];
+                    get_basic_move(d, mon, &change);
+                }
+                if(rand() & 0x1){
+                    get_random_move(&change);
+                }
                 break;
 
             case trait_int | trait_tele:
@@ -175,6 +214,10 @@ int do_turn(dungeon_t *d, heap_t *h)
                 break;
 
             case trait_int | trait_erratic:
+
+                if(rand() & 0x1){
+                    get_random_move(&change);
+                }
                 break;
 
             case trait_tele | trait_tunnel:
@@ -184,21 +227,41 @@ int do_turn(dungeon_t *d, heap_t *h)
                 break;
 
             case trait_tunnel | trait_erratic:
+
+                if(rand() & 0x1){
+                    get_random_move(&change);
+                }
                 break;
 
             case trait_int | trait_tele | trait_tunnel:
                 break;
 
             case trait_int | trait_tele | trait_erratic:
+
+                if(rand() & 0x1){
+                    get_random_move(&change);
+                }
                 break;
 
             case trait_int | trait_tunnel | trait_erratic:
+
+                if(rand() & 0x1){
+                    get_random_move(&change);
+                }
                 break;
 
             case trait_tele | trait_tunnel | trait_erratic:
+
+                if(rand() & 0x1){
+                    get_random_move(&change);
+                }
                 break;
 
             case trait_int | trait_tele | trait_tunnel | trait_erratic:
+
+                if(rand() & 0x1){
+                    get_random_move(&change);
+                }
                 break;
             }
         }
