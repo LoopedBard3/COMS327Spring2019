@@ -41,13 +41,6 @@ typedef struct room
   pair_t size;
 } room_t;
 
-// typedef struct pc
-// {
-//   heap_node_t *hn;
-//   pair_t position;
-//   char alive;
-// } pc_t;
-
 typedef enum __attribute__((__packed__)) monster_trait
 {
   trait_int = 0x1,
