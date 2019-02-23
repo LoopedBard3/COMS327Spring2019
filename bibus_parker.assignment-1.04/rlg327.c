@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
       //render_tunnel_distance_map(&d);
       dijkstra(&d);
       dijkstra_tunnel(&d);
-      usleep(250000);
+      usleep(500000);
     }
   }
 
