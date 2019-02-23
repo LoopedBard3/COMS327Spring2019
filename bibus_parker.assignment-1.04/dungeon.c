@@ -1464,8 +1464,8 @@ void gen_monsters(dungeon_t *d)
 
     mon_hold.position[dim_x] = pos_x;
     mon_hold.position[dim_y] = pos_y;
-    mon_hold.last_spotted[dim_x] = pos_x;
-    mon_hold.last_spotted[dim_y] = pos_y;
+    mon_hold.move_goal[dim_x] = pos_x;
+    mon_hold.move_goal[dim_y] = pos_y;
     d->monsters[counter] = mon_hold;
     d->char_pos[pos_y][pos_x] = &(d->monsters[counter]);
   }

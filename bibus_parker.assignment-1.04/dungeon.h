@@ -54,7 +54,7 @@ typedef struct monster
 {
   heap_node_t *hn;
   pair_t position;
-  pair_t last_spotted;
+  pair_t move_goal;
   char is_player;
   char traits;
   char speed;

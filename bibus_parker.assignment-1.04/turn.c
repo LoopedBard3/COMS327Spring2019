@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "heap.h"
+#include "dims.h"
 #include "dungeon.h"
 #include "turn.h"
 #include "utils.h"
@@ -19,6 +20,57 @@ static int32_t turn_cmp(const void *key, const void *with)
     {
         return turn_stat;
     }
+}
+
+int sees_player(dungeon_t *d, monster_t *mon){
+    pair_t point1, point2;
+    int new, error, x_hold, y_hold;
+    //Ensure we draw left to right
+    if(mon->position[dim_x] < d->pc.position[dim_x]){
+        point1[dim_x] = mon->position[dim_x];
+        point1[dim_y] = mon->position[dim_y];
+        point2[dim_x] = d->pc.position[dim_x];
+        point2[dim_y] = d->pc.position[dim_y];
+    }else{
+        point1[dim_x] = d->pc.position[dim_x];
+        point1[dim_y] = d->pc.position[dim_y];
+        point2[dim_x] = mon->position[dim_x];
+        point2[dim_y] = mon->position[dim_y];
+    }
+    
+    new = 2*(point2[dim_y]- point1[dim_y]);
+    error = new - (point2[dim_x] - point1[dim_x]);
+
+    for(x_hold = 0, y_hold = 0; x_hold <= point2[dim_x]; x_hold++){
+        //Increment y once the slope error is enough
+        if(error >= 0){
+            y_hold++;
+            error -= 2*(point2[dim_x] - point1[dim_x]);
+        }
+        if(hardnessxy(x_hold, y_hold) != 0){
+            return 0;
+        }
+        //Add slope error
+        error += new;
+    }
+    return 1;
+}
+
+void get_basic_move(dungeon_t *d, monster_t *mon, pair_t *change){
+  if(mon->move_goal[dim_x] - mon->position[dim_x] == 0){
+    (*change)[dim_x] = 0;
+  }else if(mon->move_goal[dim_x] - mon->position[dim_x] < 0){
+    (*change)[dim_x] = -1;
+  }else{
+    (*change)[dim_x] = 1;
+  }
+  if(mon->move_goal[dim_y] - mon->position[dim_y] == 0){
+    (*change)[dim_y] = 0;
+  }else if(mon->move_goal[dim_y] - mon->position[dim_y] < 0){
+    (*change)[dim_y] = -1;
+  }else{
+    (*change)[dim_y] = 1;
+  }
 }
 
 void turn_init(dungeon_t *d, heap_t *h)
@@ -73,36 +125,41 @@ void attempt_move(dungeon_t *d, monster_t *mon, uint8_t pos_x, uint8_t pos_y)
     }
 }
 
-// static int sees_player(dungeon_t *d, monster_t *mon)
-// {
-// }
-
 //Does a turn and returns true if it was the PC's turn.
 int do_turn(dungeon_t *d, heap_t *h)
 {
     static monster_t *mon;
-    int goal_x, goal_y;
+    pair_t change;
     mon = heap_remove_min(h);
 
     if (mon->alive)
     {
         if (mon->is_player)
         {
-            goal_x = mon->position[dim_x] + 1;
-            goal_y = mon->position[dim_y];
+            change[dim_x] = 1;
+            change[dim_y] = 0;
         }
         else
         {
+            change[dim_x] = 1;
+            change[dim_y] = 1;
             //Do the movement stuff and killing of monsters
             switch (mon->traits)
             {
             case 0:
+                if(sees_player(d, mon)){
+                    change[dim_x] = d->pc.position[dim_x];
+                    change[dim_y] = d->pc.position[dim_y];
+                    get_basic_move(d, mon, &change);
+                }
                 break;
 
             case trait_int:
                 break;
 
             case trait_tele:
+                change[dim_x] = 1;
+                change[dim_y] = 1;
                 break;
 
             case trait_tunnel:
@@ -144,11 +201,9 @@ int do_turn(dungeon_t *d, heap_t *h)
             case trait_int | trait_tele | trait_tunnel | trait_erratic:
                 break;
             }
-            goal_x = mon->position[dim_x] + 1;
-            goal_y = mon->position[dim_y] + 1;
         }
 
-        attempt_move(d, mon, goal_x, goal_y);
+        attempt_move(d, mon, mon->position[dim_x] + change[dim_x], mon->position[dim_y] + change[dim_y]);
         mon->next_turn = mon->next_turn + (1000 / (mon->speed));
         mon->hn = heap_insert(h, mon);
     }
