@@ -45,13 +45,9 @@ static void turn_init(dungeon_t *d, heap_t *h)
 }
 
 void kill_spot(dungeon_t *d, monster_t *mon, uint8_t pos_x, uint8_t pos_y){
-  int counter = 0;
-  for(counter = 0; counter < d->num_monsters; counter++){
-    if(d->monsters[counter].breaker != mon->breaker && d->monsters[counter].alive && pos_x == d->monsters[counter].position[dim_x] && pos_y == d->monsters[counter].position[dim_y]){
-      d->monsters[counter].alive = 0;
-      break;
+    if(d->char_pos[pos_y][pos_x] != NULL && d->char_pos[pos_y][pos_x]->breaker != mon->breaker){
+      d->char_pos[pos_y][pos_x]->alive = 0;
     }
-  }
 }
 
 void attempt_move(dungeon_t *d, monster_t *mon, uint8_t pos_x, uint8_t pos_y)
@@ -59,10 +55,10 @@ void attempt_move(dungeon_t *d, monster_t *mon, uint8_t pos_x, uint8_t pos_y)
   if (hardnessxy(pos_x, pos_y) == 0)
   {
     kill_spot(d, mon, pos_x, pos_y);
-    d->char_pos[mon->position[dim_y]][mon->position[dim_y]] = NULL;
+    d->char_pos[mon->position[dim_y]][mon->position[dim_x]] = NULL;
     mon->position[dim_x] = pos_x;
     mon->position[dim_y] = pos_y;
-    d->char_pos[mon->position[dim_y]][mon->position[dim_y]] = mon;
+    d->char_pos[mon->position[dim_y]][mon->position[dim_x]] = mon;
   }
   else if (mon->traits & trait_tunnel && hardnessxy(pos_x, pos_y) != 255)
   {
@@ -70,10 +66,10 @@ void attempt_move(dungeon_t *d, monster_t *mon, uint8_t pos_x, uint8_t pos_y)
       kill_spot(d, mon, pos_x, pos_y);
       hardnessxy(pos_x, pos_y) = 0;
       mapxy(pos_x, pos_y) = ter_floor_hall;
-      d->char_pos[mon->position[dim_y]][mon->position[dim_y]] = NULL;
+      d->char_pos[mon->position[dim_y]][mon->position[dim_x]] = NULL;
       mon->position[dim_x] = pos_x;
       mon->position[dim_y] = pos_y;
-      d->char_pos[mon->position[dim_y]][mon->position[dim_y]] = mon;
+      d->char_pos[mon->position[dim_y]][mon->position[dim_x]] = mon;
     }else{
       hardnessxy(pos_x, pos_y) = hardnessxy(pos_x, pos_y) - 85;
     }
@@ -86,7 +82,6 @@ static int do_turn(dungeon_t *d, heap_t *h)
   static monster_t *mon;
   //int goal_x, goal_y;
   mon = heap_remove_min(h);
-  //mon = heap_peek_min(h);
 
   if(mon->alive){
   //Do the movement stuff and killing of monsters
@@ -143,11 +138,6 @@ static int do_turn(dungeon_t *d, heap_t *h)
 
   attempt_move(d, mon, mon->position[dim_x] + 1, mon->position[dim_y] + 1);
 
-
-  // if(space_valid(d, mon->position[dim_x], goal_y, mon->traits & trait_tunnel)){
-  //   mon->position[dim_y] = goal_y;
-  // }
-
   // if(!mon->is_player){
 
   // }else{
@@ -157,7 +147,6 @@ static int do_turn(dungeon_t *d, heap_t *h)
   mon->next_turn = mon->next_turn + (1000 / (mon->speed));
   mon->hn = heap_insert(h, mon);
   }
-  //heap_decrease_key_no_replace(h, ((*mon).hn));
   return mon->is_player;
 }
 
@@ -349,9 +338,9 @@ int main(int argc, char *argv[])
   //Do the movement and monster turn code.
   while (d.pc.alive)
   {
-    //if (do_turn(&d, &heap))
+    if (do_turn(&d, &heap))
     {
-      do_turn(&d, &heap);
+      //do_turn(&d, &heap); //Used for testing individual monster turns
       render_dungeon(&d);
       dijkstra(&d);
       dijkstra_tunnel(&d);
@@ -359,7 +348,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  printf("You have perished a very untimely death!");
+  printf("\nYou have perished a very untimely death!\n");
 
   if (do_save)
   {

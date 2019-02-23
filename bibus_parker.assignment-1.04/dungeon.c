@@ -714,28 +714,19 @@ int gen_dungeon(dungeon_t *d)
 void render_dungeon(dungeon_t *d)
 {
   pair_t p;
-  uint32_t counter;
-  char placed;
   for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++)
   {
     for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++)
     {
-      placed = 0;
-      for (counter = 0; counter < d->num_monsters; counter++)
-      {
-        if (d->monsters[counter].alive && d->monsters[counter].position[dim_x] == p[dim_x] && d->monsters[counter].position[dim_y] == p[dim_y])
-        {
-          printf("%x", d->monsters[counter].traits);
-          placed = 1;
-          break;
-        }
-      }
-      if (!placed && d->pc.position[dim_x] == p[dim_x] && d->pc.position[dim_y] == p[dim_y])
+      if (d->pc.position[dim_x] == p[dim_x] && d->pc.position[dim_y] == p[dim_y])
       {
         putchar('@');
-        placed = 1;
       }
-      else if (!placed)
+      else if(d->char_pos[p[dim_y]][p[dim_x]] != NULL)
+      {
+        printf("%x", d->char_pos[p[dim_y]][p[dim_x]]->traits);
+      }
+      else
       {
         switch (mappair(p))
         {
