@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #include "heap.h"
 #include "dims.h"
@@ -91,7 +92,52 @@ void get_basic_move(dungeon_t *d, monster_t *mon, pair_t *change)
     }
 }
 
-void get_random_move(pair_t* change){
+void get_advanced_move(dungeon_t *d, monster_t *mon, pair_t *change)
+{
+    int x_hold, y_hold, x_low = -1, y_low = -1;
+    int mon_x, mon_y;
+    mon_x = mon->position[dim_x];
+    mon_y = mon->position[dim_y];
+    if (mon->traits & (trait_tunnel | trait_int))
+    {
+        for (x_hold = -1; x_hold < 2; x_hold++)
+        {
+            for (y_hold = -1; y_hold < 2; y_hold++)
+            {
+                if (d->pc_distance[mon_y + y_hold][mon_x + x_hold] < d->pc_distance[mon_y + y_low][mon_x + x_low])
+                {
+                    x_low = x_hold;
+                    y_low = y_hold;
+                }
+            }
+        }
+        (*change)[dim_x] = x_low;
+        (*change)[dim_y] = y_low;
+    }
+    else if (mon->traits & trait_int)
+    {
+        for (x_hold = -1; x_hold < 2; x_hold++)
+        {
+            for (y_hold = -1; y_hold < 2; y_hold++)
+            {
+                if (d->pc_tunnel[mon_y + y_hold][mon_x + x_hold] < d->pc_tunnel[mon_y + y_low][mon_x + x_low])
+                {
+                    x_low = x_hold;
+                    y_low = y_hold;
+                }
+            }
+        }
+        (*change)[dim_x] = x_low;
+        (*change)[dim_y] = y_low;
+    }
+    else
+    {
+        get_basic_move(d, mon, change);
+    }
+}
+
+void get_random_move(pair_t *change)
+{
     (*change)[dim_x] = rand() % 3 - 1;
     (*change)[dim_y] = rand() % 3 - 1;
 }
@@ -202,7 +248,8 @@ int do_turn(dungeon_t *d, heap_t *h)
                     mon->move_goal[dim_y] = d->pc.position[dim_y];
                     get_basic_move(d, mon, &change);
                 }
-                if(rand() & 0x1){
+                if (rand() & 0x1)
+                {
                     get_random_move(&change);
                 }
                 break;
@@ -215,7 +262,8 @@ int do_turn(dungeon_t *d, heap_t *h)
 
             case trait_int | trait_erratic:
 
-                if(rand() & 0x1){
+                if (rand() & 0x1)
+                {
                     get_random_move(&change);
                 }
                 break;
@@ -228,7 +276,8 @@ int do_turn(dungeon_t *d, heap_t *h)
 
             case trait_tunnel | trait_erratic:
 
-                if(rand() & 0x1){
+                if (rand() & 0x1)
+                {
                     get_random_move(&change);
                 }
                 break;
@@ -238,28 +287,32 @@ int do_turn(dungeon_t *d, heap_t *h)
 
             case trait_int | trait_tele | trait_erratic:
 
-                if(rand() & 0x1){
+                if (rand() & 0x1)
+                {
                     get_random_move(&change);
                 }
                 break;
 
             case trait_int | trait_tunnel | trait_erratic:
 
-                if(rand() & 0x1){
+                if (rand() & 0x1)
+                {
                     get_random_move(&change);
                 }
                 break;
 
             case trait_tele | trait_tunnel | trait_erratic:
 
-                if(rand() & 0x1){
+                if (rand() & 0x1)
+                {
                     get_random_move(&change);
                 }
                 break;
 
             case trait_int | trait_tele | trait_tunnel | trait_erratic:
 
-                if(rand() & 0x1){
+                if (rand() & 0x1)
+                {
                     get_random_move(&change);
                 }
                 break;

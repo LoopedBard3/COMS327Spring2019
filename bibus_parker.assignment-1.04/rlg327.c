@@ -22,7 +22,7 @@ void usage(char *name)
 int main(int argc, char *argv[])
 {
   dungeon_t d;
-  heap_t heap;
+  heap_t heap_turns;
   time_t seed;
   struct timeval tv;
   uint32_t i;
@@ -200,16 +200,16 @@ int main(int argc, char *argv[])
   d.pc.breaker = 0;
   d.pc.speed = 10;
   gen_monsters(&d);
-  turn_init(&d, &heap);
+  turn_init(&d, &heap_turns);
   printf("PC is at (y, x): %d, %d\n",
          d.pc.position[dim_y], d.pc.position[dim_x]);
 
   //Do the movement and monster turn code.
   while (d.pc.alive)
   {
-    if (do_turn(&d, &heap))
+    if (do_turn(&d, &heap_turns))
     {
-      //do_turn(&d, &heap); //Used for testing individual monster turns
+      //do_turn(&d, &heap_turns); //Used for testing individual monster turns
       render_dungeon(&d);
       dijkstra(&d);
       dijkstra_tunnel(&d);

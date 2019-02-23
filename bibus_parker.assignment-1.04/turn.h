@@ -9,5 +9,6 @@ int do_turn(dungeon_t *d, heap_t *h);
 int sees_player(dungeon_t *d, monster_t *mon);
 void get_basic_move(dungeon_t *d, monster_t *mon, pair_t *change);
 void get_random_move(pair_t* change);
+void get_advanced_move(dungeon_t *d, monster_t *mon, pair_t *change);
 
 #endif

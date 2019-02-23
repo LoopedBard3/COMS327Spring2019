@@ -79,7 +79,9 @@ typedef struct dungeon
    * and pulling in unnecessary data with each map cell would add a lot   *
    * of overhead to the memory system.                                    */
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
+  //Distance for non-tunneling monsters
   uint8_t pc_distance[DUNGEON_Y][DUNGEON_X];
+  //Distance for tunneling monsters
   uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
   monster_t* char_pos[DUNGEON_Y][DUNGEON_X];
 
