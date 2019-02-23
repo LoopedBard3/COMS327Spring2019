@@ -215,7 +215,6 @@ int do_turn(dungeon_t *d, heap_t *h)
             switch (mon->traits)
             {
             case 0:
-            case trait_tunnel:
                 if (sees_player(d, mon))
                 {
                     mon->move_goal[dim_x] = d->pc.position[dim_x];
@@ -240,126 +239,16 @@ int do_turn(dungeon_t *d, heap_t *h)
                 get_basic_move(d, mon, &change);
                 break;
 
-            case trait_erratic:
-                if (sees_player(d, mon))
-                {
-                    mon->move_goal[dim_x] = d->pc.position[dim_x];
-                    mon->move_goal[dim_y] = d->pc.position[dim_y];
-                    get_basic_move(d, mon, &change);
-                }
-                if (rand() & 0x1)
-                {
-                    get_random_move(&change);
-                }
-                break;
-
             case trait_int | trait_tele:
                 mon->move_goal[dim_x] = d->pc.position[dim_x];
                 mon->move_goal[dim_y] = d->pc.position[dim_y];
                 get_advanced_move(d, mon, &change);
                 break;
 
-            case trait_int | trait_tunnel:
-                if (sees_player(d, mon))
-                {
-                    mon->move_goal[dim_x] = d->pc.position[dim_x];
-                    mon->move_goal[dim_y] = d->pc.position[dim_y];
-                    get_advanced_move(d, mon, &change);
-                }
-                get_basic_move(d, mon, &change);
-                break;
+            }
 
-            case trait_int | trait_erratic:
-                if (sees_player(d, mon))
-                {
-                    mon->move_goal[dim_x] = d->pc.position[dim_x];
-                    mon->move_goal[dim_y] = d->pc.position[dim_y];
-                    get_advanced_move(d, mon, &change);
-                }
-                get_basic_move(d, mon, &change);
-                if (rand() & 0x1)
-                {
-                    get_random_move(&change);
-                }
-                break;
-
-            case trait_tele | trait_tunnel:
-                mon->move_goal[dim_x] = d->pc.position[dim_x];
-                mon->move_goal[dim_y] = d->pc.position[dim_y];
-                get_basic_move(d, mon, &change);
-                break;
-
-            case trait_tele | trait_erratic:
-                mon->move_goal[dim_x] = d->pc.position[dim_x];
-                mon->move_goal[dim_y] = d->pc.position[dim_y];
-                get_basic_move(d, mon, &change);
-                if (rand() & 0x1)
-                {
-                    get_random_move(&change);
-                }
-                break;
-
-            case trait_tunnel | trait_erratic:
-                if (sees_player(d, mon))
-                {
-                    mon->move_goal[dim_x] = d->pc.position[dim_x];
-                    mon->move_goal[dim_y] = d->pc.position[dim_y];
-                    get_basic_move(d, mon, &change);
-                }
-                if (rand() & 0x1)
-                {
-                    get_random_move(&change);
-                }
-                break;
-
-            case trait_int | trait_tele | trait_tunnel:
-                mon->move_goal[dim_x] = d->pc.position[dim_x];
-                mon->move_goal[dim_y] = d->pc.position[dim_y];
-                get_advanced_move(d, mon, &change);
-                break;
-
-            case trait_int | trait_tele | trait_erratic:
-                mon->move_goal[dim_x] = d->pc.position[dim_x];
-                mon->move_goal[dim_y] = d->pc.position[dim_y];
-                get_advanced_move(d, mon, &change);
-                if (rand() & 0x1)
-                {
-                    get_random_move(&change);
-                }
-                break;
-
-            case trait_int | trait_tunnel | trait_erratic:
-                if (sees_player(d, mon))
-                {
-                    mon->move_goal[dim_x] = d->pc.position[dim_x];
-                    mon->move_goal[dim_y] = d->pc.position[dim_y];
-                    get_basic_move(d, mon, &change);
-                }
-                if (rand() & 0x1)
-                {
-                    get_random_move(&change);
-                }
-                break;
-
-            case trait_tele | trait_tunnel | trait_erratic:
-                mon->move_goal[dim_x] = d->pc.position[dim_x];
-                mon->move_goal[dim_y] = d->pc.position[dim_y];
-                get_basic_move(d, mon, &change);
-                if (rand() & 0x1)
-                {
-                    get_random_move(&change);
-                }
-                break;
-
-            case trait_int | trait_tele | trait_tunnel | trait_erratic:
-                mon->move_goal[dim_x] = d->pc.position[dim_x];
-                mon->move_goal[dim_y] = d->pc.position[dim_y];
-                get_advanced_move(d, mon, &change);
-                if (rand() & 0x1)
-                {
-                    get_random_move(&change);
-                }
-                break;
+            if(mon->traits & trait_erratic && rand() & 0x1){
+                get_random_move(&change);
             }
         }
 
