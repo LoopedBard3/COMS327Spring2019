@@ -208,8 +208,8 @@ int do_turn(dungeon_t *d, heap_t *h)
         change[dim_y] = 0;
         if (mon->is_player)
         {
-            change[dim_x] = rand() % 2;
-            change[dim_y] = rand() % 2;
+            change[dim_x] = rand() % 3 - 1;
+            change[dim_y] = rand() % 3 - 1;
             int rad = 3, x_scan, y_scan;
             for (x_scan = rad * -1; x_scan <= rad; x_scan++)
             {
