@@ -637,7 +637,8 @@ static int place_rooms(dungeon_t *d)
           {
             mappair(p) = ter_floor_room;
             hardnesspair(p) = 0;
-            if(i != 0) d->num_room_spots++;
+            if (i != 0)
+              d->num_room_spots++;
           }
         }
       }
@@ -722,7 +723,7 @@ void render_dungeon(dungeon_t *d)
       {
         putchar('@');
       }
-      else if(d->char_pos[p[dim_y]][p[dim_x]] != NULL)
+      else if (d->char_pos[p[dim_y]][p[dim_x]] != NULL)
       {
         printf("%x", d->char_pos[p[dim_y]][p[dim_x]]->traits);
       }
@@ -1076,7 +1077,8 @@ int read_rooms(dungeon_t *d, FILE *f)
            x < d->rooms[i].position[dim_x] + d->rooms[i].size[dim_x];
            x++)
       {
-        if(i != 0) d->num_room_spots++;
+        if (i != 0)
+          d->num_room_spots++;
         mapxy(x, y) = ter_floor_room;
       }
     }
@@ -1431,12 +1433,34 @@ void render_tunnel_distance_map(dungeon_t *d)
   }
 }
 
+void render_char_map(dungeon_t *d)
+{
+  pair_t p;
+
+  for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++)
+  {
+    for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++)
+    {
+      if (d->char_pos[p[dim_y]][p[dim_x]] == NULL)
+      {
+        printf(" ");
+      }
+      else
+      {
+        printf("%x", d->char_pos[p[dim_y]][p[dim_x]]->traits);
+      }
+    }
+    putchar('\n');
+  }
+}
+
 void gen_monsters(dungeon_t *d)
 {
   uint32_t counter = 0;
   uint8_t pos_room, pos_x, pos_y;
   monster_t mon_hold;
-  if(d->num_monsters >= d->num_room_spots) d->num_monsters = d->num_room_spots; 
+  if (d->num_monsters >= d->num_room_spots)
+    d->num_monsters = d->num_room_spots;
   d->monsters = malloc(sizeof(*d->monsters) * d->num_monsters);
   for (counter = 0; counter < d->num_monsters; counter++)
   {
