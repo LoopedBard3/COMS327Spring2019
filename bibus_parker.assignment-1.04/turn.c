@@ -215,7 +215,7 @@ int do_turn(dungeon_t *d, heap_t *h)
                 mon->move_goal[dim_x] = d->pc.position[dim_x];
                 mon->move_goal[dim_y] = d->pc.position[dim_y];
                 get_advanced_move(d, mon, &change);
-                printf("%x, C3\n", mon->traits);
+                // printf("%x, C3\n", mon->traits);
             }else if(mon->traits & trait_int){
                 if (sees_player(d, mon))
                 {
@@ -224,12 +224,12 @@ int do_turn(dungeon_t *d, heap_t *h)
                     get_advanced_move(d, mon, &change);
                 }
                 get_basic_move(d, mon, &change);
-                printf("%x, C1\n", mon->traits);
+                // printf("%x, C1\n", mon->traits);
             }else if(mon->traits & trait_tele){
                 mon->move_goal[dim_x] = d->pc.position[dim_x];
                 mon->move_goal[dim_y] = d->pc.position[dim_y];
                 get_basic_move(d, mon, &change);
-                printf("%x, C2\n", mon->traits);
+                // printf("%x, C2\n", mon->traits);
             }else{
                 if (sees_player(d, mon))
                 {
@@ -237,7 +237,7 @@ int do_turn(dungeon_t *d, heap_t *h)
                     mon->move_goal[dim_y] = d->pc.position[dim_y];
                     get_basic_move(d, mon, &change);
                 }
-                printf("%x, C0\n", mon->traits);
+                // printf("%x, C0\n", mon->traits);
             }
 
             if(mon->traits & trait_erratic && rand() & 0x1){

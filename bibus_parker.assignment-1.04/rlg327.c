@@ -148,6 +148,8 @@ int main(int argc, char *argv[])
             /* There is another argument, and it's not a switch, so *
              * we use it to set the number of monsters.    */
             d.num_monsters = atoi(argv[++i]);
+            if (d.num_monsters < 1)
+              d.num_monsters = 10;
           }
           break;
         default:
@@ -201,30 +203,31 @@ int main(int argc, char *argv[])
   d.pc.speed = 10;
   gen_monsters(&d);
   turn_init(&d, &heap_turns);
-  printf("PC is at (y, x): %d, %d\n",
-         d.pc.position[dim_y], d.pc.position[dim_x]);
+  // printf("PC is at (y, x): %d, %d\n",
+  //        d.pc.position[dim_y], d.pc.position[dim_x]);
 
   dijkstra(&d);
   dijkstra_tunnel(&d);
-  render_distance_map(&d);
-  render_tunnel_distance_map(&d);
   //Do the movement and monster turn code.
-  while (d.pc.alive)
+  while (d.pc.alive && d.num_monsters > 0)
   {
     if (do_turn(&d, &heap_turns))
     {
-      //do_turn(&d, &heap_turns); //Used for testing individual monster turns
       render_dungeon(&d);
-      //render_distance_map(&d);
-      //render_tunnel_distance_map(&d);
       dijkstra(&d);
       dijkstra_tunnel(&d);
-      usleep(500000);
+      usleep(400000);
     }
   }
 
-  printf("\nYou have perished a very untimely death!\n");
-
+  if (d.num_monsters > 0)
+  {
+    printf("\nYou have perished a very untimely death!\n");
+  }
+  else
+  {
+    printf("\nGreat Job @! You have defeated all of the monsters!\n");
+  }
   if (do_save)
   {
     if (do_save_seed)
