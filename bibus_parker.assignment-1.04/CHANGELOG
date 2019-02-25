@@ -1,3 +1,25 @@
+commit 52b87f1240628096ad2675083e389cc077d94760
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sun Feb 24 22:09:48 2019 -0600
+
+    Setup having multiple death screens and having them randomly printed
+    
+    Setup having multiple death screens and having them randomly printed
+
+commit 464b4bebaae6f3f5116369606791cda697e4bc6f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sun Feb 24 21:49:26 2019 -0600
+
+    Changed the death screen to have more personality
+    
+    Changed the death screen to have more personality
+
+commit 71da4d1975d54b9e78b2de746226460f52be31b9
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sun Feb 24 21:29:59 2019 -0600
+
+    Updated the player movement to avoid the enemies semi-intelligently
+
 commit 6a6ac153e503cc158d7d758d09307adb270f082c
 Author: Parker Bibus <pbibus@hotmail.com>
 Date:   Sun Feb 24 19:04:55 2019 -0600
