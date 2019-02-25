@@ -224,9 +224,15 @@ int main(int argc, char *argv[])
   {
     FILE *file;
     char ch;
-    file = fopen("death_ascii", "r");
+    char* file_name = malloc(sizeof(char) * 14);
+    strcpy(file_name, "death_ascii");
+    char numb[5];
+    sprintf(numb, "%d", rand() % 3);
+    file_name = strcat(file_name, numb);
+    file = fopen(file_name, "r");
     if (file != NULL)
     {
+      printf("\n\n\n\n");
       while((ch = fgetc(file)) != EOF){
         printf("%c", ch);
       }
