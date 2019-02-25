@@ -1,3 +1,23 @@
+commit 7c0fbab21cae735f3307b09ca30c319d2c36e274
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 25 12:28:30 2019 -0600
+
+    Updated README
+    
+    Updated README
+
+commit 69c56e70251e8af8c897d16464fa1e5c01873b5b
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 25 09:49:40 2019 -0600
+
+    Updated the PC random move code to actually move in any direction
+
+commit c6b9980d14ca0a35aa91afe61f3c2b8e81a770bc
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sun Feb 24 22:42:54 2019 -0600
+
+    Updated the changelog with the final commit messages from git
+
 commit 52b87f1240628096ad2675083e389cc077d94760
 Author: Parker Bibus <pbibus@hotmail.com>
 Date:   Sun Feb 24 22:09:48 2019 -0600
