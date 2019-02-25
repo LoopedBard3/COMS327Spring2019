@@ -243,6 +243,7 @@ int main(int argc, char *argv[])
     {
       printf("\nYou have perished a very untimely death!\n");
     }
+    free(file_name);
   }
   else
   {
