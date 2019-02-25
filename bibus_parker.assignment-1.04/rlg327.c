@@ -222,7 +222,21 @@ int main(int argc, char *argv[])
 
   if (d.num_monsters > 0)
   {
-    printf("\nYou have perished a very untimely death!\n");
+    FILE *file;
+    char ch;
+    file = fopen("death_ascii", "r");
+    if (file != NULL)
+    {
+      while((ch = fgetc(file)) != EOF){
+        printf("%c", ch);
+      }
+      printf("\n");
+      fclose(file);
+    }
+    else
+    {
+      printf("\nYou have perished a very untimely death!\n");
+    }
   }
   else
   {
