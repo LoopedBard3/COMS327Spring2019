@@ -3,6 +3,7 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <ncurses.h>
 
 #include "dungeon.h"
 #include "pc.h"
@@ -71,6 +72,14 @@ void usage(char *name)
           name);
 
   exit(-1);
+}
+
+void io_init_terminal(){
+  initscr();
+  raw();
+  noecho();
+  curs_set(0);
+  keypad(stdscr, TRUE);
 }
 
 int main(int argc, char *argv[])
@@ -225,17 +234,19 @@ int main(int argc, char *argv[])
   /* Ignoring PC position in saved dungeons.  Not a bug. */
   config_pc(&d);
   gen_monsters(&d);
+  io_init_terminal();
 
   while (pc_is_alive(&d) && dungeon_has_npcs(&d)) {
-    render_dungeon(&d);
+    render_dungeon_curses(&d);
     do_moves(&d);
     if (delay) {
       usleep(delay);
     }
   }
 
-  render_dungeon(&d);
+  render_dungeon_curses(&d);
 
+  endwin();
   if (do_save) {
     if (do_save_seed) {
        /* 10 bytes for number, plus dot, extention and null terminator. */
@@ -269,6 +280,5 @@ int main(int argc, char *argv[])
   pc_delete(d.pc.pc);
 
   delete_dungeon(&d);
-
   return 0;
 }
