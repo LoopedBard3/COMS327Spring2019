@@ -90,5 +90,7 @@ void render_tunnel_distance_map(dungeon_t *d);
 void render_hardness_map(dungeon_t *d);
 void render_movement_cost_map(dungeon_t *d);
 void render_dungeon_curses(dungeon_t *d);
+void reset_dungeon(dungeon_t *d);
+void clear_cur_dungeon(dungeon_t *d);
 
 #endif

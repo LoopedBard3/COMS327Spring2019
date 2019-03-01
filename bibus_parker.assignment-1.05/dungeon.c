@@ -13,6 +13,8 @@
 
 #include "heap.h"
 #include "dungeon.h"
+#include "pc.h"
+#include "npc.h"
 #include "utils.h"
 #include "event.h"
 
@@ -520,6 +522,7 @@ static int empty_dungeon(dungeon_t *d)
           x == 0 || x == DUNGEON_X - 1) {
         mapxy(x, y) = ter_wall_immutable;
         hardnessxy(x, y) = 255;
+        d->character[y][x] = 0;
       }
     }
   }
@@ -1286,4 +1289,17 @@ void render_dungeon_curses(dungeon_t *d){
     }
   }
   refresh();
+}
+
+void reset_dungeon(dungeon_t *d){
+  clear_cur_dungeon(d);
+  gen_dungeon(d);
+  place_pc(d);
+  d->character[d->pc.position[dim_y]][d->pc.position[dim_x]] = &d->pc;
+  gen_monsters(d);
+}
+
+void clear_cur_dungeon(dungeon_t *d){
+  delete_dungeon(d);
+  init_dungeon(d);
 }

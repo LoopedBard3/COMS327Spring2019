@@ -224,8 +224,23 @@ uint32_t pc_in_room(dungeon_t *d, uint32_t room)
   return 0;
 }
 
-uint32_t pc_try_stairs(dungeon_t *d, int ch){
-
+void pc_try_stairs(dungeon_t *d, int ch)
+{
+  mvprintw(0, 0, "Trying to use the ladder");
+  if (ch == '>')
+  {
+    if (d->map[d->pc.position[dim_y]][d->pc.position[dim_x]] == ter_stairs_down)
+    {
+      reset_dungeon(d);
+    }
+  }
+  else if (ch == '<')
+  {
+    if (d->map[d->pc.position[dim_y]][d->pc.position[dim_x]] == ter_stairs_up)
+    {
+      reset_dungeon(d);
+    }
+  }
 }
 
 uint32_t pc_next_pos_controlled(dungeon_t *d, pair_t dir)
@@ -307,12 +322,13 @@ uint32_t pc_next_pos_controlled(dungeon_t *d, pair_t dir)
       break;
 
     case 'Q':
+      d->quit = 1;
       moved = 1;
       break;
 
     case 'm':
       moved = 0;
-      break;    
+      break;
 
     default:
       mvprintw(0, 0, "Key Pressed Not Recognized: %d", ch);
@@ -324,6 +340,7 @@ uint32_t pc_next_pos_controlled(dungeon_t *d, pair_t dir)
   return 0;
 }
 
-uint32_t display_monster_screen(dungeon_t *d){
-  mvprintw(0,0, "Opened monster menu");
+void display_monster_screen(dungeon_t *d)
+{
+  mvprintw(0, 0, "Opened monster menu");
 }

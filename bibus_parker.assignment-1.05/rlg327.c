@@ -267,17 +267,14 @@ int main(int argc, char *argv[])
   gen_monsters(&d);
   io_init_terminal();
 
-  while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !(d->quit))
+  while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !(d.quit))
   {
     render_dungeon_curses(&d);
     do_moves(&d);
   }
-  if (!d->quit)
-  {
-    render_dungeon_curses(&d);
-    getch();
-    endwin();
-  }
+
+  endwin();
+  
   if (do_save)
   {
     if (do_save_seed)
@@ -309,7 +306,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  printf("%s", pc_is_alive(&d) ? victory : tombstone);
+  printf("%s", pc_is_alive(&d) && !d.quit ? victory : tombstone);
   printf("You defended your life in the face of %u deadly beasts.\n"
          "You avenged the cruel and untimely murders of %u "
          "peaceful dungeon residents.\n",

@@ -121,7 +121,7 @@ void do_moves(dungeon_t *d)
      * and recreated every time we leave and re-enter this function.    */
     e->c = NULL;
     event_delete(e);
-    pc_next_pos(d, next);
+    pc_next_pos_controlled(d, next);
     next[dim_x] += c->position[dim_x];
     next[dim_y] += c->position[dim_y];
     if (hardnesspair(next) != 0)
@@ -131,7 +131,7 @@ void do_moves(dungeon_t *d)
     }
     if (d->is_new)
     {
-      
+      reset_dungeon(d);
     }
     else
     {
