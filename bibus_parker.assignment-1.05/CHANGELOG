@@ -1,0 +1,661 @@
+commit 419cb947d02d43e31592f8a12c0796573aed6d0b
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Mar 1 14:17:42 2019 -0600
+
+    Finished the README and add the changelog file
+
+commit 745ecb51e6764994a74ec060f6b1f10c227088f1
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Mar 1 13:56:23 2019 -0600
+
+    Figured out why the combat seemed wonky, needed to render the dungeon just before the pc's turn
+
+commit c0b6b7cbdbf1207f1c28db33a00e4a31dfbe55f6
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 28 22:12:25 2019 -0600
+
+    Assignment seems to be finished, just need to ask about the combat as it seems wonkey but may not be.
+
+commit be7386ee28042076efca98b1d0710f24173b76cd
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 28 21:32:25 2019 -0600
+
+    Seem to have gotten the monster display to work completely and just have to commence testing before adding documentation and turning in the assignment.
+
+commit aff73adce9a18de1d8e4efed49b5a0d0d37cd432
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 28 21:07:52 2019 -0600
+
+    Made it so that the monster menu opens up and is leavable to continue the game.
+
+commit f7536eb5b3b5dd381ecd42123f3d1fba8fc5555f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 28 20:27:15 2019 -0600
+
+    Made it so that the PC can move between the different dungeon levels using the stairs.
+
+commit e0892bed0d158ae1be0b0d8149a88d69b030c4cb
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 28 19:47:15 2019 -0600
+
+    Made it so that the character can only move where they are supposed to and that they can move at all. Also started putting in stuff for monster menu and quitting. But it seems something weird is happening with the combat system.
+
+commit 41af8b72eb5f645f199cdf6f92baf012dab42d5a
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 28 16:17:33 2019 -0600
+
+    Got it so that the view should work in linux, having weird issues in windows over ssh
+
+commit 1797b3c34d62e102dfce3662886f9c64205814fc
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 28 15:11:23 2019 -0600
+
+    Obtained professors 1.04 code and will be using it for 1.05
+
+commit cf8b4c2d4de573dd527a224a9aedbf363dbe188b
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 28 14:16:41 2019 -0600
+
+    Finished 1.04 assignment
+
+commit b76b65ead1088c7364b6f47fe736a1915ab9676e
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 25 15:33:42 2019 -0600
+
+    Freed the file name
+
+commit 41087d400e947da384207895228b44bf2ed9fccd
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 25 12:32:31 2019 -0600
+
+    Update CHANGELOG
+
+commit 7c0fbab21cae735f3307b09ca30c319d2c36e274
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 25 12:28:30 2019 -0600
+
+    Updated README
+    
+    Updated README
+
+commit 69c56e70251e8af8c897d16464fa1e5c01873b5b
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 25 09:49:40 2019 -0600
+
+    Updated the PC random move code to actually move in any direction
+
+commit c6b9980d14ca0a35aa91afe61f3c2b8e81a770bc
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sun Feb 24 22:42:54 2019 -0600
+
+    Updated the changelog with the final commit messages from git
+
+commit 52b87f1240628096ad2675083e389cc077d94760
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sun Feb 24 22:09:48 2019 -0600
+
+    Setup having multiple death screens and having them randomly printed
+    
+    Setup having multiple death screens and having them randomly printed
+
+commit 464b4bebaae6f3f5116369606791cda697e4bc6f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sun Feb 24 21:49:26 2019 -0600
+
+    Changed the death screen to have more personality
+    
+    Changed the death screen to have more personality
+
+commit 71da4d1975d54b9e78b2de746226460f52be31b9
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sun Feb 24 21:29:59 2019 -0600
+
+    Updated the player movement to avoid the enemies semi-intelligently
+
+commit 6a6ac153e503cc158d7d758d09307adb270f082c
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sun Feb 24 19:04:55 2019 -0600
+
+    Final commit before initial turn in. Cleaned up debugging stuff.
+    
+    Final commit before initial turn in. Cleaned up debugging stuff such as print statements and non-dungeon renders. Also updated the readme to an agreeable state.
+
+commit e34a9cc7fae5445335d6f51667e9ee633165e5d0
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sat Feb 23 00:53:31 2019 -0600
+
+    Upped the time between renders and changed the switch do_turn statement to an if sequence, with debugging, that seems to be working.
+
+commit b99bfa3a5aed9728a97bc346c4c59bbfb9abd758
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sat Feb 23 00:46:06 2019 -0600
+
+    Added README and CHANGELOG files, also figured out that not all cases are being matched as I would have liked.
+    
+    Added README and CHANGELOG files, also figured out that not all cases are being matched as I would have liked so I have to chagne the switch to if's in the do_turn.
+
+commit ab0fdf782b1d48e46f6b93bdf4b8cc874047e933
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 21:52:36 2019 -0600
+
+    Changed the case statement to only take into account different statements due to erratic being an outside factor and move methods taking tunneling into account
+    
+    Changed the case statement to only take into account different statements due to erratic being an outside factor and move methods taking tunneling into account.
+
+commit 0ecdcc70f5f270b8da545a51b04790de276eb204
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 21:45:36 2019 -0600
+
+    Added in testing renders so I can see the different movement maps
+    
+    Added in testing renders so I can see the different movement maps.
+
+commit 4fc065cf5215bcb0a2442d6e8793bd80665bdf34
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 21:39:42 2019 -0600
+
+    Added in all of the movement commands, doesn't currently work quite right
+    
+    Added in all of the movement commands, doesn't currently work quite right
+
+commit d31e1670477716df5a00c60ab5c5398937c6c871
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 21:20:16 2019 -0600
+
+    Add a get advanced move method for getting move based on distance from PC
+    
+    Add a get advanced move method for getting move based on distance from PC
+
+commit 3a73795ab14185b07f4ce10bc0fa96647c69c2d5
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 20:45:14 2019 -0600
+
+    Completed a good basic random move, regular move, and player see.
+    
+    Completed a good basic random move, regular move, and player see.
+
+commit 928f677aa68968ee9552b7e590708d4937185f05
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 20:19:05 2019 -0600
+
+    added see's player and basic get move functions
+    
+    added see's player and basic get move functions that still need to be tested more and actually added to the code.
+
+commit 104bdc1b49ae7cfdd4a07e6140387678556af8d4
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 18:45:09 2019 -0600
+
+    Added error checking to ensure that characters only move 1 space at a time.
+    
+    Added error checking to ensure that characters only move 1 space at a time.
+
+commit abfd676d1d7ccdd43b995089c0a83e2c2d224c1f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 18:28:36 2019 -0600
+
+    Update .gitignore
+
+commit a6ded6aa02632896f1942547261f3834bd1e4d30
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 18:28:09 2019 -0600
+
+    Moved all the turn code into its own file and made the needed updates to make this run.
+    
+    Moved all the turn code into its own file and made the needed updates to make this run.
+
+commit 019751c40cd0a69f67ed37e52e43bed21eee6b23
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 18:03:35 2019 -0600
+
+    Finished refactoring the code to use the char_pos map
+    
+    Finished refactoring the code to use the char_pos map mostly for rendering but also for killing other entities.
+
+commit 0516495c7dff4fa064da850b745473141c6acedb
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 17:42:39 2019 -0600
+
+    Cleaned out the debug print statements. Also setup the max number of monsters that can be placed.
+    
+    Cleaned out the debug print statements. Also setup the max number of monsters that can be placed.
+
+commit c888f94b1a2c00dcec2bc8d641c1b7a997b5f55b
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 16:54:32 2019 -0600
+
+    Setup killing based on a spot and attempting movement
+    
+    Setup killing based on a spot and attempting movement. Also confirmed that the queue works properly.
+
+commit 696571a4efedb297fc2603472f5c389723242040
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Fri Feb 22 14:26:13 2019 -0600
+
+    Changed the if statement to a case statement that uses the enums.
+    
+    Changed the if statement to a case statement that uses the enums. Also fixed the monster speed variable.
+
+commit 0ba3b6efa46d2781b33105ad7fe36280b10b9465
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 13:01:02 2019 -0600
+
+    Started the if statements for movement but currently just have test movement code
+    
+    Added the if statements for movement but currently just have test movement code.
+
+commit 4dd264aab847535b341b070f931af3f037f5c9b1
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 11:58:03 2019 -0600
+
+    Small change to speed for getting the next turn
+    
+    Small change to speed for getting the next turn
+
+commit f34cc501e2327ee5dbad957c44543125c8590164
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 11:54:19 2019 -0600
+
+    Got it so that that map is continually generating and monsters can move. But the monsters don't move perfectly in the order they are supposed to.
+    
+    Got it so that that map is continually generating and monsters can move. But the monsters don't move perfectly in the order they are supposed to.
+
+commit 63d542f03b68ff976b6971e5abf2c6e103f23a69
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 11:18:00 2019 -0600
+
+    Changed the player character to be considered a monster but keeps the pc_t tag.
+
+commit 47e0bf02326b919f10fabcd7937cee683a0ac2ba
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 11:09:49 2019 -0600
+
+    Added in a next turn variable for each monster. Also got the basics for a turn event simulator started.
+    
+    Added in a next turn variable for each monster. Also got the basics for a turn event simulator started.
+
+commit 449ed649ffa8f2b06d412e2b60e05852079a75ad
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Feb 22 10:33:59 2019 -0600
+
+    Took out the full room checking for monsters and added in pc last spotted for the monsters.
+    
+    Took out the full room checking for monsters and added a variable for the last spotted position of the pc.
+
+commit b370cb9be64b06162b24babdf0193cccfda30935
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 21:51:59 2019 -0600
+
+    Added living value to the PC and set it to 1
+    
+    Added living value to the PC and set it to 1
+
+commit a6c140a34c897ada11aeea42f0e06653fc688495
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 21:48:46 2019 -0600
+
+    Cleaned up the debug print statements.
+    
+    Cleaned up the debug print statements and set the dungeon to only render alive monsters.
+
+commit df4094e3246bf0b1dff7b7c35af050da81dd0959
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 21:27:37 2019 -0600
+
+    Add in the rendering of all the monsters so that they populate the dungeon with the proper characters.
+    
+    Add in the rendering of all the monsters so that they populate the dungeon with the proper characters and moved the render dungeon method to after the dungeon is loaded.
+
+commit 0508e0776e39868b4d25626bbb62b88533311b41
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 20:24:15 2019 -0600
+
+    Added in basic monster initialization code
+    
+    Added in basic monster initialization code including allocating memory, freeing the memory, and generating the monsters.
+
+commit 1b0ef93eae09492c63aaa13f081fdd97237ff145
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 19:53:52 2019 -0600
+
+    Setup the switch for setting the number of monsters.
+    
+    Setup the switch for setting the number of monsters such that is will be saved to the dungeon struct.
+
+commit 749bd4cff37fda75bcaefadded2f937e145061f9
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 19:41:52 2019 -0600
+
+    Fixed make errors I forgot to initially check for.
+    
+    Fixed make errors I forgot to initially check for.
+
+commit 210e070e82e63a8689fff38a8026b3d55171163b
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 19:39:35 2019 -0600
+
+    Fixed some formatting for the main files it seems will be worked with.
+    
+    Fixed some formatting for the main files it seems will be worked with.
+
+commit d4aba697a6c250c5829f607907f925c6206f8faa
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 19:36:36 2019 -0600
+
+    Cleaned the code in the rlg code and added basics to dungeon.
+    
+    Cleaned the code for printing the special dungeons so only the main dungeon is printed. Also added types for the monsters.
+
+commit 0ed1302dab28f475f2a9e97baf1cc7577d54db31
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 19:04:01 2019 -0600
+
+    Added in the code for assignment 1.04
+    
+    Added in the code for assignment 1.04 so I can start.
+
+commit 2c6554e82721062c28a66ef1794754c6d20ef063
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Feb 21 17:46:13 2019 -0600
+
+    Add player position printing
+    
+    Add player position printing
+
+commit 110f7e5f1047ce12fd61deb0949036c50e4f3d6f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Wed Feb 13 17:36:51 2019 -0600
+
+    Added the changelog and cleaned the readme
+    
+    Added the changelog and cleaned the readme
+
+commit d64f49300bf061646d005534e81035ba14e1d8ef
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Wed Feb 13 15:57:33 2019 -0600
+
+    Clarified some comments. Also removed from from the path type.
+
+commit a8ab168843ae3f0be2d2820a09b00a10d74196fb
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Wed Feb 13 15:38:14 2019 -0600
+
+    Added README and empty change file, also confirmed everything works in current state.
+
+commit a8972545aad114a495552f538578aa6363e83e5e
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Wed Feb 13 14:19:37 2019 -0600
+
+    Seemingly got both of them to actually work, going to double check with more testing.
+
+commit c91aaa545c9d0d838b006547ceaa05419669aa50
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 12 22:12:08 2019 -0600
+
+    Attempted other changes, non of which worked so am saving progress for the next time I work on the code.
+
+commit a0fedb51b18d369287c15d3cfefe5038509ecee4
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 12 21:00:37 2019 -0600
+
+    Have the floor based algorithm working, working on getting the all space one to work.
+
+commit 1e5009e5f58c03ed548939b76a212bc89bd1deb3
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Tue Feb 12 16:19:41 2019 -0600
+
+    Added in the corridor and floor algorithm for pathfinding. Have yet to test it.
+
+commit e0e47717eb6255bdc4e9c046f994297611344529
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Tue Feb 12 15:07:23 2019 -0600
+
+    Update Makefile
+
+commit 5e4ca4439f45edbdea36fe982047a27bd77137ac
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Mon Feb 11 11:16:05 2019 -0600
+
+    Added in the code for assignment 1.03
+    
+    Added in the code for assignment 1.03
+
+commit 71147b12a36dcf1d26b1000b864487c441b71bfc
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Wed Feb 6 15:53:29 2019 -0600
+
+    Created new tar.gz for updated submission
+
+commit 8ad4170d2e5334bbc0254f339791e67c8d6b2014
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Wed Feb 6 15:36:30 2019 -0600
+
+    Added in the free function for previous addition
+
+commit 4c5be1959232dbacc527ac51028e669a4e912907
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Wed Feb 6 15:31:17 2019 -0600
+
+    Fixed the obtainment of the home variable so it doesn't destroy data after it.
+
+commit 371eb909e7f816cfe560cb5aa99529305e800096
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 22:41:59 2019 -0600
+
+    Small update to the readme and changelog, also adding in the compressed folder of the assignment.
+    
+    Small update to the readme and changelog, also adding in the compressed folder of the assignment.
+
+commit 5a08bf30d240be555490426796126e80f2d37731
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 22:25:55 2019 -0600
+
+    Added changelog and readme, and small memory management update
+    
+    Added changelog and readme, and small memory management update by freeing the stair arrays in the save method.
+
+commit 38d76d52efd24ddb30218f827c5a03fa5887eb75
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 21:12:45 2019 -0600
+
+    Commented/Removed all debugging code and more testing.
+    
+    Commented/Removed all debugging code and tested some more to ensure everything seemed to be working properly.
+
+commit 019adbf5a09c59ea85341f1c7f479a215f5591fa
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 20:48:55 2019 -0600
+
+    Finished fixing the bug with save and load at the same time.
+    
+    Finished fixing the bug with save and load at the same time. Now I have to take out the debugging code.
+
+commit 3d481afc4b54538a4a08f9250c4b1ccced8d23e5
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 20:18:22 2019 -0600
+
+    Made it so that the --save actually saves
+    
+    Made it so that the --save actually saves and is loadable with --load. But I am currently running into an issue when I load and save in the same session.
+
+commit 388b4520cdcd1650bd27a45b76bf6a160cd304e3
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Tue Feb 5 14:31:56 2019 -0600
+
+    Fixed the data conversion issues so that the endianness is correct
+    
+    Fixed the data conversion issues so that the endianness is correct. This means that the variables should be ready to write to the file.
+
+commit 8fd2c0bc09b964e6fe160c008257eb088520677e
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 13:46:19 2019 -0600
+
+    Figured out why the save couldn't open the file. And started debugging filesize
+    
+    Figured out why the save couldn't open the file and commented it out. Also started debugging filesize and everyother variable now before actually writing out to the file.
+
+commit 26312e3e7eed9e668b66004adc2e8986ade87a29
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 13:26:52 2019 -0600
+
+    added in some frees and file closes
+    
+    added in some frees and file closes. Also seemingly finished getting the data setup finished for saving.
+
+commit 747dd45e5abbf237f23536799df62fd5775be5b1
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 12:55:00 2019 -0600
+
+    Changed the rooms variable in the struct to a pointer
+    
+    Changed the rooms variable in the struct to a pointer to allow for unlimited rooms while also allowing the previous implementation to still work with some changes.
+
+commit 7a488ac2898151c39c8cde5fb5dc687c306aec18
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 12:34:04 2019 -0600
+
+    Made good progress on saving dungeons
+    
+    Made good progress on saving dungeons. Got the start of saving the needed values that will be written to the file.
+
+commit 4f6c88e7d1d58662409ffc3b110d4193fec24566
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 11:53:02 2019 -0600
+
+    Updated the types of the number of rooms and stairs.
+    
+    Updated the types of the number of rooms and stairs to match with the new specification. This includes making the load dungeon work with the new sizes.
+
+commit 42bf85046ff01f967cc6cf8ebae0903dc80fa652
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Tue Feb 5 00:31:27 2019 -0600
+
+    Finished the load dungeon method
+    
+    Finished the load dungeon method including changing the sizes of some types and the data contained in some types, especially in the dungeon struct, pair struct, and the floor enums.
+
+commit 171070c49581156164d9d999ef75e71860ddad40
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 4 22:46:49 2019 -0600
+
+    Updated the make file to also delete .pgm files
+    
+    Updated the make file to also delete .pgm files
+
+commit f68c53b9c0fa47a18e5d8437d262b8ef915abf0e
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Feb 4 22:45:37 2019 -0600
+
+    Added in save and load success checks. Also have load dungeon reading all of the data that will be read.
+    
+    Added in save and load success checks. Also have load dungeon reading all of the data that will be read using the specified structs and mallocing everything.
+
+commit e9e14e00b68aec3c396d947abbee5a539f48db42
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Mon Feb 4 17:05:56 2019 -0600
+
+    Added in functions holders for loading and saving dungeons and put them where they should interact in main. Also added a filePath variable of the file location
+    
+    Added in functions holders for loading and saving dungeons and put them where they should interact in main. Also added a filePath variable of the file location.
+
+commit d4bc963ab6cbf443fd52bca0422b5c80302617e3
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Mon Feb 4 16:39:29 2019 -0600
+
+    Added in command line argument reading for the load save and seed
+    
+    Added in command line argument reading for the load save and seed using a for loop.
+
+commit a37fbf0cf4c9f2ac8482e646b936a47ce5d3afaa
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Mon Feb 4 16:15:40 2019 -0600
+
+    Obtained instructor code to use for assignment 1.02
+    
+    Obtained instructor code to use for assignment 1.02.
+
+commit 291c835bb1b04d8ee81dd1cd2549c4d4a5339423
+Author: LoopedBard3 <pbibus@hotmail.com>
+Date:   Mon Feb 4 16:05:16 2019 -0600
+
+    Starting assignmen 2
+
+commit c65a54dcef6eb1a74878b637f418d0d9b166dc42
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:24:20 2019 -0600
+
+    CHANGELOG update.
+
+commit 1aa0195b8bbc1c1675367a7c38fb195cd5cb9318
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:23:09 2019 -0600
+
+    Added slight error checking to ensure that the generation doesn't go on forever, also added some comments to clear up what the methods do. Next I will reflect these changes in the CHANGELOG.
+
+commit a804e9121a2a3f239d56bc7022a75e214f812c2d
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:10:40 2019 -0600
+
+    updated changelog to point where I can turn it in, this commit will not be included.
+
+commit 37bceb67aed8070ec12f76a499ded861fc80d845
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 23:09:10 2019 -0600
+
+    Updated the CHANGELOG file
+
+commit 8752064814b3fbfe010894626ec6a709a0a9155e
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 20:33:24 2019 -0600
+
+    Filled out the README and changed how the seed arugment works pertaining to choosing a specific seed and printing out the seed.
+
+commit df35990a30d1384e8f3b7b6fb2182cf9931ffd42
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 19:34:57 2019 -0600
+
+    Added in, implemented, and activated the method for adding stairs. This means that each dungeon will have at least one up and down ladder with all ladders being accessible.
+
+commit dcd66ff3bb140f6255456c3dce70313a22fae81b
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 19:01:21 2019 -0600
+
+    Added in the corridor generator code that generates and connects the corridors.
+
+commit a89bafb5e9c54c4e95f6df637136e2f9aeb60f9f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 17:39:23 2019 -0600
+
+    Get the rooms working correctly and made sure they are up to the specification for number of rooms and sizes.
+
+commit b221ea9d179aab419d1e5c63bf916a241d8763ed
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 15:46:56 2019 -0600
+
+    Changed the min and max amount of rooms.
+
+commit ddeb64775bb426ab3eca0788557965a894f24d73
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Fri Jan 25 14:28:25 2019 -0600
+
+    Finished the room generating code and got the code to create dungeon rooms successfully most of the time(all the time)?
+
+commit 7c5e2b2474f4601be284fa935ddf16d440f1113f
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Jan 24 23:11:14 2019 -0600
+
+    Made progress in setting up what I plan on having.
+    
+    Made progress in setting up what I plan on having. Currently have methods and basic setup for adding and generating rooms, but I am currently getting a illegal instruction core dump. :(
+
+commit bca3c9e9d994831463c8a5bd4603dfd9bbf4aa89
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Jan 24 21:48:33 2019 -0600
+
+    Created the Makefile and generator file. Currently getting a random number and creating the base dungeon with spaces for rocks and a border.
+
+commit 0d0a8e9bc3e6602fd9e4405d298d0b8c5f3f1f8d
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Thu Jan 24 19:26:57 2019 -0600
+
+    Initial commit
