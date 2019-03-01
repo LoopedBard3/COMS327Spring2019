@@ -1255,36 +1255,35 @@ void render_dungeon_curses(dungeon_t *d){
   for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
     for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
       if (charpair(p)) {
-        mvaddch(p[dim_y], p[dim_x], charpair(p)->symbol);
+        mvaddch(p[dim_y] + 1, p[dim_x], charpair(p)->symbol);
       } else {
         switch (mappair(p)) {
         case ter_wall:
         case ter_wall_immutable:
-          mvaddch(p[dim_y], p[dim_x],' ');
+          mvaddch(p[dim_y] + 1, p[dim_x],' ');
           break;
         case ter_floor:
         case ter_floor_room:
-          mvaddch(p[dim_y], p[dim_x],'.');
+          mvaddch(p[dim_y] + 1, p[dim_x],'.');
           break;
         case ter_floor_hall:
-          mvaddch(p[dim_y], p[dim_x],'#');
+          mvaddch(p[dim_y] + 1, p[dim_x],'#');
           break;
         case ter_debug:
-          mvaddch(p[dim_y], p[dim_x],'*');
+          mvaddch(p[dim_y] + 1, p[dim_x],'*');
           fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
           break;
         case ter_stairs_up:
-          mvaddch(p[dim_y], p[dim_x],'<');
+          mvaddch(p[dim_y] + 1, p[dim_x],'<');
           break;
         case ter_stairs_down:
-          mvaddch(p[dim_y], p[dim_x],'>');
+          mvaddch(p[dim_y] + 1, p[dim_x],'>');
           break;
         default:
           break;
         }
       }
     }
-    //move(p[dim_y], 0);
   }
   refresh();
 }
