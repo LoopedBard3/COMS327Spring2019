@@ -114,6 +114,7 @@ void do_moves(dungeon_t *d)
 
   if (pc_is_alive(d) && e->c == &d->pc)
   {
+    render_dungeon_curses(d);
     c = e->c;
     d->time = e->time;
     /* Kind of kludgey, but because the PC is never in the queue when   *
