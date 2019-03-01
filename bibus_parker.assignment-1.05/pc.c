@@ -346,26 +346,31 @@ void display_monster_screen(dungeon_t *d)
   mvprintw(0, 0, "Opened monster menu");
   int exit_menu = 0;
   int ch;
-  int index = 0;
+  int index = 0, prev_index = 1;
   int num_mon = 0;
-
   do{
-    display_monsters(d, index, &num_mon);
+    if(index != prev_index) {
+      display_monsters(d, index, &num_mon);
+    }
+    prev_index = index;
+    refresh();
     ch = getch();
+    move(0,0);
+    clrtoeol();
     switch(ch){
-      case KEY_UP:
-      if(index <= 0 && num_mon > 23){
+      case 259:
+      if(index <= 0 || num_mon <= 23){
         mvprintw(0,0,"Already at the top");
       }else{
-        index--;
+        index -= 1;
       }
       break;
 
-      case KEY_DOWN:
+      case 258:
       if(index >= num_mon - 23){
         mvprintw(0,0,"Already at the bottom");
       }else{
-        index++;
+        index += 1;
       }
       break;
 
@@ -375,10 +380,11 @@ void display_monster_screen(dungeon_t *d)
       break;
 
       default:
-        mvprintw(0,0,"Sorry, I don't understand that! Use escape to exit and up and down arrows to scroll!");
+        mvprintw(0,0,"Sorry, I don't understand that!");
         break;
     }
   }while(!exit_menu);
+  clear();
   render_dungeon_curses(d);
 }
 
@@ -391,9 +397,9 @@ void display_monsters(dungeon_t *d, int index, int *num_mon){
       for (x = 0; x < DUNGEON_X; x++) {
         hold = 0;
         if(d->character[y][x] != 0){
-          mons++;
-          mvprintw(mons, 0, "%c, ", d->character[y][x]->symbol); 
-          if(mons < 23){
+          mons++; 
+          if(mons < index + 23 && mons > index){
+             mvprintw(mons - index, 0, "%c, ", d->character[y][x]->symbol);
             if(d->character[y][x]->symbol == '@'){
               printw("This is YOU!!");
             }
@@ -422,4 +428,5 @@ void display_monsters(dungeon_t *d, int index, int *num_mon){
         }
       }
     }
+    *num_mon = mons;
 }
