@@ -327,6 +327,7 @@ uint32_t pc_next_pos_controlled(dungeon_t *d, pair_t dir)
       break;
 
     case 'm':
+      display_monster_screen(d);
       moved = 0;
       break;
 
@@ -343,4 +344,82 @@ uint32_t pc_next_pos_controlled(dungeon_t *d, pair_t dir)
 void display_monster_screen(dungeon_t *d)
 {
   mvprintw(0, 0, "Opened monster menu");
+  int exit_menu = 0;
+  int ch;
+  int index = 0;
+  int num_mon = 0;
+
+  do{
+    display_monsters(d, index, &num_mon);
+    ch = getch();
+    switch(ch){
+      case KEY_UP:
+      if(index <= 0 && num_mon > 23){
+        mvprintw(0,0,"Already at the top");
+      }else{
+        index--;
+      }
+      break;
+
+      case KEY_DOWN:
+      if(index >= num_mon - 23){
+        mvprintw(0,0,"Already at the bottom");
+      }else{
+        index++;
+      }
+      break;
+
+      case 'Q':
+      case 27:
+        exit_menu = 1;
+      break;
+
+      default:
+        mvprintw(0,0,"Sorry, I don't understand that! Use escape to exit and up and down arrows to scroll!");
+        break;
+    }
+  }while(!exit_menu);
+  render_dungeon_curses(d);
+}
+
+void display_monsters(dungeon_t *d, int index, int *num_mon){
+    clear();
+    int mons = 0;
+    int hold = 0;
+    int x, y;
+    for (y = 0; y < DUNGEON_Y; y++) {
+      for (x = 0; x < DUNGEON_X; x++) {
+        hold = 0;
+        if(d->character[y][x] != 0){
+          mons++;
+          mvprintw(mons, 0, "%c, ", d->character[y][x]->symbol); 
+          if(mons < 23){
+            if(d->character[y][x]->symbol == '@'){
+              printw("This is YOU!!");
+            }
+            if(y < d->pc.position[dim_y]){
+              hold = d->pc.position[dim_y] - y;
+              printw("%d north ", hold);
+            }else if(y > d->pc.position[dim_y]){
+              hold = y - d->pc.position[dim_y];
+              printw("%d south ", hold);
+            }
+
+            if(x < d->pc.position[dim_x]){
+              if(hold != 0){
+                printw(" and ");
+              }
+              hold = d->pc.position[dim_x] - x;
+              printw("%d west", hold);
+            }else if(x > d->pc.position[dim_x]){
+              if(hold != 0){
+                printw(" and ");
+              }
+              hold = x - d->pc.position[dim_x];
+              printw("%d east", hold);
+            }
+          }
+        }
+      }
+    }
 }

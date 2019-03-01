@@ -17,5 +17,7 @@ uint32_t pc_next_pos(dungeon_t *d, pair_t dir);
 void place_pc(dungeon_t *d);
 uint32_t pc_in_room(dungeon_t *d, uint32_t room);
 uint32_t pc_next_pos_controlled(dungeon_t *d, pair_t dir);
+void display_monster_screen(dungeon_t *d);
+void display_monsters(dungeon_t *d, int index, int *num_mon);
 
 #endif
