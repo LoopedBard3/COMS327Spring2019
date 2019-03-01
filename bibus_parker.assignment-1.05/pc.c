@@ -251,6 +251,8 @@ uint32_t pc_next_pos_controlled(dungeon_t *d, pair_t dir)
   do
   {
     ch = getch();
+    move(0, 0);
+    clrtoeol();
     switch (ch)
     {
     case '7':
@@ -358,7 +360,7 @@ void display_monster_screen(dungeon_t *d)
     move(0,0);
     clrtoeol();
     switch(ch){
-      case 259:
+      case KEY_UP:
       if(index <= 0 || num_mon <= 23){
         mvprintw(0,0,"Already at the top");
       }else{
@@ -366,7 +368,7 @@ void display_monster_screen(dungeon_t *d)
       }
       break;
 
-      case 258:
+      case KEY_DOWN:
       if(index >= num_mon - 23){
         mvprintw(0,0,"Already at the bottom");
       }else{
