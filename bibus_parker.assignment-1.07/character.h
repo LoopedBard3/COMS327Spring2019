@@ -14,9 +14,13 @@ typedef enum kill_type {
 class character {
  public:
   char symbol;
+  char* name;
   pair_t position;
   int32_t speed;
   uint32_t alive;
+  uint16_t color;
+  uint32_t curr_hp;
+  uint32_t max_hp;
   /* Characters use to have a next_turn for the move queue.  Now that it is *
    * an event queue, there's no need for that here.  Instead it's in the    *
    * event.  Similarly, sequence_number was introduced in order to ensure   *

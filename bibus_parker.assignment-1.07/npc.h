@@ -49,6 +49,7 @@ class npc : public character {
   npc_characteristics_t characteristics;
   uint32_t have_seen_pc;
   pair_t pc_last_known_position;
+  char* desc;
 };
 
 void gen_monsters(dungeon *d);
