@@ -68,7 +68,7 @@ void usage(char *name)
   fprintf(stderr,
           "Usage: %s [-r|--rand <seed>] [-l|--load [<file>]]\n"
           "          [-s|--save [<file>]] [-i|--image <pgm file>]\n"
-          "          [-n|--nummon <count>]\n",
+          "          [-n|--nummon <count>] [-p|--parser parser output only]\n",
           name);
 
   exit(-1);
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
   time_t seed;
   struct timeval tv;
   int32_t i;
-  uint32_t do_load, do_save, do_seed, do_image, do_save_seed, do_save_image;
+  uint32_t do_load, do_save, do_seed, do_image, do_save_seed, do_save_image, do_parser_output;
   uint32_t long_arg;
   char *save_file;
   char *load_file;
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
   
   /* Default behavior: Seed with the time, generate a new dungeon, *
    * and don't write to disk.                                      */
-  do_load = do_save = do_image = do_save_seed = do_save_image = 0;
+  do_load = do_save = do_image = do_save_seed = do_save_image = do_parser_output = 0;
   do_seed = 1;
   save_file = load_file = NULL;
   d.max_monsters = MAX_MONSTERS;
@@ -125,6 +125,13 @@ int main(int argc, char *argv[])
               !sscanf(argv[i], "%hu", &d.max_monsters)) {
             usage(argv[0]);
           }
+          break;
+        case 'p':
+         if ((!long_arg && argv[i][2]) ||
+              (long_arg && strcmp(argv[i], "-parser"))) {
+            usage(argv[0]);
+          }
+          do_parser_output = 1;
           break;
         case 'r':
           if ((!long_arg && argv[i][2]) ||
@@ -198,7 +205,8 @@ int main(int argc, char *argv[])
   }
 
   srand(seed);
-
+  //Parse the file
+if(!do_parser_output){
   io_init_terminal();
   init_dungeon(&d);
 
@@ -218,6 +226,7 @@ int main(int argc, char *argv[])
   if (!do_load && !do_image) {
     io_queue_message("Seed is %u.", seed);
   }
+  
   while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.quit) {
     do_moves(&d);
   }
@@ -254,6 +263,7 @@ int main(int argc, char *argv[])
          "You avenged the cruel and untimely murders of %u "
          "peaceful dungeon residents.\n",
          d.PC->kills[kill_direct], d.PC->kills[kill_avenged]);
+ 
 
   if (pc_is_alive(&d)) {
     /* If the PC is dead, it's in the move heap and will get automatically *
@@ -263,6 +273,8 @@ int main(int argc, char *argv[])
   }
 
   delete_dungeon(&d);
-
+ }else{
+   //Print out the parsed files
+ }
   return 0;
 }
