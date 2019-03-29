@@ -70,11 +70,13 @@ class monster_definition {
 class monster_def_parser {
     public:
     int fields_checked[NUM_CHECK_FIELDS];
+    int num_monsters;
     monster_definition curr_monster;
     monster_definition* monster_def_list;
-    void parseWOutput();
+    void parse(int output_enable);
     void empty();
-    void reset_current();
+    void reset_check();
+    void printMonsDefList();
 };
 
 #endif
