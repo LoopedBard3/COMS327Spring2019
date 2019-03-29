@@ -236,6 +236,7 @@ int main(int argc, char *argv[])
     monster_def_parser parse;
     std::cout << "Parsing" << std::endl;
     parse.parseWOutput();
+    parse.empty();
     return 0;
   }
 
@@ -321,5 +322,6 @@ int main(int argc, char *argv[])
   }
 
   delete_dungeon(&d);
+  
   return 0;
 }

@@ -49,6 +49,8 @@ typedef uint32_t npc_characteristics_t;
 
 class monster_definition {
  public:
+ monster_definition();
+ public:
   std::string name;
   char symbol;
   std::string description;
@@ -69,7 +71,9 @@ class monster_definition {
 class monster_def_parser {
     public:
     monster_definition curr_monster;
+    monster_definition* monster_def_list;
     void parseWOutput();
+    void empty();
 };
 
 #endif
