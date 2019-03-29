@@ -34,10 +34,11 @@ void monster_def_parser::parseWOutput()
     monster_def_list = (monster_definition *)malloc(sizeof(monster_definition));
 
     monster_count = 0;
+    
     while(std::getline(readFile, line)){
         if(!reading_monster && line.compare("BEGIN MONSTER") == 0){
             reading_monster = 1;
-            curr_monster = new monster_definition();
+            reset_current();
             std::cout << "Found Start" << std::endl;
         }else if(reading_monster){
             if(line.find("SYMB") != std::string::npos){ 
@@ -59,6 +60,18 @@ void monster_def_parser::parseWOutput()
         readFile.close();
         std::cout << "Closed" << std::endl;
     }
+}
+
+void monster_def_parser::reset_current(){
+    colors_set = 0;
+    curr_monster.name = std::string("");
+    curr_monster.symbol = '\0';
+    curr_monster.description = std::string("");
+    // curr_monster.
+    // curr_monster.
+    // curr_monster.
+    // curr_monster.
+    // curr_monster.
 }
 
 

@@ -49,31 +49,31 @@ typedef uint32_t npc_characteristics_t;
 
 class monster_definition {
  public:
- monster_definition();
- public:
-  std::string name;
-  char symbol;
-  std::string description;
-  Color colors[NUMCOLORS]; //Change to Enum
-  uint32_t speed_base;
-  uint32_t speed_dice;
-  uint32_t speed_sides;
-  npc_characteristics_t abilities;
-  uint32_t hp_base;
-  uint32_t hp_dice;
-  uint32_t hp_sides;
-  uint32_t atk_base;
-  uint32_t atk_dice;
-  uint32_t atk_sides;
-  uint32_t rarity;
+  std::string name{ "" };
+  char symbol{ '\0' };
+  std::string description{ "" };
+  Color colors[NUMCOLORS]{ NUMCOLORS }; //Change to Enum
+  int32_t speed_base{ -1 };
+  int32_t speed_dice{ -1 };
+  int32_t speed_sides{ -1 };
+  npc_characteristics_t abilities{ 0xFFFFFFFF };
+  int32_t hp_base{ -1 };
+  int32_t hp_dice{ -1 };
+  int32_t hp_sides{ -1 };
+  int32_t atk_base{ -1 };
+  int32_t atk_dice{ -1 };
+  int32_t atk_sides{ -1 };
+  int32_t rarity{ -1 };
 };
 
 class monster_def_parser {
     public:
+    int colors_set = 0;
     monster_definition curr_monster;
     monster_definition* monster_def_list;
     void parseWOutput();
     void empty();
+    void reset_current();
 };
 
 #endif
