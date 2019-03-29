@@ -1,7 +1,8 @@
-#ifndef NPC_H
-# define NPC_H
+#ifndef MDEF_H
+# define MDEF_H
 
 # include <stdint.h>
+#include <string>
 
 # include "dims.h"
 # include "character.h"
@@ -39,18 +40,19 @@
 // # define NPC_BIT30         0x40000000
 // # define NPC_BIT31         0x80000000
 
-// # define has_characteristic(character, bit)              \
+// # define has_characteristic(character, bit)              
 //   ((character)->npc->characteristics & NPC_##bit)
+
+enum Color { BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, NUMCOLORS };
 
 typedef uint32_t npc_characteristics_t;
 
-class monster_definition{
-
+class monster_definition {
  public:
-  char* name;
+  std::string name;
   char symbol;
-  char* description;
-  uint32_t color; //Change to Enum
+  std::string description;
+  Color colors[NUMCOLORS]; //Change to Enum
   uint32_t speed_base;
   uint32_t speed_dice;
   uint32_t speed_sides;
@@ -62,6 +64,12 @@ class monster_definition{
   uint32_t atk_dice;
   uint32_t atk_sides;
   uint32_t rarity;
+};
+
+class monster_def_parser {
+    public:
+    monster_definition curr_monster;
+    void parseWOutput();
 };
 
 #endif

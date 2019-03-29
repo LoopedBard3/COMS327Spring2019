@@ -3,6 +3,7 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <iostream>
 
 #include "dungeon.h"
 #include "pc.h"
@@ -10,6 +11,7 @@
 #include "move.h"
 #include "utils.h"
 #include "io.h"
+#include "monster_definitions.h"
 
 const char *victory =
     "\n                                       o\n"
@@ -231,92 +233,93 @@ int main(int argc, char *argv[])
   if (do_parser_output)
   {
     //Parser with Output
+    monster_def_parser parse;
+    std::cout << "Parsing" << std::endl;
+    parse.parseWOutput();
+    return 0;
+  }
 
+  //Regular Parse
+
+  io_init_terminal();
+  init_dungeon(&d);
+
+  if (do_load)
+  {
+    read_dungeon(&d, load_file);
+  }
+  else if (do_image)
+  {
+    read_pgm(&d, pgm_file);
   }
   else
   {
-    //Regular Parse
-    
-    io_init_terminal();
-    init_dungeon(&d);
+    gen_dungeon(&d);
+  }
 
-    if (do_load)
+  /* Ignoring PC position in saved dungeons.  Not a bug. */
+  config_pc(&d);
+  gen_monsters(&d);
+
+  io_display(&d);
+  if (!do_load && !do_image)
+  {
+    io_queue_message("Seed is %u.", seed);
+  }
+
+  while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.quit)
+  {
+    do_moves(&d);
+  }
+  io_display(&d);
+
+  io_reset_terminal();
+
+  if (do_save)
+  {
+    if (do_save_seed)
     {
-      read_dungeon(&d, load_file);
+      /* 10 bytes for number, plus dot, extention and null terminator. */
+      save_file = (char *)malloc(18);
+      sprintf(save_file, "%ld.rlg327", seed);
     }
-    else if (do_image)
+    if (do_save_image)
     {
-      read_pgm(&d, pgm_file);
-    }
-    else
-    {
-      gen_dungeon(&d);
-    }
-
-    /* Ignoring PC position in saved dungeons.  Not a bug. */
-    config_pc(&d);
-    gen_monsters(&d);
-
-    io_display(&d);
-    if (!do_load && !do_image)
-    {
-      io_queue_message("Seed is %u.", seed);
-    }
-
-    while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.quit)
-    {
-      do_moves(&d);
-    }
-    io_display(&d);
-
-    io_reset_terminal();
-
-    if (do_save)
-    {
-      if (do_save_seed)
+      if (!pgm_file)
       {
-        /* 10 bytes for number, plus dot, extention and null terminator. */
-        save_file = (char *)malloc(18);
-        sprintf(save_file, "%ld.rlg327", seed);
+        fprintf(stderr, "No image file was loaded.  Using default.\n");
+        do_save_image = 0;
       }
-      if (do_save_image)
+      else
       {
-        if (!pgm_file)
-        {
-          fprintf(stderr, "No image file was loaded.  Using default.\n");
-          do_save_image = 0;
-        }
-        else
-        {
-          /* Extension of 3 characters longer than image extension + null. */
-          save_file = (char *)malloc(strlen(pgm_file) + 4);
-          strcpy(save_file, pgm_file);
-          strcpy(strchr(save_file, '.') + 1, "rlg327");
-        }
-      }
-      write_dungeon(&d, save_file);
-
-      if (do_save_seed || do_save_image)
-      {
-        free(save_file);
+        /* Extension of 3 characters longer than image extension + null. */
+        save_file = (char *)malloc(strlen(pgm_file) + 4);
+        strcpy(save_file, pgm_file);
+        strcpy(strchr(save_file, '.') + 1, "rlg327");
       }
     }
+    write_dungeon(&d, save_file);
 
-    printf("%s", pc_is_alive(&d) ? victory : tombstone);
-    printf("You defended your life in the face of %u deadly beasts.\n"
-           "You avenged the cruel and untimely murders of %u "
-           "peaceful dungeon residents.\n",
-           d.PC->kills[kill_direct], d.PC->kills[kill_avenged]);
-
-    if (pc_is_alive(&d))
+    if (do_save_seed || do_save_image)
     {
-      /* If the PC is dead, it's in the move heap and will get automatically *
+      free(save_file);
+    }
+  }
+
+  printf("%s", pc_is_alive(&d) ? victory : tombstone);
+  printf("You defended your life in the face of %u deadly beasts.\n"
+         "You avenged the cruel and untimely murders of %u "
+         "peaceful dungeon residents.\n",
+         d.PC->kills[kill_direct], d.PC->kills[kill_avenged]);
+
+  if (pc_is_alive(&d))
+  {
+    /* If the PC is dead, it's in the move heap and will get automatically *
      * deleted when the heap destructs.  In that case, we can't call       *
      * delete_pc(), because it will lead to a double delete.               */
-      character_delete(d.PC);
-    }
-
-    delete_dungeon(&d);
+    character_delete(d.PC);
   }
+
+  delete_dungeon(&d);
   return 0;
 }
