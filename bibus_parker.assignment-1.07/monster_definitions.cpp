@@ -63,15 +63,10 @@ void monster_def_parser::parseWOutput()
 }
 
 void monster_def_parser::reset_current(){
-    colors_set = 0;
-    curr_monster.name = std::string("");
-    curr_monster.symbol = '\0';
-    curr_monster.description = std::string("");
-    // curr_monster.
-    // curr_monster.
-    // curr_monster.
-    // curr_monster.
-    // curr_monster.
+    int counter;
+    for(counter = 0; counter < NUM_CHECK_FIELDS; counter++){
+        fields_checked[counter] = 0;
+    }
 }
 
 

@@ -44,31 +44,32 @@
 //   ((character)->npc->characteristics & NPC_##bit)
 
 enum Color { BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, NUMCOLORS };
+enum CHECKED_FIELDS {NAME, SYMBOL, DESC, COLOR, SPEED, ABIL, HEALTH, ATK, RARITY, NUM_CHECK_FIELDS};
 
 typedef uint32_t npc_characteristics_t;
 
 class monster_definition {
  public:
-  std::string name{ "" };
-  char symbol{ '\0' };
-  std::string description{ "" };
-  Color colors[NUMCOLORS]{ NUMCOLORS }; //Change to Enum
-  int32_t speed_base{ -1 };
-  int32_t speed_dice{ -1 };
-  int32_t speed_sides{ -1 };
-  npc_characteristics_t abilities{ 0xFFFFFFFF };
-  int32_t hp_base{ -1 };
-  int32_t hp_dice{ -1 };
-  int32_t hp_sides{ -1 };
-  int32_t atk_base{ -1 };
-  int32_t atk_dice{ -1 };
-  int32_t atk_sides{ -1 };
-  int32_t rarity{ -1 };
+  std::string name;
+  char symbol;
+  std::string description;
+  int colors_selection[NUMCOLORS]{ 0 }; //Change to Enum
+  int32_t speed_base;
+  int32_t speed_dice;
+  int32_t speed_sides;
+  npc_characteristics_t abilities;
+  int32_t hp_base;
+  int32_t hp_dice;
+  int32_t hp_sides;
+  int32_t atk_base;
+  int32_t atk_dice;
+  int32_t atk_sides;
+  int32_t rarity;
 };
 
 class monster_def_parser {
     public:
-    int colors_set = 0;
+    int fields_checked[NUM_CHECK_FIELDS];
     monster_definition curr_monster;
     monster_definition* monster_def_list;
     void parseWOutput();

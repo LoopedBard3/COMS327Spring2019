@@ -142,7 +142,7 @@ typedef struct heap 13,153
 io.h,19
 # define IO_H2,13
 
-monster_definitions.h,1008
+monster_definitions.h,2096
 # define MDEF_H2,16
 # define NPC_SMART 10,125
 # define NPC_TELEPATH 11,164
@@ -158,15 +158,38 @@ enum Color { BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA,46,1577
 enum Color { BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN,46,1577
 enum Color { BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE,46,1577
 enum Color { BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, NUMCOLORS 46,1577
-typedef uint32_t npc_characteristics_t;48,1661
-class monster_definition 50,1704
-  Color colors[colors55,1827
-  npc_characteristics_t abilities{abilities59,1973
-class monster_def_parser 69,2215
-    monster_def_parser(71,2256
-    int colors_set 72,2285
-    monster_definition curr_monster;73,2310
-    monster_definition* monster_def_list;74,2348
+enum CHECKED_FIELDS 47,1659
+enum CHECKED_FIELDS {NAME,NAME47,1659
+enum CHECKED_FIELDS {NAME, SYMBOL,47,1659
+enum CHECKED_FIELDS {NAME, SYMBOL, DESC,47,1659
+enum CHECKED_FIELDS {NAME, SYMBOL, DESC, COLOR,47,1659
+enum CHECKED_FIELDS {NAME, SYMBOL, DESC, COLOR, SPEED,47,1659
+enum CHECKED_FIELDS {NAME, SYMBOL, DESC, COLOR, SPEED, ABIL,47,1659
+enum CHECKED_FIELDS {NAME, SYMBOL, DESC, COLOR, SPEED, ABIL, HEALTH,47,1659
+enum CHECKED_FIELDS {NAME, SYMBOL, DESC, COLOR, SPEED, ABIL, HEALTH, ATK,47,1659
+enum CHECKED_FIELDS {NAME, SYMBOL, DESC, COLOR, SPEED, ABIL, HEALTH, ATK, RARITY,47,1659
+enum CHECKED_FIELDS {NAME, SYMBOL, DESC, COLOR, SPEED, ABIL, HEALTH, ATK, RARITY, NUM_CHECK_FIELDS}NUM_CHECK_FIELDS47,1659
+typedef uint32_t npc_characteristics_t;49,1763
+class monster_definition 51,1806
+  std::string name;53,1844
+  char symbol;54,1865
+  std::string description;55,1881
+  int colors_selection[colors_selection56,1909
+  int32_t speed_base;57,1967
+  int32_t speed_dice;58,1990
+  int32_t speed_sides;59,2013
+  npc_characteristics_t abilities;60,2037
+  int32_t hp_base;61,2073
+  int32_t hp_dice;62,2093
+  int32_t hp_sides;63,2113
+  int32_t atk_base;64,2134
+  int32_t atk_dice;65,2155
+  int32_t atk_sides;66,2176
+  int32_t rarity;67,2198
+class monster_def_parser 70,2223
+    int fields_checked[fields_checked72,2264
+    monster_definition curr_monster;73,2307
+    monster_definition* monster_def_list;74,2345
 
 move.h,21
 # define MOVE_H2,15
@@ -335,7 +358,7 @@ void io_handle_input(653,16376
 monster_definitions.cpp,165
 void monster_def_parser::parseWOutput(parseWOutput6,96
 void monster_def_parser::reset_current(reset_current65,1773
-void monster_def_parser::empty(empty78,2078
+void monster_def_parser::empty(empty73,1948
 
 move.cpp,237
 void do_combat(18,266
