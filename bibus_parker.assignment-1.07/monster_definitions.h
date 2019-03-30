@@ -50,10 +50,10 @@ typedef uint32_t npc_characteristics_t;
 
 class monster_definition {
  public:
-  std::string name;
+  std::string name{ "" };
   char symbol;
   std::string description;
-  int colors_selection[NUMCOLORS]{ 0 }; //Change to Enum
+  int colors_selection[NUMCOLORS]{ 0 }; 
   int32_t speed_base;
   int32_t speed_dice;
   int32_t speed_sides;
@@ -65,18 +65,25 @@ class monster_definition {
   int32_t atk_dice;
   int32_t atk_sides;
   int32_t rarity;
+  void setName(std::string newName){ name = newName; }
 };
 
 class monster_def_parser {
     public:
     int fields_checked[NUM_CHECK_FIELDS];
     int num_monsters;
+    int failed;
     monster_definition curr_monster;
     monster_definition* monster_def_list;
     void parse(int output_enable);
     void empty();
     void reset_check();
     void printMonsDefList();
+    void saveMons(monster_definition* md, int position);
+    void readDice(int32_t *base, int32_t *dice, int32_t *sides, std::string str);
+    int checkMonster(monster_definition md);
 };
+
+
 
 #endif
