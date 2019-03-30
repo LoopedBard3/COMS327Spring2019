@@ -234,7 +234,6 @@ int main(int argc, char *argv[])
   {
     //Parser with Output
     monster_def_parser parse;
-    std::cout << "Parsing" << std::endl;
     parse.parse(1);
     parse.empty();
     return 0;

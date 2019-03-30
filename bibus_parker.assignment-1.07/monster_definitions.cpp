@@ -50,7 +50,6 @@ void monster_def_parser::parse(int output_enable)
         {
             if (line.find("NAME") != std::string::npos)
             {
-                std::cout << "Found NAME: " << line << std::endl;
                 line = line.substr(line.find_first_of(" ") + 1, std::string::npos);
                 if (line.length() == 0 || fields_checked[NAME])
                 {
@@ -60,7 +59,23 @@ void monster_def_parser::parse(int output_enable)
                 {
                     curr_monster.name = line;
                     fields_checked[NAME] = 1;
-                    std::cout << "NAME SET: " << curr_monster.name << " Monster: " << monster_count << std::endl;
+                }
+            }
+            else if (line.find("DESC") != std::string::npos)
+            {
+                std::string strHold;
+                while (std::getline(readFile, line) && line.compare(".") != 0 && line.compare("END") != 0)
+                {
+                    strHold.append(line.append("\n"));
+                }
+                if (line.length() == 0 || fields_checked[DESC] || line.compare("END") == 0)
+                {
+                    failed = 1;
+                }
+                else
+                {
+                    curr_monster.description = strHold;
+                    fields_checked[DESC] = 1;
                 }
             }
             else if (line.find("SYMB") != std::string::npos)
@@ -210,8 +225,8 @@ void monster_def_parser::printMonsDefList()
     int counter;
     for (counter = 0; counter < num_monsters; counter++)
     {
-        std::cout << monster_def_list[counter].name << std::endl;//NAME
-        //DESC
+        std::cout << monster_def_list[counter].name << std::endl; //NAME
+        std::cout << monster_def_list[counter].description;//DESC
         std::cout << monster_def_list[counter].symbol << std::endl;                                                                                                    //SYMB
         monster_def_list[counter].printColors();                                                                                                                       //COLOR
         std::cout << monster_def_list[counter].speed_base << "+" << monster_def_list[counter].speed_dice << "d" << monster_def_list[counter].speed_sides << std::endl; //SPEED
@@ -227,8 +242,8 @@ void monster_def_parser::saveMons(monster_definition *md, int position)
 {
     int counter;
     //monster_def_list[position].name = md->name;  //setName(&md->name);
-    monster_def_list[position].setName(md->name);   
-    //DESC
+    monster_def_list[position].setName(md->name);
+    monster_def_list[position].setDesc(md->description);
     monster_def_list[position].symbol = md->symbol;
     monster_def_list[position].hp_base = md->hp_base;
     monster_def_list[position].hp_dice = md->hp_dice;
@@ -325,7 +340,6 @@ void monster_def_parser::readGetAbilities(monster_definition *md, std::string li
         else if (ability.substr(0, ability.find_first_of(" \n\t")).compare("BOSS") == 0)
             md->abilities = md->abilities | NPC_BOSS;
     }
-    std::cout << md->abilities << std::endl;
 }
 
 void monster_definition::printAbilities()
