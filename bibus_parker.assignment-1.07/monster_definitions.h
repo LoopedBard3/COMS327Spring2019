@@ -83,7 +83,8 @@ class monster_def_parser {
     void printMonsDefList();
     void saveMons(monster_definition* md, int position);
     void readDice(int32_t *base, int32_t *dice, int32_t *sides, std::string str);
-    void readGetColors(monster_definition *md, std::string line);    
+    void readGetColors(monster_definition *md, std::string line);
+    void readGetAbilities(monster_definition *md, std::string line);    
     int checkMonster(monster_definition md);
 };
 
