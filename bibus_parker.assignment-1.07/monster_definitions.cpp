@@ -41,7 +41,7 @@ void monster_def_parser::parse(int output_enable)
 
     while (std::getline(readFile, line) && monster_count < num_monsters)
     {
-        if (!reading_monster && line.compare("BEGIN MONSTER") == 0)
+        if (line.compare("BEGIN MONSTER") == 0)
         {
             reading_monster = 1;
             reset_check();
