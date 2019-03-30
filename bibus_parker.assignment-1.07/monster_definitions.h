@@ -11,11 +11,11 @@
 # define NPC_TELEPATH      0x00000002
 # define NPC_TUNNEL        0x00000004
 # define NPC_ERRATIC       0x00000008
-// # define NPC_BIT04         0x00000010
-// # define NPC_BIT05         0x00000020
-// # define NPC_BIT06         0x00000040
-// # define NPC_BIT07         0x00000080
-// # define NPC_BIT08         0x00000100
+# define NPC_PASS          0x00000010
+# define NPC_PICKUP        0x00000020
+# define NPC_DESTROY       0x00000040
+# define NPC_UNIQ          0x00000080
+# define NPC_BOSS          0x00000100
 // # define NPC_BIT09         0x00000200
 // # define NPC_BIT10         0x00000400
 // # define NPC_BIT11         0x00000800
@@ -53,7 +53,7 @@ class monster_definition {
   std::string name{ "" };
   char symbol;
   std::string description;
-  int colors_selection[NUMCOLORS]{ 0 }; 
+  int colors_selection[NUMCOLORS]; 
   int32_t speed_base;
   int32_t speed_dice;
   int32_t speed_sides;
@@ -66,6 +66,8 @@ class monster_definition {
   int32_t atk_sides;
   int32_t rarity;
   void setName(std::string newName){ name = newName; }
+  void printAbilities();
+  void printColors();
 };
 
 class monster_def_parser {
@@ -81,6 +83,7 @@ class monster_def_parser {
     void printMonsDefList();
     void saveMons(monster_definition* md, int position);
     void readDice(int32_t *base, int32_t *dice, int32_t *sides, std::string str);
+    void readGetColors(monster_definition *md, std::string line);    
     int checkMonster(monster_definition md);
 };
 
