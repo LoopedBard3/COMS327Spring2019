@@ -55,7 +55,6 @@ void monster_def_parser::parse(int output_enable)
                 if (line.length() == 0 || fields_checked[NAME])
                 {
                     failed = 1;
-                    std::cout << "NAME FAILURE: " << line << std::endl;
                 }
                 else
                 {
@@ -211,7 +210,7 @@ void monster_def_parser::printMonsDefList()
     int counter;
     for (counter = 0; counter < num_monsters; counter++)
     {
-        //NAMEstd::cout << monster_def_list[counter].name << std::endl;
+        std::cout << monster_def_list[counter].name << std::endl;//NAME
         //DESC
         std::cout << monster_def_list[counter].symbol << std::endl;                                                                                                    //SYMB
         monster_def_list[counter].printColors();                                                                                                                       //COLOR
@@ -226,8 +225,10 @@ void monster_def_parser::printMonsDefList()
 
 void monster_def_parser::saveMons(monster_definition *md, int position)
 {
-    int counter = 0;
+    int counter;
     //monster_def_list[position].name = md->name;  //setName(&md->name);
+    monster_def_list[position].setName(md->name);   
+    //DESC
     monster_def_list[position].symbol = md->symbol;
     monster_def_list[position].hp_base = md->hp_base;
     monster_def_list[position].hp_dice = md->hp_dice;

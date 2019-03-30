@@ -65,7 +65,8 @@ class monster_definition {
   int32_t atk_dice;
   int32_t atk_sides;
   int32_t rarity;
-  void setName(std::string newName){ name = newName; }
+  void setName(std::string newName){ name.assign(newName); }
+  void setDesc(std::string newDesc){ description.assign(newDesc); }
   void printAbilities();
   void printColors();
 };
