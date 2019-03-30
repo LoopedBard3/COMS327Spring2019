@@ -44,6 +44,7 @@ void monster_def_parser::parse(int output_enable)
         if (line.compare("BEGIN MONSTER") == 0)
         {
             reading_monster = 1;
+            failed = 0;
             reset_check();
         }
         else if (reading_monster)
@@ -159,7 +160,7 @@ void monster_def_parser::parse(int output_enable)
             else if (line.find("ABIL") != std::string::npos)
             {
                 line = line.substr(line.find_first_of(" ") + 1, std::string::npos);
-                if (line.length() == 0 || fields_checked[ABIL])
+                if (fields_checked[ABIL])
                 {
                     break;
                 }
@@ -172,13 +173,14 @@ void monster_def_parser::parse(int output_enable)
             else if (line.compare("END") == 0)
             {
                 //Check for proper monster and save
-                fields_checked[NAME] = 1;
-                fields_checked[DESC] = 1;
                 if (checkMonster(curr_monster) == 0)
                 {
                     saveMons(&curr_monster, monster_count++);
                 }
                 reading_monster = 0;
+            }
+            else{
+                failed = 1;
             }
             if (failed)
             {
@@ -264,11 +266,19 @@ void monster_def_parser::saveMons(monster_definition *md, int position)
 
 void monster_def_parser::readDice(int32_t *base, int32_t *dice, int32_t *sides, std::string str)
 {
+    if(str.find("+") == std::string::npos || str.find("d") == std::string::npos){
+        failed = 1;
+        return ;
+    }
+    try{
     *base = std::stoi(str.substr(0, str.find_first_of("+")));
     str = str.substr(str.find_first_of("+") + 1);
     *dice = std::stoi(str.substr(0, str.find_first_of("d")));
     str = str.substr(str.find_first_of("d") + 1);
     *sides = std::stoi(str);
+    }catch(...){
+        failed = 1;
+    }
 }
 
 int monster_def_parser::checkMonster(monster_definition md)
@@ -362,6 +372,8 @@ void monster_definition::printAbilities()
         std::cout << "UNIQ ";
     if (this->abilities & NPC_BOSS)
         std::cout << "BOSS ";
+    if (this->abilities == 0)
+        std::cout << "NONE ";
     std::cout << std::endl;
 }
 
