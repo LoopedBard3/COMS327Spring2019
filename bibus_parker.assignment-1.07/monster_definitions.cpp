@@ -323,10 +323,6 @@ void monster_def_parser::readGetAbilities(monster_definition *md, std::string li
             md->abilities = md->abilities | NPC_UNIQ;
         else if (ability.substr(0, ability.find_first_of(" \n\t")).compare("BOSS") == 0)
             md->abilities = md->abilities | NPC_BOSS;
-        else
-        {
-            return;
-        }
     }
     std::cout << md->abilities << std::endl;
 }
