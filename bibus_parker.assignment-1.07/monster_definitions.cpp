@@ -229,12 +229,12 @@ void monster_def_parser::printMonsDefList()
     {
         std::cout << monster_def_list[counter].name << std::endl; //NAME
         std::cout << monster_def_list[counter].description;//DESC
-        std::cout << monster_def_list[counter].symbol << std::endl;                                                                                                    //SYMB
         monster_def_list[counter].printColors();                                                                                                                       //COLOR
         std::cout << monster_def_list[counter].speed_base << "+" << monster_def_list[counter].speed_dice << "d" << monster_def_list[counter].speed_sides << std::endl; //SPEED
         monster_def_list[counter].printAbilities();                                                                                                                    //ABIL
         std::cout << monster_def_list[counter].hp_base << "+" << monster_def_list[counter].hp_dice << "d" << monster_def_list[counter].hp_sides << std::endl;          //HEALTH
         std::cout << monster_def_list[counter].atk_base << "+" << monster_def_list[counter].atk_dice << "d" << monster_def_list[counter].atk_sides << std::endl;       //DAMAGE
+        std::cout << monster_def_list[counter].symbol << std::endl;                                                                                                    //SYMB
         std::cout << monster_def_list[counter].rarity << std::endl;                                                                                                    //RRTY
         std::cout << std::endl;
     }
