@@ -1,3 +1,15 @@
+commit f66e68ab9a0ccd1e3f97bd8acd32a1cdf53dd5e1
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Mon Apr 1 12:18:37 2019 -0500
+
+    Fixed the print order of the monster attributes to match the table.
+
+commit eaa4cfe738411e7a444efbc110965bc8a5efe259
+Author: Parker Bibus <pbibus@hotmail.com>
+Date:   Sat Mar 30 14:10:26 2019 -0500
+
+    Finished Changelog and Readme.
+
 commit 90e9628e78f0badd51b772c3046b8372fcb4b564
 Author: Parker Bibus <pbibus@hotmail.com>
 Date:   Sat Mar 30 13:13:47 2019 -0500
