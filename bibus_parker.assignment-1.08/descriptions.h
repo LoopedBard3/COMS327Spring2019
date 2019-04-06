@@ -6,50 +6,36 @@
 # include <vector>
 # include <string>
 # include "dice.h"
+# include "utils.h"
+# include "item.h"
+# include "npc.h"
+# include "object_type.h"
 
 typedef struct dungeon dungeon_t;
 
 uint32_t parse_descriptions(dungeon_t *d);
 uint32_t print_descriptions(dungeon_t *d);
 uint32_t destroy_descriptions(dungeon_t *d);
+item get_item(dungeon_t *d);
+npc get_npc(dungeon_t *d);
+char get_item_symbol(object_type_t obj_type);
 
-typedef enum object_type {
-  objtype_no_type,
-  objtype_WEAPON,
-  objtype_OFFHAND,
-  objtype_RANGED,
-  objtype_LIGHT,
-  objtype_ARMOR,
-  objtype_HELMET,
-  objtype_CLOAK,
-  objtype_GLOVES,
-  objtype_BOOTS,
-  objtype_AMULET,
-  objtype_RING,
-  objtype_SCROLL,
-  objtype_BOOK,
-  objtype_FLASK,
-  objtype_GOLD,
-  objtype_AMMUNITION,
-  objtype_FOOD,
-  objtype_WAND,
-  objtype_CONTAINER
-} object_type_t;
 
 extern const char object_symbol[];
 
 class monster_description {
- private:
+ public:
   std::string name, description;
   char symbol;
   std::vector<uint32_t> color;
   uint32_t abilities;
   dice speed, hitpoints, damage;
   uint32_t rarity;
+  bool unspawnable;
  public:
   monster_description() : name(),       description(), symbol(0),   color(0),
                           abilities(0), speed(),       hitpoints(), damage(),
-                          rarity(0)
+                          rarity(0), unspawnable(false)
   {
   }
   void set(const std::string &name,
@@ -73,12 +59,13 @@ class object_description {
   dice hit, damage, dodge, defence, weight, speed, attribute, value;
   bool artifact;
   uint32_t rarity;
+  bool unspawnable;
  public:
   object_description() : name(),    description(), type(objtype_no_type),
                          color(0),  hit(),         damage(),
                          dodge(),   defence(),     weight(),
                          speed(),   attribute(),   value(),
-                         artifact(false), rarity(0)
+                         artifact(false), rarity(0), unspawnable(false)
   {
   }
   void set(const std::string &name,
@@ -110,6 +97,8 @@ class object_description {
   inline const dice &get_speed() const { return speed; }
   inline const dice &get_attribute() const { return attribute; }
   inline const dice &get_value() const { return value; }
+  inline const uint32_t &get_rarity() const { return rarity; }
+  inline const bool &is_unspawnable() const { return unspawnable; }
 };
 
 std::ostream &operator<<(std::ostream &o, monster_description &m);

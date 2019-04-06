@@ -1002,6 +1002,113 @@ uint32_t destroy_descriptions(dungeon_t *d)
   return 0;
 }
 
+item get_item(dungeon_t *d){
+  bool got_item = false;
+  object_description item_desc;
+  item item_hold;
+  while(!got_item){
+    item_desc = d->object_descriptions[rand_range(0, d->object_descriptions.size() - 1)];
+    if(item_desc.is_unspawnable()){
+      got_item = false;
+      break;
+    }else if(item_desc.get_rarity() <= (uint32_t) rand_range(0, 99)){
+      got_item = false;
+      break;
+    }else{
+      item_hold.name = item_desc.get_name();
+      item_hold.description = item_desc.get_description();
+      item_hold.type = item_desc.get_type();
+      item_hold.color = item_desc.get_color();
+      item_hold.hit = item_desc.get_hit().roll();
+      item_hold.damage = item_desc.get_damage();
+      item_hold.dodge = item_desc.get_dodge().roll();
+      item_hold.defence = item_desc.get_defence().roll();
+      item_hold.weight = item_desc.get_weight().roll();
+      item_hold.speed = item_desc.get_speed().roll();
+      item_hold.attribute = item_desc.get_attribute().roll();
+      item_hold.value = item_desc.get_value().roll();
+      item_hold.symbol = get_item_symbol(item_desc.get_type());
+      got_item = true;
+    }
+  }
+  return item_hold;
+}
+
+
+npc get_npc(dungeon_t *d){
+  bool got_npc = false;
+  monster_description npc_desc;
+  npc npc_hold;
+  while(!got_npc){
+    npc_desc = d->monster_descriptions[rand_range(0, d->monster_descriptions.size() - 1)];
+    if(npc_desc.unspawnable){
+      got_npc = false;
+      break;
+    }else if(npc_desc.rarity <= (uint32_t) rand_range(0, 99)){
+      got_npc = false;
+      break;
+    }else{
+      npc_hold.name = npc_desc.name;
+      npc_hold.description = npc_desc.description;
+      npc_hold.color = npc_desc.color;
+      npc_hold.speed = npc_desc.speed.roll();
+      npc_hold.abilities = npc_desc.abilities;
+      npc_hold.hitpoints = npc_desc.hitpoints.roll();
+      npc_hold.damage = npc_desc.damage;
+      npc_hold.symbol = npc_desc.symbol;
+      got_npc = true;
+    }
+  }
+  return npc_hold;
+}
+
+char get_item_symbol(object_type_t obj_type){
+  switch(obj_type){
+    case objtype_no_type:
+      return '*';
+    case objtype_WEAPON:
+      return '|';
+    case objtype_OFFHAND:
+      return ')';
+    case objtype_RANGED:
+      return '}';
+    case objtype_ARMOR:
+      return '[';
+    case objtype_HELMET:
+      return ']';
+    case objtype_CLOAK:
+      return '(';
+    case objtype_GLOVES:
+      return '{';
+    case objtype_BOOTS:
+      return '\\';
+    case objtype_RING:
+      return '=';
+    case objtype_AMULET:
+      return '\"';
+    case objtype_LIGHT:
+      return '_';
+    case objtype_SCROLL:
+      return '~';
+    case objtype_BOOK:
+      return '?';
+    case objtype_FLASK:
+      return '!';
+    case objtype_GOLD:
+      return '$';
+    case objtype_AMMUNITION:
+      return '/';
+    case objtype_FOOD:
+      return ',';
+    case objtype_WAND:
+      return '-';
+    case objtype_CONTAINER:
+      return '%';  
+    default:
+      return '*';
+  }
+}
+
 void object_description::set(const std::string &name,
                              const std::string &description,
                              const object_type_t type,

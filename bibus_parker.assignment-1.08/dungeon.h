@@ -7,6 +7,7 @@
 # include "dims.h"
 # include "character.h"
 # include "descriptions.h"
+# include "item.h"
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
@@ -78,6 +79,7 @@ class dungeon {
   uint8_t pc_distance[DUNGEON_Y][DUNGEON_X];
   uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
   character *character_map[DUNGEON_Y][DUNGEON_X];
+  item *item_map[DUNGEON_Y][DUNGEON_X];
   pc *PC;
   heap_t events;
   uint16_t num_monsters;
