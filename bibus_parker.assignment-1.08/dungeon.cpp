@@ -674,6 +674,7 @@ void delete_dungeon(dungeon *d)
   free(d->rooms);
   heap_delete(&d->events);
   memset(d->character_map, 0, sizeof (d->character_map));
+  destroy_descriptions(d);
 }
 
 void init_dungeon(dungeon *d)
@@ -681,6 +682,7 @@ void init_dungeon(dungeon *d)
   empty_dungeon(d);
   memset(&d->events, 0, sizeof (d->events));
   heap_init(&d->events, compare_events, event_delete);
+  parse_descriptions(d);
 }
 
 int write_dungeon_map(dungeon *d, FILE *f)

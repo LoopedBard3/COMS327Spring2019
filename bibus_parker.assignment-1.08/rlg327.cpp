@@ -85,12 +85,7 @@ int main(int argc, char *argv[])
   char *save_file;
   char *load_file;
   char *pgm_file;
-  
-  parse_descriptions(&d);
-  print_descriptions(&d);
-  destroy_descriptions(&d);
 
-  return 0;
   
   /* Default behavior: Seed with the time, generate a new dungeon, *
    * and don't write to disk.                                      */
