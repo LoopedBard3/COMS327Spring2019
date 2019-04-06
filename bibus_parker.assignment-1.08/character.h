@@ -2,8 +2,11 @@
 # define CHARACTER_H
 
 # include <stdint.h>
+# include <vector>
+# include <string>
 
 # include "dims.h"
+# include "dice.h"
 
 typedef enum kill_type {
   kill_direct,
@@ -13,6 +16,12 @@ typedef enum kill_type {
 
 class character {
  public:
+ character() : symbol(0), position(), speed(), alive(),
+                sequence_number(1), kills(), damage(), 
+                hitpoints(), color(0)
+                
+  {}   
+
   char symbol;
   pair_t position;
   int32_t speed;
@@ -26,6 +35,11 @@ class character {
    * characters have been created by the game.                              */
   uint32_t sequence_number;
   uint32_t kills[num_kill_types];
+
+  //Attributes added for 1.08
+  dice damage;
+  uint32_t hitpoints;
+  std::vector<uint32_t> color;
 };
 
 class dungeon;
