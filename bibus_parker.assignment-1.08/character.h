@@ -18,7 +18,7 @@ class character {
  public:
  character() : symbol(0), position(), speed(), alive(),
                 sequence_number(1), kills(), damage(), 
-                hitpoints(), color(0)
+                hitpoints(), color(0), name(), description()
                 
   {}   
 
@@ -40,6 +40,8 @@ class character {
   dice damage;
   uint32_t hitpoints;
   std::vector<uint32_t> color;
+    // Attributes added for 1.08
+  std::string name, description;
 };
 
 class dungeon;

@@ -47,15 +47,11 @@ typedef uint32_t npc_characteristics_t;
 
 class npc : public character {
  public:
-  npc() : characteristics(0), have_seen_pc(0), 
-          name(), description()               
+  npc() : characteristics(0), have_seen_pc(0)             
   {}  
   npc_characteristics_t characteristics;
   uint32_t have_seen_pc;
   pair_t pc_last_known_position;
-
-  // Attributes added for 1.08
-  std::string name, description;
 };
 
 void gen_monsters(dungeon *d);

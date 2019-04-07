@@ -1,6 +1,18 @@
+Got Monsters
 Got Objects
-The One And Only
-Sting
-the Heart of the Ocean
-the cloak of invisibility
-the Aegis
+MONSTER: David Bowie : p
+MONSTER: Donald Trump : D
+MONSTER: Rory Gilmore : p
+MONSTER: Casper the Friendly Ghost : G
+MONSTER: Rory Gilmore : p
+NOT PASSED: 89
+MONSTER: SpongeBob SquarePants : S
+MONSTER: Slimer : G
+ITEM: The One And Only
+ITEM: Mjolnir
+ITEM: the Moon Stick
+ITEM: the Heart of the Ocean
+MONSTER: Rory Gilmore : p
+MONSTER: Slimer : G
+MONSTER: Donald Trump : D
+ITEM: Sting

@@ -16,119 +16,128 @@
 #include "character.h"
 #include "utils.h"
 
-#define MONSTER_FILE_SEMANTIC          "RLG327 MONSTER DESCRIPTION"
-#define MONSTER_FILE_VERSION           1U
+#define MONSTER_FILE_SEMANTIC "RLG327 MONSTER DESCRIPTION"
+#define MONSTER_FILE_VERSION 1U
 #define NUM_MONSTER_DESCRIPTION_FIELDS 9
-#define OBJECT_FILE_SEMANTIC           "RLG327 OBJECT DESCRIPTION"
-#define OBJECT_FILE_VERSION            1U
-#define NUM_OBJECT_DESCRIPTION_FIELDS  14
+#define OBJECT_FILE_SEMANTIC "RLG327 OBJECT DESCRIPTION"
+#define OBJECT_FILE_VERSION 1U
+#define NUM_OBJECT_DESCRIPTION_FIELDS 14
 
-static const struct {
+static const struct
+{
   const char *name;
   const uint32_t value;
 } abilities_lookup[] = {
-  /* There are only 32 bits available.  So far we're only using five *
+    /* There are only 32 bits available.  So far we're only using five *
    * of them (but even if we were using all 32, that's a very small  *
    * number), so it's much more efficient to do a linear search      *
    * rather than a binary search.  Zeros on the end are sentinals to *
    * stop the search.  Two notes: 1) Performance isn't a big deal    *
    * here, since this is initialization, not gameplay; and           *
    * 2) Alphabetizing these just because.                            */
-  { "BOSS",    NPC_BOSS        },
-  { "DESTROY", NPC_DESTROY_OBJ },
-  { "ERRATIC", NPC_ERRATIC     },
-  { "PASS",    NPC_PASS_WALL   },
-  { "PICKUP",  NPC_PICKUP_OBJ  },
-  { "RRTY",    0               },
-  { "SMART",   NPC_SMART       },
-  { "TELE",    NPC_TELEPATH    },
-  { "TUNNEL",  NPC_TUNNEL      },
-  { "UNIQ",    NPC_UNIQ        },
-  { 0,         0               }
-};
+    {"BOSS", NPC_BOSS},
+    {"DESTROY", NPC_DESTROY_OBJ},
+    {"ERRATIC", NPC_ERRATIC},
+    {"PASS", NPC_PASS_WALL},
+    {"PICKUP", NPC_PICKUP_OBJ},
+    {"RRTY", 0},
+    {"SMART", NPC_SMART},
+    {"TELE", NPC_TELEPATH},
+    {"TUNNEL", NPC_TUNNEL},
+    {"UNIQ", NPC_UNIQ},
+    {0, 0}};
 
-#define color_lu_entry(color) { #color, COLOR_##color }
-static const struct {
+#define color_lu_entry(color) \
+  {                           \
+#color, COLOR_##color     \
+  }
+static const struct
+{
   const char *name;
   const uint32_t value;
 } colors_lookup[] = {
-  /* Same deal here as above in abilities_lookup definition. */
-  /* We can use this convenient macro here, but we can't use a *
+    /* Same deal here as above in abilities_lookup definition. */
+    /* We can use this convenient macro here, but we can't use a *
    * similar macro above because of PASS and TELE.             */
-  /* color_lu_entry(BLACK), Can't display COLOR_BLACK */
-  "BLACK", COLOR_WHITE,
-  color_lu_entry(BLUE),
-  color_lu_entry(CYAN),
-  color_lu_entry(GREEN),
-  color_lu_entry(MAGENTA),
-  color_lu_entry(RED),
-  color_lu_entry(WHITE),
-  color_lu_entry(YELLOW),
-  { 0, 0 }
-};
+    /* color_lu_entry(BLACK), Can't display COLOR_BLACK */
+    "BLACK",
+    COLOR_WHITE,
+    color_lu_entry(BLUE),
+    color_lu_entry(CYAN),
+    color_lu_entry(GREEN),
+    color_lu_entry(MAGENTA),
+    color_lu_entry(RED),
+    color_lu_entry(WHITE),
+    color_lu_entry(YELLOW),
+    {0, 0}};
 
-#define type_lu_entry(type) { #type, objtype_##type }
-static const struct {
+#define type_lu_entry(type) \
+  {                         \
+#type, objtype_##type   \
+  }
+static const struct
+{
   const char *name;
   const object_type_t value;
 } types_lookup[] = {
-  type_lu_entry(WEAPON),
-  type_lu_entry(OFFHAND),
-  type_lu_entry(RANGED),
-  type_lu_entry(LIGHT),
-  type_lu_entry(ARMOR),
-  type_lu_entry(HELMET),
-  type_lu_entry(CLOAK),
-  type_lu_entry(GLOVES),
-  type_lu_entry(BOOTS),
-  type_lu_entry(AMULET),
-  type_lu_entry(RING),
-  type_lu_entry(SCROLL),
-  type_lu_entry(BOOK),
-  type_lu_entry(FLASK),
-  type_lu_entry(GOLD),
-  type_lu_entry(AMMUNITION),
-  type_lu_entry(FOOD),
-  type_lu_entry(WAND),
-  type_lu_entry(CONTAINER),
-  { 0, objtype_no_type }
-};
+    type_lu_entry(WEAPON),
+    type_lu_entry(OFFHAND),
+    type_lu_entry(RANGED),
+    type_lu_entry(LIGHT),
+    type_lu_entry(ARMOR),
+    type_lu_entry(HELMET),
+    type_lu_entry(CLOAK),
+    type_lu_entry(GLOVES),
+    type_lu_entry(BOOTS),
+    type_lu_entry(AMULET),
+    type_lu_entry(RING),
+    type_lu_entry(SCROLL),
+    type_lu_entry(BOOK),
+    type_lu_entry(FLASK),
+    type_lu_entry(GOLD),
+    type_lu_entry(AMMUNITION),
+    type_lu_entry(FOOD),
+    type_lu_entry(WAND),
+    type_lu_entry(CONTAINER),
+    {0, objtype_no_type}};
 
 extern const char object_symbol[] = {
-  '*', /* objtype_no_type */
-  '|', /* objtype_WEAPON */
-  ')', /* objtype_OFFHAND */
-  '}', /* objtype_RANGED */
-  '~', /* objtype_LIGHT */
-  '[', /* objtype_ARMOR */
-  ']', /* objtype_HELMET */
-  '(', /* objtype_CLOAK */
-  '{', /* objtype_GLOVES */
-  '\\', /* objtype_BOOTS */
-  '"', /* objtype_AMULET */
-  '=', /* objtype_RING */
-  '`', /* objtype_SCROLL */
-  '?', /* objtype_BOOK */
-  '!', /* objtype_FLASK */
-  '$', /* objtype_GOLD */
-  '/', /* objtype_AMMUNITION */
-  ',', /* objtype_FOOD */
-  '-', /* objtype_WAND */
-  '%', /* objtype_CONTAINER */
+    '*',  /* objtype_no_type */
+    '|',  /* objtype_WEAPON */
+    ')',  /* objtype_OFFHAND */
+    '}',  /* objtype_RANGED */
+    '~',  /* objtype_LIGHT */
+    '[',  /* objtype_ARMOR */
+    ']',  /* objtype_HELMET */
+    '(',  /* objtype_CLOAK */
+    '{',  /* objtype_GLOVES */
+    '\\', /* objtype_BOOTS */
+    '"',  /* objtype_AMULET */
+    '=',  /* objtype_RING */
+    '`',  /* objtype_SCROLL */
+    '?',  /* objtype_BOOK */
+    '!',  /* objtype_FLASK */
+    '$',  /* objtype_GOLD */
+    '/',  /* objtype_AMMUNITION */
+    ',',  /* objtype_FOOD */
+    '-',  /* objtype_WAND */
+    '%',  /* objtype_CONTAINER */
 };
 
 static inline void eat_whitespace(std::ifstream &f)
 {
-  while (isspace(f.peek())) {
+  while (isspace(f.peek()))
+  {
     f.get();
-  }  
+  }
 }
 
 static inline void eat_blankspace(std::ifstream &f)
 {
-  while (isblank(f.peek())) {
+  while (isblank(f.peek()))
+  {
     f.get();
-  }  
+  }
 }
 
 static uint32_t parse_name(std::ifstream &f,
@@ -142,7 +151,8 @@ static uint32_t parse_name(std::ifstream &f,
 
   eat_blankspace(f);
 
-  if (f.peek() == '\n') {
+  if (f.peek() == '\n')
+  {
     return 1;
   }
 
@@ -168,14 +178,16 @@ static uint32_t parse_monster_symb(std::ifstream &f,
 {
   eat_blankspace(f);
 
-  if (f.peek() == '\n') {
+  if (f.peek() == '\n')
+  {
     return 1;
   }
 
   *symb = f.get();
 
   eat_blankspace(f);
-  if (f.peek() != '\n') {
+  if (f.peek() != '\n')
+  {
     return 1;
   }
 
@@ -190,13 +202,15 @@ static uint32_t parse_integer(std::ifstream &f,
 {
   eat_blankspace(f);
 
-  if (f.peek() == '\n') {
+  if (f.peek() == '\n')
+  {
     return 1;
   }
 
   f >> *lookahead;
 
-  if (sscanf(lookahead->c_str(), "%d", integer) != 1) {
+  if (sscanf(lookahead->c_str(), "%d", integer) != 1)
+  {
     return 1;
   }
 
@@ -222,25 +236,30 @@ static uint32_t parse_color(std::ifstream &f,
 
   eat_blankspace(f);
 
-  if (f.peek() == '\n') {
+  if (f.peek() == '\n')
+  {
     return 1;
   }
 
   f >> *lookahead;
 
-  for (i = 0; colors_lookup[i].name; i++) {
-    if (*lookahead == colors_lookup[i].name) {
+  for (i = 0; colors_lookup[i].name; i++)
+  {
+    if (*lookahead == colors_lookup[i].name)
+    {
       *color = colors_lookup[i].value;
       break;
     }
   }
 
-  if (!colors_lookup[i].name) {
+  if (!colors_lookup[i].name)
+  {
     return 1;
   }
 
   eat_blankspace(f);
-  if (f.peek() != '\n') {
+  if (f.peek() != '\n')
+  {
     return 1;
   }
 
@@ -260,21 +279,26 @@ static uint32_t parse_monster_color(std::ifstream &f,
 
   eat_blankspace(f);
 
-  if (f.peek() == '\n') {
+  if (f.peek() == '\n')
+  {
     return 1;
   }
 
-  do {
+  do
+  {
     f >> *lookahead;
 
-    for (i = 0; colors_lookup[i].name; i++) {
-      if (*lookahead == colors_lookup[i].name) {
+    for (i = 0; colors_lookup[i].name; i++)
+    {
+      if (*lookahead == colors_lookup[i].name)
+      {
         c = colors_lookup[i].value;
         break;
       }
     }
 
-    if (!colors_lookup[i].name) {
+    if (!colors_lookup[i].name)
+    {
       return 1;
     }
 
@@ -296,21 +320,25 @@ static uint32_t parse_desc(std::ifstream &f,
    * as the keyword, so we want to eat the newline, too.    */
   eat_blankspace(f);
 
-  if (f.peek() != '\n') {
+  if (f.peek() != '\n')
+  {
     return 1;
   }
 
   f.get();
 
-  while (f.peek() != EOF) {
+  while (f.peek() != EOF)
+  {
     getline(f, *lookahead);
-    if (lookahead->length() > 77) {
+    if (lookahead->length() > 77)
+    {
       return 1;
     }
 
     lookahead->push_back('\n');
 
-    if (*lookahead == ".\n") {
+    if (*lookahead == ".\n")
+    {
       break;
     }
 
@@ -320,7 +348,8 @@ static uint32_t parse_desc(std::ifstream &f,
   /* Strip off the trailing newline */
   desc->erase(desc->length() - 1);
 
-  if (*lookahead != ".\n") {
+  if (*lookahead != ".\n")
+  {
     return 1;
   }
 
@@ -349,13 +378,15 @@ static uint32_t parse_dice(std::ifstream &f,
 
   eat_blankspace(f);
 
-  if (f.peek() == '\n') {
+  if (f.peek() == '\n')
+  {
     return 1;
   }
 
   f >> *lookahead;
 
-  if (sscanf(lookahead->c_str(), "%d+%ud%u", &base, &number, &sides) != 3) {
+  if (sscanf(lookahead->c_str(), "%d+%ud%u", &base, &number, &sides) != 3)
+  {
     return 1;
   }
 
@@ -380,22 +411,27 @@ static uint32_t parse_monster_abil(std::ifstream &f,
 
   eat_blankspace(f);
 
-  if (f.peek() == '\n') {
+  if (f.peek() == '\n')
+  {
     return 1;
   }
 
   /* Will not lead to error if an ability is listed multiple times. */
-  while (f.peek() != '\n') {
+  while (f.peek() != '\n')
+  {
     f >> *lookahead;
 
-    for (i = 0; abilities_lookup[i].name; i++) {
-      if (*lookahead == abilities_lookup[i].name) {
+    for (i = 0; abilities_lookup[i].name; i++)
+    {
+      if (*lookahead == abilities_lookup[i].name)
+      {
         *abil |= abilities_lookup[i].value;
         break;
       }
     }
 
-    if (!abilities_lookup[i].name) {
+    if (!abilities_lookup[i].name)
+    {
       return 1;
     }
 
@@ -413,7 +449,7 @@ static uint32_t parse_monster_description(std::ifstream &f,
 {
   std::string s;
   bool read_name, read_symb, read_color, read_desc,
-       read_speed, read_dam, read_hp, read_abil, read_rrty;
+      read_speed, read_dam, read_hp, read_abil, read_rrty;
   std::string name, desc;
   char symb;
   uint32_t abil;
@@ -423,102 +459,134 @@ static uint32_t parse_monster_description(std::ifstream &f,
   int count;
   uint32_t rrty;
 
-  read_name = read_symb = read_color = read_desc = read_speed
-            = read_dam = read_hp = read_abil = read_rrty = false;
+  read_name = read_symb = read_color = read_desc = read_speed = read_dam = read_hp = read_abil = read_rrty = false;
 
-  if (*lookahead != "BEGIN") {
+  if (*lookahead != "BEGIN")
+  {
     std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
               << "Parse error in monster description.\n"
               << "Discarding monster." << std::endl;
-    do {
+    do
+    {
       f >> *lookahead;
     } while (*lookahead != "BEGIN" && f.peek() != EOF);
   }
-  if (f.peek() == EOF) {
+  if (f.peek() == EOF)
+  {
     return 1;
   }
   f >> *lookahead;
-  if (*lookahead != "MONSTER") {
+  if (*lookahead != "MONSTER")
+  {
     return 1;
   }
 
   for (f >> *lookahead, count = 0;
        count < NUM_MONSTER_DESCRIPTION_FIELDS;
-       count++) {
+       count++)
+  {
     /* This could definately be more concise. */
-    if        (*lookahead == "NAME")  {
-      if (read_name || parse_monster_name(f, lookahead, &name)) {
+    if (*lookahead == "NAME")
+    {
+      if (read_name || parse_monster_name(f, lookahead, &name))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster name.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
       read_name = true;
-    } else if (*lookahead == "DESC")  {
-      if (read_desc || parse_monster_desc(f, lookahead, &desc)) {
+    }
+    else if (*lookahead == "DESC")
+    {
+      if (read_desc || parse_monster_desc(f, lookahead, &desc))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster description.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
       read_desc = true;
-    } else if (*lookahead == "SYMB")  {
-      if (read_symb || parse_monster_symb(f, lookahead, &symb)) {
+    }
+    else if (*lookahead == "SYMB")
+    {
+      if (read_symb || parse_monster_symb(f, lookahead, &symb))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster symbol.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
       read_symb = true;
-    } else if (*lookahead == "COLOR") {
-      if (read_color || parse_monster_color(f, lookahead, &color)) {
+    }
+    else if (*lookahead == "COLOR")
+    {
+      if (read_color || parse_monster_color(f, lookahead, &color))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster color.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
       read_color = true;
-    } else if (*lookahead == "SPEED") {
-      if (read_speed || parse_monster_speed(f, lookahead, &speed)) {
+    }
+    else if (*lookahead == "SPEED")
+    {
+      if (read_speed || parse_monster_speed(f, lookahead, &speed))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster speed.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
       read_speed = true;
-    } else if (*lookahead == "ABIL")  {
-      if (read_abil || parse_monster_abil(f, lookahead, &abil)) {
+    }
+    else if (*lookahead == "ABIL")
+    {
+      if (read_abil || parse_monster_abil(f, lookahead, &abil))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster abilities.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
       read_abil = true;
-    } else if (*lookahead == "HP")    {
-      if (read_hp || parse_monster_hp(f, lookahead, &hp)) {
+    }
+    else if (*lookahead == "HP")
+    {
+      if (read_hp || parse_monster_hp(f, lookahead, &hp))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster hitpoints.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
       read_hp = true;
-    } else if (*lookahead == "DAM")   {
-      if (read_dam || parse_monster_dam(f, lookahead, &dam)) {
+    }
+    else if (*lookahead == "DAM")
+    {
+      if (read_dam || parse_monster_dam(f, lookahead, &dam))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster damage.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
       read_dam = true;
-    } else if (*lookahead == "RRTY")   {
-      if (read_rrty || parse_monster_rrty(f, lookahead, &rrty)) {
+    }
+    else if (*lookahead == "RRTY")
+    {
+      if (read_rrty || parse_monster_rrty(f, lookahead, &rrty))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in monster damage.\n"
                   << "Discarding monster." << std::endl;
         return 1;
       }
       read_rrty = true;
-    } else                           {
+    }
+    else
+    {
       std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                 << "Parse error in monster description.\n"
                 << "Discarding monster." << std::endl;
@@ -526,12 +594,14 @@ static uint32_t parse_monster_description(std::ifstream &f,
     }
   }
 
-  if (*lookahead != "END") {
+  if (*lookahead != "END")
+  {
     return 1;
   }
 
   eat_blankspace(f);
-  if (f.peek() != '\n' && f.peek() != EOF) {
+  if (f.peek() != '\n' && f.peek() != EOF)
+  {
     return 1;
   }
   f >> *lookahead;
@@ -551,16 +621,20 @@ static uint32_t parse_object_name(std::ifstream &f,
 }
 
 static uint32_t parse_object_art(std::ifstream &f,
-                                  std::string *lookahead,
-                                  bool *art)
+                                 std::string *lookahead,
+                                 bool *art)
 {
   std::string s;
 
-  if (!parse_name(f, lookahead, &s)) {
-    if (s == std::string("TRUE")) {
+  if (!parse_name(f, lookahead, &s))
+  {
+    if (s == std::string("TRUE"))
+    {
       *art = true;
       return 0;
-    } else if (s == std::string("FALSE")) {
+    }
+    else if (s == std::string("FALSE"))
+    {
       *art = false;
       return 0;
     }
@@ -593,25 +667,30 @@ static uint32_t parse_object_type(std::ifstream &f,
 
   eat_blankspace(f);
 
-  if (f.peek() == '\n') {
+  if (f.peek() == '\n')
+  {
     return 1;
   }
 
   f >> *lookahead;
 
-  for (i = 0; types_lookup[i].name; i++) {
-    if (*lookahead == types_lookup[i].name) {
+  for (i = 0; types_lookup[i].name; i++)
+  {
+    if (*lookahead == types_lookup[i].name)
+    {
       *type = types_lookup[i].value;
       break;
     }
   }
 
-  if (*type == objtype_no_type) {
+  if (*type == objtype_no_type)
+  {
     return 1;
   }
 
   eat_blankspace(f);
-  if (f.peek() != '\n') {
+  if (f.peek() != '\n')
+  {
     return 1;
   }
 
@@ -642,9 +721,9 @@ static uint32_t parse_object_description(std::ifstream &f,
 {
   std::string s;
   bool read_name, read_desc, read_type, read_color,
-       read_hit, read_dam, read_dodge, read_def,
-       read_weight, read_speed, read_attr, read_val,
-       read_art, read_rrty;
+      read_hit, read_dam, read_dodge, read_def,
+      read_weight, read_speed, read_attr, read_val,
+      read_art, read_rrty;
   std::string name, desc;
   uint32_t color;
   object_type_t type;
@@ -655,143 +734,191 @@ static uint32_t parse_object_description(std::ifstream &f,
   int count;
 
   read_name = read_desc = read_type = read_color =
-              read_hit = read_dam = read_dodge = read_def =
-              read_weight = read_speed = read_attr = read_val =
+      read_hit = read_dam = read_dodge = read_def =
+          read_weight = read_speed = read_attr = read_val =
               read_art = read_rrty = false;
 
-  if (*lookahead != "BEGIN") {
+  if (*lookahead != "BEGIN")
+  {
     std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
               << "Parse error in object description.\n"
               << "Discarding object." << std::endl;
-    do {
+    do
+    {
       f >> *lookahead;
     } while (*lookahead != "BEGIN" && f.peek() != EOF);
   }
-  if (f.peek() == EOF) {
+  if (f.peek() == EOF)
+  {
     return 1;
   }
   f >> *lookahead;
-  if (*lookahead != "OBJECT") {
+  if (*lookahead != "OBJECT")
+  {
     return 1;
   }
 
   for (f >> *lookahead, count = 0;
        count < NUM_OBJECT_DESCRIPTION_FIELDS;
-       count++) {
+       count++)
+  {
     /* This could definately be more concise. */
-    if        (*lookahead == "NAME")  {
-      if (read_name || parse_object_name(f, lookahead, &name)) {
+    if (*lookahead == "NAME")
+    {
+      if (read_name || parse_object_name(f, lookahead, &name))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object name.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_name = true;
-    } else if (*lookahead == "DESC")  {
-      if (read_desc || parse_object_desc(f, lookahead, &desc)) {
+    }
+    else if (*lookahead == "DESC")
+    {
+      if (read_desc || parse_object_desc(f, lookahead, &desc))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object description.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_desc = true;
-    } else if (*lookahead == "TYPE")  {
-      if (read_type || parse_object_type(f, lookahead, &type)) {
+    }
+    else if (*lookahead == "TYPE")
+    {
+      if (read_type || parse_object_type(f, lookahead, &type))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object type.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_type = true;
-    } else if (*lookahead == "COLOR") {
-      if (read_color || parse_object_color(f, lookahead, &color)) {
+    }
+    else if (*lookahead == "COLOR")
+    {
+      if (read_color || parse_object_color(f, lookahead, &color))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object color.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_color = true;
-    } else if (*lookahead == "HIT")   {
-      if (read_hit || parse_object_hit(f, lookahead, &hit)) {
+    }
+    else if (*lookahead == "HIT")
+    {
+      if (read_hit || parse_object_hit(f, lookahead, &hit))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object hit bonux.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_hit = true;
-    } else if (*lookahead == "DAM")   {
-      if (read_dam || parse_object_dam(f, lookahead, &dam)) {
+    }
+    else if (*lookahead == "DAM")
+    {
+      if (read_dam || parse_object_dam(f, lookahead, &dam))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object damage bonus.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_dam = true;
-    } else if (*lookahead == "DODGE")   {
-      if (read_dodge || parse_object_dodge(f, lookahead, &dodge)) {
+    }
+    else if (*lookahead == "DODGE")
+    {
+      if (read_dodge || parse_object_dodge(f, lookahead, &dodge))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object dodge bonus.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_dodge = true;
-    } else if (*lookahead == "DEF")   {
-      if (read_def || parse_object_def(f, lookahead, &def)) {
+    }
+    else if (*lookahead == "DEF")
+    {
+      if (read_def || parse_object_def(f, lookahead, &def))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object defence bonus.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_def = true;
-    } else if (*lookahead == "WEIGHT")   {
-      if (read_weight || parse_object_weight(f, lookahead, &weight)) {
+    }
+    else if (*lookahead == "WEIGHT")
+    {
+      if (read_weight || parse_object_weight(f, lookahead, &weight))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object weight.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_weight = true;
-    } else if (*lookahead == "SPEED") {
-      if (read_speed || parse_object_speed(f, lookahead, &speed)) {
+    }
+    else if (*lookahead == "SPEED")
+    {
+      if (read_speed || parse_object_speed(f, lookahead, &speed))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object speed bonus.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_speed = true;
-    } else if (*lookahead == "ATTR")  {
-      if (read_attr || parse_object_attr(f, lookahead, &attr)) {
+    }
+    else if (*lookahead == "ATTR")
+    {
+      if (read_attr || parse_object_attr(f, lookahead, &attr))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object special attribute bonus.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_attr = true;
-    } else if (*lookahead == "VAL")    {
-      if (read_val || parse_object_val(f, lookahead, &val)) {
+    }
+    else if (*lookahead == "VAL")
+    {
+      if (read_val || parse_object_val(f, lookahead, &val))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object value.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_val = true;
-    } else if (*lookahead == "ART")    {
-      if (read_art || parse_object_art(f, lookahead, &art)) {
+    }
+    else if (*lookahead == "ART")
+    {
+      if (read_art || parse_object_art(f, lookahead, &art))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object value.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_art = true;
-    } else if (*lookahead == "RRTY")    {
-      if (read_rrty || parse_object_rrty(f, lookahead, &rrty)) {
+    }
+    else if (*lookahead == "RRTY")
+    {
+      if (read_rrty || parse_object_rrty(f, lookahead, &rrty))
+      {
         std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                   << "Parse error in object value.\n"
                   << "Discarding object." << std::endl;
         return 1;
       }
       read_rrty = true;
-    } else                           {
+    }
+    else
+    {
       std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
                 << "Parse error in object description.\n"
                 << "Discarding object." << std::endl;
@@ -799,12 +926,14 @@ static uint32_t parse_object_description(std::ifstream &f,
     }
   }
 
-  if (*lookahead != "END") {
+  if (*lookahead != "END")
+  {
     return 1;
   }
 
   eat_blankspace(f);
-  if (f.peek() != '\n' && f.peek() != EOF) {
+  if (f.peek() != '\n' && f.peek() != EOF)
+  {
     return 1;
   }
   f >> *lookahead;
@@ -825,12 +954,13 @@ static uint32_t parse_monster_descriptions(std::ifstream &f,
   std::string lookahead;
 
   expected << MONSTER_FILE_SEMANTIC << " " << MONSTER_FILE_VERSION;
-
+  std::cerr << "Got Monsters" << std::endl;
   eat_whitespace(f);
 
   getline(f, s);
 
-  if (s != expected.str()) {
+  if (s != expected.str())
+  {
     std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
               << "Parse error in monster description file.\nExpected: \""
               << expected.str() << "\"\nRead:     \"" << s << "\"\n\nAborting."
@@ -839,7 +969,8 @@ static uint32_t parse_monster_descriptions(std::ifstream &f,
   }
 
   f >> lookahead;
-  do {
+  do
+  {
     parse_monster_description(f, &lookahead, v);
   } while (f.peek() != EOF);
 
@@ -860,7 +991,8 @@ static uint32_t parse_object_descriptions(std::ifstream &f,
 
   getline(f, s);
 
-  if (s != expected.str()) {
+  if (s != expected.str())
+  {
     std::cerr << "Discovered at " << __FILE__ << ":" << __LINE__ << "\n"
               << "Parse error in object description file.\nExpected: \""
               << expected.str() << "\"\nRead:     \"" << s << "\"\n\nAborting."
@@ -869,7 +1001,8 @@ static uint32_t parse_object_descriptions(std::ifstream &f,
   }
 
   f >> lookahead;
-  do {
+  do
+  {
     parse_object_description(f, &lookahead, v);
   } while (f.peek() != EOF);
 
@@ -885,28 +1018,32 @@ uint32_t parse_descriptions(dungeon_t *d)
   retval = 0;
 
   file = getenv("HOME");
-  if (file.length() == 0) {
+  if (file.length() == 0)
+  {
     file = ".";
   }
   file += std::string("/") + SAVE_DIR + "/" + MONSTER_DESC_FILE;
 
   f.open(file.c_str());
 
-  if (parse_monster_descriptions(f, d, &d->monster_descriptions)) {
+  if (parse_monster_descriptions(f, d, &d->monster_descriptions))
+  {
     retval = 1;
   }
 
   f.close();
 
   file = getenv("HOME");
-  if (file.length() == 0) {
+  if (file.length() == 0)
+  {
     file = ".";
   }
   file += std::string("/") + SAVE_DIR + "/" + OBJECT_DESC_FILE;
 
   f.open(file.c_str());
 
-  if (parse_object_descriptions(f, d, &d->object_descriptions)) {
+  if (parse_object_descriptions(f, d, &d->object_descriptions))
+  {
     retval = 1;
   }
 
@@ -922,12 +1059,13 @@ uint32_t print_descriptions(dungeon_t *d)
   std::vector<object_description> &o = d->object_descriptions;
   std::vector<object_description>::iterator oi;
 
-  for (mi = m.begin(); mi != m.end(); mi++) {
+  for (mi = m.begin(); mi != m.end(); mi++)
+  {
     std::cout << *mi << std::endl;
   }
 
-
-  for (oi = o.begin(); oi != o.end(); oi++) {
+  for (oi = o.begin(); oi != o.end(); oi++)
+  {
     std::cout << *oi << std::endl;
   }
 
@@ -955,7 +1093,7 @@ void monster_description::set(const std::string &name,
   this->rarity = rrty;
 }
 
-std::ostream &monster_description::print(std::ostream& o)
+std::ostream &monster_description::print(std::ostream &o)
 {
   uint32_t i;
   uint32_t num_abilities;
@@ -964,9 +1102,12 @@ std::ostream &monster_description::print(std::ostream& o)
   o << name << std::endl;
   o << description << std::endl;
   o << symbol << std::endl;
-  for (ci = color.begin(); ci != color.end(); ci++) {
-    for (i = 0; colors_lookup[i].name; i++) {
-      if (*ci == colors_lookup[i].value) {
+  for (ci = color.begin(); ci != color.end(); ci++)
+  {
+    for (i = 0; colors_lookup[i].name; i++)
+    {
+      if (*ci == colors_lookup[i].value)
+      {
         o << colors_lookup[i].name << " ";
         break;
       }
@@ -974,19 +1115,24 @@ std::ostream &monster_description::print(std::ostream& o)
   }
   o << std::endl;
   o << speed << std::endl;
-  for (i = num_abilities = 0; abilities_lookup[i].name; i++) {
-    if (abilities & abilities_lookup[i].value) {
+  for (i = num_abilities = 0; abilities_lookup[i].name; i++)
+  {
+    if (abilities & abilities_lookup[i].value)
+    {
       num_abilities++;
       o << abilities_lookup[i].name << " ";
     }
   }
 
-  if (!num_abilities) {
+  if (!num_abilities)
+  {
     o << "Monster failing to live up to full potential";
   }
 
-  return o << std::endl << hitpoints << std::endl
-           << damage << std::endl << rarity << std::endl;
+  return o << std::endl
+           << hitpoints << std::endl
+           << damage << std::endl
+           << rarity << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &o, monster_description &m)
@@ -1002,18 +1148,25 @@ uint32_t destroy_descriptions(dungeon_t *d)
   return 0;
 }
 
-void get_item(dungeon_t *d, item* item_hold){
+void get_item(dungeon_t *d, item *item_hold)
+{
   bool got_item = false;
   object_description item_desc;
   int item_to_get;
-  while(!got_item){
+  while (!got_item)
+  {
     item_to_get = rand_range(0, d->object_descriptions.size() - 1);
     item_desc = d->object_descriptions[item_to_get];
-    if(item_desc.is_unspawnable()){
+    if (item_desc.is_unspawnable())
+    {
       got_item = false;
-    }else if(item_desc.get_rarity() <= (uint32_t) rand_range(0, 99)){
+    }
+    else if (item_desc.get_rarity() <= (uint32_t)rand_range(0, 99))
+    {
       got_item = false;
-    }else{
+    }
+    else
+    {
       item_hold->name = item_desc.get_name();
       item_hold->description = item_desc.get_description();
       item_hold->type = item_desc.get_type();
@@ -1027,29 +1180,32 @@ void get_item(dungeon_t *d, item* item_hold){
       item_hold->attribute = item_desc.get_attribute().roll();
       item_hold->value = item_desc.get_value().roll();
       item_hold->symbol = get_item_symbol(item_desc.get_type());
-      if(item_desc.is_artifact()){
+      if (item_desc.is_artifact())
+      {
         item_desc.set_is_unspawnable(true);
         d->object_descriptions.erase(d->object_descriptions.begin() + item_to_get);
-        std::cerr << item_desc.get_name() << std::endl;
+        std::cerr << "ITEM: " << item_desc.get_name() << std::endl;
       }
       got_item = true;
     }
   }
 }
 
-
-void get_npc(dungeon_t *d, npc* npc_hold){
+void get_npc(dungeon_t *d, npc *npc_hold)
+{
   bool got_npc = false;
   monster_description npc_desc;
-  int mon_to_get;
-  while(!got_npc){
+  int mon_to_get, counter_x, counter_y;
+  while (!got_npc)
+  {
     mon_to_get = rand_range(0, d->monster_descriptions.size() - 1);
     npc_desc = d->monster_descriptions[mon_to_get];
-    if(npc_desc.unspawnable){
+    if (npc_desc.unspawnable || npc_desc.rarity <= (uint32_t)rand_range(0, 99))
+    {
       got_npc = false;
-    }else if(npc_desc.rarity <= (uint32_t) rand_range(0, 99)){
-      got_npc = false;
-    }else{
+    }
+    else
+    {
       npc_hold->name = npc_desc.name;
       npc_hold->description = npc_desc.description;
       npc_hold->color = npc_desc.color;
@@ -1057,56 +1213,73 @@ void get_npc(dungeon_t *d, npc* npc_hold){
       npc_hold->characteristics = npc_desc.abilities;
       npc_hold->hitpoints = npc_desc.hitpoints.roll();
       npc_hold->damage = npc_desc.damage;
-      npc_hold->symbol = npc_desc.symbol;      
+      npc_hold->symbol = npc_desc.symbol;
       got_npc = true;
+    }
+    if (npc_hold->characteristics & NPC_UNIQ)
+    {
+      std::cerr << "MONSTER: " << npc_desc.name << " : " << npc_desc.symbol << std::endl;
+      for (counter_y = 0; counter_y < DUNGEON_Y; counter_y++)
+      {
+        for (counter_x = 0; counter_x < DUNGEON_X; counter_x++)
+        {
+          if (d->character_map[counter_y][counter_x] != NULL && d->character_map[counter_y][counter_x]->name == npc_hold->name)
+          {
+            got_npc = false;
+            std::cerr << "NOT PASSED: " << std::hex << npc_desc.abilities << std::endl;
+          }
+        }
+      }
     }
   }
 }
 
-char get_item_symbol(object_type_t obj_type){
-  switch(obj_type){
-    case objtype_no_type:
-      return '*';
-    case objtype_WEAPON:
-      return '|';
-    case objtype_OFFHAND:
-      return ')';
-    case objtype_RANGED:
-      return '}';
-    case objtype_ARMOR:
-      return '[';
-    case objtype_HELMET:
-      return ']';
-    case objtype_CLOAK:
-      return '(';
-    case objtype_GLOVES:
-      return '{';
-    case objtype_BOOTS:
-      return '\\';
-    case objtype_RING:
-      return '=';
-    case objtype_AMULET:
-      return '\"';
-    case objtype_LIGHT:
-      return '_';
-    case objtype_SCROLL:
-      return '~';
-    case objtype_BOOK:
-      return '?';
-    case objtype_FLASK:
-      return '!';
-    case objtype_GOLD:
-      return '$';
-    case objtype_AMMUNITION:
-      return '/';
-    case objtype_FOOD:
-      return ',';
-    case objtype_WAND:
-      return '-';
-    case objtype_CONTAINER:
-      return '%';  
-    default:
-      return '*';
+char get_item_symbol(object_type_t obj_type)
+{
+  switch (obj_type)
+  {
+  case objtype_no_type:
+    return '*';
+  case objtype_WEAPON:
+    return '|';
+  case objtype_OFFHAND:
+    return ')';
+  case objtype_RANGED:
+    return '}';
+  case objtype_ARMOR:
+    return '[';
+  case objtype_HELMET:
+    return ']';
+  case objtype_CLOAK:
+    return '(';
+  case objtype_GLOVES:
+    return '{';
+  case objtype_BOOTS:
+    return '\\';
+  case objtype_RING:
+    return '=';
+  case objtype_AMULET:
+    return '\"';
+  case objtype_LIGHT:
+    return '_';
+  case objtype_SCROLL:
+    return '~';
+  case objtype_BOOK:
+    return '?';
+  case objtype_FLASK:
+    return '!';
+  case objtype_GOLD:
+    return '$';
+  case objtype_AMMUNITION:
+    return '/';
+  case objtype_FOOD:
+    return ',';
+  case objtype_WAND:
+    return '-';
+  case objtype_CONTAINER:
+    return '%';
+  default:
+    return '*';
   }
 }
 
@@ -1147,23 +1320,34 @@ std::ostream &object_description::print(std::ostream &o)
 
   o << name << std::endl;
   o << description << std::endl;
-  for (i = 0; types_lookup[i].name; i++) {
-    if (type == types_lookup[i].value) {
+  for (i = 0; types_lookup[i].name; i++)
+  {
+    if (type == types_lookup[i].value)
+    {
       o << types_lookup[i].name << std::endl;
       break;
     }
   }
-  for (i = 0; colors_lookup[i].name; i++) {
-    if (color == colors_lookup[i].value) {
+  for (i = 0; colors_lookup[i].name; i++)
+  {
+    if (color == colors_lookup[i].value)
+    {
       o << colors_lookup[i].name << std::endl;
       break;
     }
   }
 
-return o << hit << std::endl << damage << std::endl << dodge << std::endl
-         << defence << std::endl << weight << std::endl << speed << std::endl
-         << attribute << std::endl << value << std::endl << artifact
-         << std::endl << rarity << std::endl;
+  return o << hit << std::endl
+           << damage << std::endl
+           << dodge << std::endl
+           << defence << std::endl
+           << weight << std::endl
+           << speed << std::endl
+           << attribute << std::endl
+           << value << std::endl
+           << artifact
+           << std::endl
+           << rarity << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &o, object_description &od)
