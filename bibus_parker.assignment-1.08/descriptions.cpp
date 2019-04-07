@@ -853,7 +853,7 @@ static uint32_t parse_object_descriptions(std::ifstream &f,
   std::string s;
   std::stringstream expected;
   std::string lookahead;
-
+  std::cerr << "Got Objects" << std::endl;
   expected << OBJECT_FILE_SEMANTIC << " " << OBJECT_FILE_VERSION;
 
   eat_whitespace(f);
@@ -1005,9 +1005,10 @@ uint32_t destroy_descriptions(dungeon_t *d)
 void get_item(dungeon_t *d, item* item_hold){
   bool got_item = false;
   object_description item_desc;
-
+  int item_to_get;
   while(!got_item){
-    item_desc = d->object_descriptions[rand_range(0, d->object_descriptions.size() - 1)];
+    item_to_get = rand_range(0, d->object_descriptions.size() - 1);
+    item_desc = d->object_descriptions[item_to_get];
     if(item_desc.is_unspawnable()){
       got_item = false;
     }else if(item_desc.get_rarity() <= (uint32_t) rand_range(0, 99)){
@@ -1026,6 +1027,11 @@ void get_item(dungeon_t *d, item* item_hold){
       item_hold->attribute = item_desc.get_attribute().roll();
       item_hold->value = item_desc.get_value().roll();
       item_hold->symbol = get_item_symbol(item_desc.get_type());
+      if(item_desc.is_artifact()){
+        item_desc.set_is_unspawnable(true);
+        d->object_descriptions.erase(d->object_descriptions.begin() + item_to_get);
+        std::cerr << item_desc.get_name() << std::endl;
+      }
       got_item = true;
     }
   }

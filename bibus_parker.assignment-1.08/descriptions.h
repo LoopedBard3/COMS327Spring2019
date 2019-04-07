@@ -98,7 +98,9 @@ class object_description {
   inline const dice &get_attribute() const { return attribute; }
   inline const dice &get_value() const { return value; }
   inline const uint32_t &get_rarity() const { return rarity; }
-  inline const bool &is_unspawnable() const { return unspawnable; }
+  inline const bool &is_artifact() const { return artifact; }
+  inline const bool &is_unspawnable() { return unspawnable; }
+  inline const bool &set_is_unspawnable(bool spawn) { return unspawnable = spawn; }
 };
 
 std::ostream &operator<<(std::ostream &o, monster_description &m);

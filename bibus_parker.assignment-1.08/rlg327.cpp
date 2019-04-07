@@ -214,6 +214,7 @@ int main(int argc, char *argv[])
 
   /* Ignoring PC position in saved dungeons.  Not a bug. */
   config_pc(&d);
+  parse_descriptions(&d);
   gen_monsters(&d);
   gen_items(&d);
 
@@ -266,6 +267,7 @@ int main(int argc, char *argv[])
   }
 
   delete_dungeon(&d);
+  destroy_descriptions(&d);
 
   return 0;
 }
