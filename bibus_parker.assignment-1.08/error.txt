@@ -1,18 +1,24 @@
 Got Monsters
 Got Objects
-MONSTER: David Bowie : p
-MONSTER: Donald Trump : D
-MONSTER: Rory Gilmore : p
-MONSTER: Casper the Friendly Ghost : G
-MONSTER: Rory Gilmore : p
-NOT PASSED: 89
-MONSTER: SpongeBob SquarePants : S
-MONSTER: Slimer : G
-ITEM: The One And Only
-ITEM: Mjolnir
+MONSTER: Bruce Willis : W
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+ITEM: Sting
 ITEM: the Moon Stick
 ITEM: the Heart of the Ocean
-MONSTER: Rory Gilmore : p
-MONSTER: Slimer : G
-MONSTER: Donald Trump : D
-ITEM: Sting
+ITEM: the Vorpal Blade
+Removing Check: Bruce Willis
+Comparing: Junior Barbarian : Bruce Willis
+Comparing: Bruce Willis : Bruce Willis
+Removed: Bruce Willis
+ITEM: Mjolnir
+ITEM: The One And Only
+ITEM: the Aegis
+ITEM: the Moon Tiara
+ITEM: the cloak of invisibility

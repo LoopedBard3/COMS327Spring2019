@@ -20,7 +20,8 @@ class character {
                 sequence_number(1), kills(), damage(), 
                 hitpoints(), color(0), name(), description()
                 
-  {}   
+  {}
+  virtual ~character() {}   
 
   char symbol;
   pair_t position;

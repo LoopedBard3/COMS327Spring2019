@@ -57,6 +57,9 @@ void do_combat(dungeon *d, character *atk, character *def)
     charpair(def->position) = NULL;
     
     if (def != d->PC) {
+      if(dynamic_cast<npc*>(def)->characteristics & NPC_UNIQ){
+        remove_monster(d, def);
+      }
       d->num_monsters--;
     } else {
       if ((part = rand() % (sizeof (organs) / sizeof (organs[0]))) < 26) {

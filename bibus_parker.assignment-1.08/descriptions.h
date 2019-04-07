@@ -105,5 +105,5 @@ class object_description {
 
 std::ostream &operator<<(std::ostream &o, monster_description &m);
 std::ostream &operator<<(std::ostream &o, object_description &od);
-
+void remove_monster(dungeon_t *d, character *ch);
 #endif
