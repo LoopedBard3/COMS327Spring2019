@@ -37,6 +37,7 @@
 #define hardnessxy(x, y) (d->hardness[y][x])
 #define charpair(pair) (d->character_map[pair[dim_y]][pair[dim_x]])
 #define charxy(x, y) (d->character_map[y][x])
+#define itemxy(x, y) (d->item_map[y][x])
 
 enum __attribute__ ((__packed__)) terrain_type {
   ter_debug,

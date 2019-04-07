@@ -1,0 +1,456 @@
+NUM ITEM: 15
+GEN ITEM
+[
+a prom dress
+20 : 9
+
+GEN ITEM
+\
+a pair of Prada dress sandals
+47 : 12
+
+GEN ITEM
+|
+Mjolnir
+23 : 9
+
+GEN ITEM
+=
+a ring of speed
+49 : 10
+
+GEN ITEM
+"
+the Heart of the Ocean
+48 : 11
+
+GEN ITEM
+|
+Mjolnir
+74 : 5
+
+GEN ITEM
+_
+a torch
+47 : 10
+
+GEN ITEM
+|
+Sting
+41 : 6
+
+GEN ITEM
+"
+the Heart of the Ocean
+13 : 7
+
+GEN ITEM
+|
+Mjolnir
+48 : 12
+
+GEN ITEM
+|
+a NERF(R) dagger
+58 : 2
+
+GEN ITEM
+\
+a pair of Prada dress sandals
+15 : 8
+
+GEN ITEM
+_
+a torch
+74 : 7
+
+GEN ITEM
+)
+the Aegis
+76 : 6
+
+GEN ITEM
+"
+the Heart of the Ocean
+22 : 10
+
+NUM ITEM: 15
+GEN ITEM
+{
+fingerless gloves
+36 : 5
+
+GEN ITEM
+]
+a chainmail coif
+34 : 17
+
+GEN ITEM
+|
+a NERF(R) dagger
+39 : 3
+
+GEN ITEM
+]
+a chainmail coif
+53 : 9
+
+GEN ITEM
+=
+a ring of damage
+36 : 17
+
+GEN ITEM
+[
+a prom dress
+20 : 8
+
+GEN ITEM
+|
+Sting
+61 : 7
+
+GEN ITEM
+|
+Sting
+23 : 12
+
+GEN ITEM
+=
+a ring of damage
+39 : 4
+
+GEN ITEM
+]
+the Moon Tiara
+36 : 6
+
+GEN ITEM
+|
+Sting
+17 : 8
+
+GEN ITEM
+{
+fingerless gloves
+22 : 15
+
+GEN ITEM
+=
+a ring of damage
+24 : 15
+
+GEN ITEM
+]
+a chainmail coif
+17 : 7
+
+GEN ITEM
+|
+Sting
+29 : 8
+
+NUM ITEM: 15
+GEN ITEM
+\
+a pair of Prada dress sandals
+26 : 15
+
+GEN ITEM
+|
+a NERF(R) dagger
+49 : 12
+
+GEN ITEM
+\
+a pair of Prada dress sandals
+4 : 14
+
+GEN ITEM
+|
+a NERF(R) dagger
+28 : 15
+
+GEN ITEM
+|
+a NERF(R) dagger
+41 : 5
+
+GEN ITEM
+"
+the Heart of the Ocean
+48 : 14
+
+GEN ITEM
+\
+a pair of Prada dress sandals
+71 : 7
+
+GEN ITEM
+|
+a NERF(R) dagger
+71 : 5
+
+GEN ITEM
+]
+a chainmail coif
+3 : 14
+
+GEN ITEM
+(
+the cloak of invisibility
+4 : 12
+
+GEN ITEM
+(
+the cloak of invisibility
+71 : 2
+
+GEN ITEM
+"
+the Heart of the Ocean
+26 : 14
+
+GEN ITEM
+|
+Mjolnir
+35 : 6
+
+GEN ITEM
+]
+a chainmail coif
+71 : 6
+
+GEN ITEM
+{
+fingerless gloves
+25 : 14
+
+NUM ITEM: 15
+GEN ITEM
+|
+Sting
+29 : 6
+
+GEN ITEM
+{
+fingerless gloves
+19 : 13
+
+GEN ITEM
+=
+a ring of speed
+36 : 11
+
+GEN ITEM
+)
+the Moon Stick
+21 : 13
+
+GEN ITEM
+=
+a ring of damage
+22 : 17
+
+GEN ITEM
+)
+the Aegis
+22 : 11
+
+GEN ITEM
+]
+the Moon Tiara
+23 : 9
+
+GEN ITEM
+]
+the Moon Tiara
+75 : 10
+
+GEN ITEM
+"
+the Heart of the Ocean
+21 : 16
+
+GEN ITEM
+\
+a pair of Prada dress sandals
+21 : 17
+
+GEN ITEM
+[
+a prom dress
+19 : 17
+
+GEN ITEM
+_
+a torch
+30 : 5
+
+GEN ITEM
+]
+a chainmail coif
+31 : 4
+
+GEN ITEM
+[
+a prom dress
+33 : 4
+
+GEN ITEM
+{
+fingerless gloves
+74 : 11
+
+NUM ITEM: 15
+GEN ITEM
+]
+the Moon Tiara
+31 : 10
+
+GEN ITEM
+_
+a torch
+33 : 11
+
+GEN ITEM
+]
+a chainmail coif
+20 : 15
+
+GEN ITEM
+\
+a pair of Prada dress sandals
+54 : 10
+
+GEN ITEM
+=
+a ring of damage
+19 : 17
+
+GEN ITEM
+{
+fingerless gloves
+41 : 15
+
+GEN ITEM
+"
+the Heart of the Ocean
+51 : 11
+
+GEN ITEM
+]
+a chainmail coif
+18 : 11
+
+GEN ITEM
+"
+the Heart of the Ocean
+8 : 13
+
+GEN ITEM
+_
+a torch
+20 : 17
+
+GEN ITEM
+_
+a torch
+49 : 10
+
+GEN ITEM
+{
+fingerless gloves
+42 : 8
+
+GEN ITEM
+=
+a ring of speed
+66 : 17
+
+GEN ITEM
+|
+a NERF(R) dagger
+50 : 2
+
+GEN ITEM
+]
+a chainmail coif
+51 : 5
+
+NUM ITEM: 15
+GEN ITEM
+]
+a chainmail coif
+66 : 7
+
+GEN ITEM
+|
+the Vorpal Blade
+58 : 7
+
+GEN ITEM
+)
+the Moon Stick
+8 : 7
+
+GEN ITEM
+{
+fingerless gloves
+45 : 3
+
+GEN ITEM
+]
+a chainmail coif
+67 : 7
+
+GEN ITEM
+|
+Sting
+5 : 6
+
+GEN ITEM
+\
+a pair of Prada dress sandals
+9 : 5
+
+GEN ITEM
+\
+a pair of Prada dress sandals
+44 : 4
+
+GEN ITEM
+=
+a ring of speed
+70 : 6
+
+GEN ITEM
+"
+the Heart of the Ocean
+7 : 6
+
+GEN ITEM
+|
+a NERF(R) dagger
+37 : 3
+
+GEN ITEM
+]
+a chainmail coif
+46 : 2
+
+GEN ITEM
+|
+Sting
+44 : 2
+
+GEN ITEM
+_
+a Wicked Lasers(R) Torch
+38 : 2
+
+GEN ITEM
+_
+a torch
+56 : 5
+

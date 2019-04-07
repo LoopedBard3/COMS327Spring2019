@@ -530,7 +530,8 @@ static int empty_dungeon(dungeon *d)
         hardnessxy(x, y) = 255;
       }
       charxy(x, y) = NULL;
-    }
+      itemxy(x, y) = NULL;
+    } 
   }
   d->is_new = 1;
 
@@ -1314,7 +1315,7 @@ void gen_items(dungeon *d)
       p[dim_x] = rand_range(d->rooms[room].position[dim_x],
                             (d->rooms[room].position[dim_x] +
                              d->rooms[room].size[dim_x] - 1));
-    } while (d->character_map[p[dim_y]][p[dim_x]]);
+    } while (d->item_map[p[dim_y]][p[dim_x]]);
     it->position[dim_y] = p[dim_y];
     it->position[dim_x] = p[dim_x];
     d->item_map[p[dim_y]][p[dim_x]] = it;

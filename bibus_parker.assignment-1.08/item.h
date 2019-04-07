@@ -41,4 +41,7 @@ class item {
   inline const char &get_symbol() const { return symbol; }
 };
 
+int16_t *item_get_pos(item *it);
+char item_get_symbol(const item *it);
+
 #endif

@@ -220,6 +220,13 @@ void io_display(dungeon *d)
        mvaddch(y + 1, x,
                 character_get_symbol(d->character_map[y][x]));
         visible_monsters++;
+      } else if (d->item_map[y][x] &&
+           can_see(d,
+                  character_get_pos(d->PC),
+                  item_get_pos(d->item_map[y][x]),
+                  1, 0)) {
+       mvaddch(y + 1, x,
+                  item_get_symbol(d->item_map[y][x]));
       } else {
         switch (pc_learned_terrain(d->PC, y, x)) {
         case ter_wall:
@@ -292,6 +299,8 @@ void io_display_no_fog(dungeon *d)
     for (x = 0; x < 80; x++) {
       if (d->character_map[y][x]) {
         mvaddch(y + 1, x, d->character_map[y][x]->symbol);
+      } else if (d->item_map[y][x]) {
+        mvaddch(y + 1, x, d->item_map[y][x]->symbol);
       } else {
         switch (mapxy(x, y)) {
         case ter_wall:
