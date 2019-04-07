@@ -60,8 +60,6 @@ void gen_monsters(dungeon *d)
     /*    m->npc->characteristics = 0xf;*/
     m->have_seen_pc = 0;
     m->kills[kill_direct] = m->kills[kill_avenged] = 0;
-
-    d->character_map[p[dim_y]][p[dim_x]] = m;
     heap_insert(&d->events, new_event(d, event_character_turn, m, 0));
   }
 }

@@ -4,6 +4,7 @@
 # include <stdint.h>
 # include <string>
 # include "dice.h"
+# include "dims.h"
 # include "object_type.h"
 
 class item {
@@ -13,11 +14,13 @@ class item {
   uint32_t color, hit, dodge, defence, weight, speed, attribute, value;
   dice damage;
   char symbol;
+  pair_t position;
  public:
   item() : name(), description(), type(objtype_no_type),
            color(0),  hit(),  dodge(),   
            defence(),  weight(), speed(),   
-           attribute(),  value(),  damage(), symbol()
+           attribute(),  value(),  damage(), symbol(),
+           position()
   {
   }
 
@@ -37,6 +40,5 @@ class item {
   inline const uint32_t &get_value() const { return value; }
   inline const char &get_symbol() const { return symbol; }
 };
-
 
 #endif

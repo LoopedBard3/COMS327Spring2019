@@ -23,6 +23,7 @@
 #define NPC_MIN_SPEED          5
 #define NPC_MAX_SPEED          20
 #define MAX_MONSTERS           15
+#define MAX_ITEMS              15
 #define SAVE_DIR               ".rlg327"
 #define DUNGEON_SAVE_FILE      "dungeon"
 #define DUNGEON_SAVE_SEMANTIC  "RLG327-" TERM
@@ -61,7 +62,7 @@ class dungeon {
  public:
   dungeon() : num_rooms(0), rooms(0), map{ter_wall}, hardness{0},
               pc_distance{0}, pc_tunnel{0}, character_map{0}, PC(0),
-              num_monsters(0), max_monsters(0), character_sequence_number(0),
+              num_monsters(0), max_monsters(0), num_items(0), max_spawn_items(0), character_sequence_number(0),
               time(0), is_new(0), quit(0), monster_descriptions(),
               object_descriptions() {}
   uint32_t num_rooms;
@@ -84,6 +85,8 @@ class dungeon {
   heap_t events;
   uint16_t num_monsters;
   uint16_t max_monsters;
+  uint16_t num_items;
+  uint16_t max_spawn_items;
   uint32_t character_sequence_number;
   /* Game time isn't strictly necessary.  It's implicit in the turn number *
    * of the most recent thing removed from the event queue; however,       *
@@ -107,5 +110,9 @@ int read_dungeon(dungeon *d, char *file);
 int read_pgm(dungeon *d, char *pgm);
 void render_distance_map(dungeon *d);
 void render_tunnel_distance_map(dungeon *d);
+
+//Added here to avoid include loop due to having an item array and needing the
+//Dungeon in the method.
+void gen_items(dungeon *d);
 
 #endif

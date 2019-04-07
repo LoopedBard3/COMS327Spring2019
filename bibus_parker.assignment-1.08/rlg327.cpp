@@ -95,6 +95,7 @@ int main(int argc, char *argv[])
   do_seed = 1;
   save_file = load_file = NULL;
   d.max_monsters = MAX_MONSTERS;
+  d.max_spawn_items = MAX_ITEMS;
   freopen( "error.txt", "w", stderr );
 
   /* The project spec requires '--load' and '--save'.  It's common  *

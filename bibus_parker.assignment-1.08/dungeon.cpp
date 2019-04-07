@@ -27,6 +27,12 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
+#define min(x, y) ({   \
+  typeof (x) _x = (x); \
+  typeof (y) _y = (y); \
+  _x < _y ? _x : _y;   \
+})
+
 /*
 static uint32_t in_room(dungeon *d, int16_t y, int16_t x)
 {
@@ -1274,4 +1280,43 @@ void new_dungeon(dungeon *d)
   d->character_map[d->PC->position[dim_y]][d->PC->position[dim_x]] = d->PC;
 
   gen_monsters(d);
+  gen_items(d);
+}
+
+uint32_t max_item_cells(dungeon *d)
+{
+  uint32_t i;
+  uint32_t sum;
+
+  for (i = sum = 0; i < d->num_rooms; i++) {
+    sum += d->rooms[i].size[dim_y] * d->rooms[i].size[dim_x];
+  }
+
+  return sum;
+}
+
+void gen_items(dungeon *d)
+{
+  uint32_t i;
+  item *it;
+  uint32_t room;
+  pair_t p;
+
+  d->num_items = min(d->max_spawn_items, max_item_cells(d));
+  for (i = 0; i < d->num_items; i++) {
+    it = new item();
+    get_item(d, it);
+    do {
+      room = rand_range(1, d->num_rooms - 1);
+      p[dim_y] = rand_range(d->rooms[room].position[dim_y],
+                            (d->rooms[room].position[dim_y] +
+                             d->rooms[room].size[dim_y] - 1));
+      p[dim_x] = rand_range(d->rooms[room].position[dim_x],
+                            (d->rooms[room].position[dim_x] +
+                             d->rooms[room].size[dim_x] - 1));
+    } while (d->character_map[p[dim_y]][p[dim_x]]);
+    it->position[dim_y] = p[dim_y];
+    it->position[dim_x] = p[dim_x];
+    d->item_map[p[dim_y]][p[dim_x]] = it;
+  }
 }
