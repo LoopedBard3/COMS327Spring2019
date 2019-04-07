@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <iostream>
 
 #include "io.h"
 #include "move.h"
@@ -30,6 +31,7 @@ void io_init_terminal(void)
   curs_set(0);
   keypad(stdscr, TRUE);
   start_color();
+  init_pair(COLOR_BLACK, COLOR_BLACK, COLOR_WHITE);
   init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
   init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK);
   init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
@@ -217,16 +219,21 @@ void io_display(dungeon *d)
                   character_get_pos(d->PC),
                   character_get_pos(d->character_map[y][x]),
                   1, 0)) {
+                //std::cout << d->character_map[y][x]->color[0] <<std::endl;
+                // attron(COLOR_PAIR(d->character_map[y][x]->color[0]));
        mvaddch(y + 1, x,
                 character_get_symbol(d->character_map[y][x]));
+                //attroff(COLOR_PAIR(d->character_map[y][x]->color[0]));
         visible_monsters++;
       } else if (d->item_map[y][x] &&
            can_see(d,
                   character_get_pos(d->PC),
                   item_get_pos(d->item_map[y][x]),
                   1, 0)) {
+                attron(COLOR_PAIR(d->item_map[y][x]->color));
        mvaddch(y + 1, x,
                   item_get_symbol(d->item_map[y][x]));
+                attroff(COLOR_PAIR(d->item_map[y][x]->color));
       } else {
         switch (pc_learned_terrain(d->PC, y, x)) {
         case ter_wall:
@@ -300,7 +307,9 @@ void io_display_no_fog(dungeon *d)
       if (d->character_map[y][x]) {
         mvaddch(y + 1, x, d->character_map[y][x]->symbol);
       } else if (d->item_map[y][x]) {
+        attron(COLOR_PAIR(d->item_map[y][x]->color));
         mvaddch(y + 1, x, d->item_map[y][x]->symbol);
+        attroff(COLOR_PAIR(d->item_map[y][x]->color));
       } else {
         switch (mapxy(x, y)) {
         case ter_wall:
@@ -387,6 +396,8 @@ uint32_t io_teleport_pc(dungeon *d)
   while ((c = getch()) != 'g' && c != '.' && c != 'r') {
     if (charpair(dest)) {
       actual = character_get_symbol(charpair(dest));
+    }else if (itemxy(dest[dim_x], dest[dim_y])) {
+      actual = item_get_symbol(itemxy(dest[dim_x], dest[dim_y]));
     } else {
       switch (mappair(dest)) {
       case ter_wall:
