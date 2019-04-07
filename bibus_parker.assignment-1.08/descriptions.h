@@ -16,8 +16,8 @@ typedef struct dungeon dungeon_t;
 uint32_t parse_descriptions(dungeon_t *d);
 uint32_t print_descriptions(dungeon_t *d);
 uint32_t destroy_descriptions(dungeon_t *d);
-item get_item(dungeon_t *d);
-npc get_npc(dungeon_t *d);
+void get_item(dungeon_t *d, item* item_hold);
+void get_npc(dungeon_t *d, npc* npc_hold);
 char get_item_symbol(object_type_t obj_type);
 
 

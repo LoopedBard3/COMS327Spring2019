@@ -36,13 +36,14 @@ void gen_monsters(dungeon *d)
   npc *m;
   uint32_t room;
   pair_t p;
-  const static char symbol[] = "0123456789abcdef";
+  //const static char symbol[] = "0123456789abcdef";
 
   d->num_monsters = min(d->max_monsters, max_monster_cells(d));
 
   for (i = 0; i < d->num_monsters; i++) {
     m = new npc;
-    // memset(m, 0, sizeof (*m));
+    get_npc(d, m);
+    //memset(m, 0, sizeof (*m));
     
     do {
       room = rand_range(1, d->num_rooms - 1);
@@ -56,12 +57,9 @@ void gen_monsters(dungeon *d)
     m->position[dim_y] = p[dim_y];
     m->position[dim_x] = p[dim_x];
     d->character_map[p[dim_y]][p[dim_x]] = m;
-    m->speed = rand_range(5, 20);
     m->alive = 1;
     m->sequence_number = ++d->character_sequence_number;
-    m->characteristics = rand() & 0x0000000f;
     /*    m->npc->characteristics = 0xf;*/
-    m->symbol = symbol[m->characteristics];
     m->have_seen_pc = 0;
     m->kills[kill_direct] = m->kills[kill_avenged] = 0;
 

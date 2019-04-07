@@ -1002,10 +1002,10 @@ uint32_t destroy_descriptions(dungeon_t *d)
   return 0;
 }
 
-item get_item(dungeon_t *d){
+void get_item(dungeon_t *d, item* item_hold){
   bool got_item = false;
   object_description item_desc;
-  item item_hold;
+
   while(!got_item){
     item_desc = d->object_descriptions[rand_range(0, d->object_descriptions.size() - 1)];
     if(item_desc.is_unspawnable()){
@@ -1015,30 +1015,28 @@ item get_item(dungeon_t *d){
       got_item = false;
       break;
     }else{
-      item_hold.name = item_desc.get_name();
-      item_hold.description = item_desc.get_description();
-      item_hold.type = item_desc.get_type();
-      item_hold.color = item_desc.get_color();
-      item_hold.hit = item_desc.get_hit().roll();
-      item_hold.damage = item_desc.get_damage();
-      item_hold.dodge = item_desc.get_dodge().roll();
-      item_hold.defence = item_desc.get_defence().roll();
-      item_hold.weight = item_desc.get_weight().roll();
-      item_hold.speed = item_desc.get_speed().roll();
-      item_hold.attribute = item_desc.get_attribute().roll();
-      item_hold.value = item_desc.get_value().roll();
-      item_hold.symbol = get_item_symbol(item_desc.get_type());
+      item_hold->name = item_desc.get_name();
+      item_hold->description = item_desc.get_description();
+      item_hold->type = item_desc.get_type();
+      item_hold->color = item_desc.get_color();
+      item_hold->hit = item_desc.get_hit().roll();
+      item_hold->damage = item_desc.get_damage();
+      item_hold->dodge = item_desc.get_dodge().roll();
+      item_hold->defence = item_desc.get_defence().roll();
+      item_hold->weight = item_desc.get_weight().roll();
+      item_hold->speed = item_desc.get_speed().roll();
+      item_hold->attribute = item_desc.get_attribute().roll();
+      item_hold->value = item_desc.get_value().roll();
+      item_hold->symbol = get_item_symbol(item_desc.get_type());
       got_item = true;
     }
   }
-  return item_hold;
 }
 
 
-npc get_npc(dungeon_t *d){
+void get_npc(dungeon_t *d, npc* npc_hold){
   bool got_npc = false;
   monster_description npc_desc;
-  npc npc_hold;
   while(!got_npc){
     npc_desc = d->monster_descriptions[rand_range(0, d->monster_descriptions.size() - 1)];
     if(npc_desc.unspawnable){
@@ -1048,18 +1046,17 @@ npc get_npc(dungeon_t *d){
       got_npc = false;
       break;
     }else{
-      npc_hold.name = npc_desc.name;
-      npc_hold.description = npc_desc.description;
-      npc_hold.color = npc_desc.color;
-      npc_hold.speed = npc_desc.speed.roll();
-      npc_hold.abilities = npc_desc.abilities;
-      npc_hold.hitpoints = npc_desc.hitpoints.roll();
-      npc_hold.damage = npc_desc.damage;
-      npc_hold.symbol = npc_desc.symbol;
+      npc_hold->name = npc_desc.name;
+      npc_hold->description = npc_desc.description;
+      npc_hold->color = npc_desc.color;
+      npc_hold->speed = npc_desc.speed.roll();
+      npc_hold->characteristics = npc_desc.abilities;
+      npc_hold->hitpoints = npc_desc.hitpoints.roll();
+      npc_hold->damage = npc_desc.damage;
+      npc_hold->symbol = npc_desc.symbol;
       got_npc = true;
     }
   }
-  return npc_hold;
 }
 
 char get_item_symbol(object_type_t obj_type){
