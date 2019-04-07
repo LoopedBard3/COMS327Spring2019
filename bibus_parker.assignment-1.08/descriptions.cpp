@@ -1037,14 +1037,14 @@ void get_item(dungeon_t *d, item* item_hold){
 void get_npc(dungeon_t *d, npc* npc_hold){
   bool got_npc = false;
   monster_description npc_desc;
+  int mon_to_get;
   while(!got_npc){
-    npc_desc = d->monster_descriptions[rand_range(0, d->monster_descriptions.size() - 1)];
+    mon_to_get = rand_range(0, d->monster_descriptions.size() - 1);
+    npc_desc = d->monster_descriptions[mon_to_get];
     if(npc_desc.unspawnable){
       got_npc = false;
-      break;
     }else if(npc_desc.rarity <= (uint32_t) rand_range(0, 99)){
       got_npc = false;
-      break;
     }else{
       npc_hold->name = npc_desc.name;
       npc_hold->description = npc_desc.description;
@@ -1053,7 +1053,7 @@ void get_npc(dungeon_t *d, npc* npc_hold){
       npc_hold->characteristics = npc_desc.abilities;
       npc_hold->hitpoints = npc_desc.hitpoints.roll();
       npc_hold->damage = npc_desc.damage;
-      npc_hold->symbol = npc_desc.symbol;
+      npc_hold->symbol = npc_desc.symbol;      
       got_npc = true;
     }
   }

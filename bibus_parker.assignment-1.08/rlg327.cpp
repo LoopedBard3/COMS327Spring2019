@@ -3,6 +3,8 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <iostream>
+#include <cstdio>
 
 #include "dungeon.h"
 #include "pc.h"
@@ -93,6 +95,7 @@ int main(int argc, char *argv[])
   do_seed = 1;
   save_file = load_file = NULL;
   d.max_monsters = MAX_MONSTERS;
+  freopen( "error.txt", "w", stderr );
 
   /* The project spec requires '--load' and '--save'.  It's common  *
    * to have short and long forms of most switches (assuming you    *

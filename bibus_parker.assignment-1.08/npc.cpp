@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <iostream>
 
 #include "utils.h"
 #include "npc.h"
@@ -39,12 +40,9 @@ void gen_monsters(dungeon *d)
   //const static char symbol[] = "0123456789abcdef";
 
   d->num_monsters = min(d->max_monsters, max_monster_cells(d));
-
   for (i = 0; i < d->num_monsters; i++) {
-    m = new npc;
+    m = new npc();
     get_npc(d, m);
-    //memset(m, 0, sizeof (*m));
-    
     do {
       room = rand_range(1, d->num_rooms - 1);
       p[dim_y] = rand_range(d->rooms[room].position[dim_y],
@@ -64,7 +62,6 @@ void gen_monsters(dungeon *d)
     m->kills[kill_direct] = m->kills[kill_avenged] = 0;
 
     d->character_map[p[dim_y]][p[dim_x]] = m;
-
     heap_insert(&d->events, new_event(d, event_character_turn, m, 0));
   }
 }
