@@ -1010,10 +1010,8 @@ void get_item(dungeon_t *d, item* item_hold){
     item_desc = d->object_descriptions[rand_range(0, d->object_descriptions.size() - 1)];
     if(item_desc.is_unspawnable()){
       got_item = false;
-      break;
     }else if(item_desc.get_rarity() <= (uint32_t) rand_range(0, 99)){
       got_item = false;
-      break;
     }else{
       item_hold->name = item_desc.get_name();
       item_hold->description = item_desc.get_description();
