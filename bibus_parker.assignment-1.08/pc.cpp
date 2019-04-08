@@ -32,6 +32,7 @@ void config_pc(dungeon *d)
   d->PC = new pc;
 
   d->PC->symbol = '@';
+  d->PC->color.assign(1, 1);
 
   place_pc(d);
 

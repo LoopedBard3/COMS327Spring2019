@@ -681,6 +681,14 @@ void delete_dungeon(dungeon *d)
   free(d->rooms);
   heap_delete(&d->events);
   memset(d->character_map, 0, sizeof (d->character_map));
+  int counter_y, counter_x;
+  for(counter_y = 0; counter_y < DUNGEON_Y; counter_y++){
+    for(counter_x = 0; counter_x < DUNGEON_X; counter_x++){
+      if(d->item_map[counter_y][counter_x] != NULL){
+        delete d->item_map[counter_y][counter_x];
+      }
+    }
+  }
   memset(d->item_map, 0, sizeof (d->item_map));
 }
 

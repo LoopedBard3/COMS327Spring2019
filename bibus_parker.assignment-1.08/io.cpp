@@ -220,11 +220,10 @@ void io_display(dungeon *d)
                   character_get_pos(d->PC),
                   character_get_pos(d->character_map[y][x]),
                   1, 0)) {
-                std::cerr << "PRINT MON COLOR: " << d->character_map[y][x]->name <<std::endl;
-                 //attron(COLOR_PAIR(d->character_map[y][x]->color.at(0)));
+                 attron(COLOR_PAIR(d->character_map[y][x]->color.at(0)));
        mvaddch(y + 1, x,
                 d->character_map[y][x]->symbol);
-                //attroff(COLOR_PAIR(d->character_map[y][x]->color.at(0)));
+                attroff(COLOR_PAIR(d->character_map[y][x]->color.at(0)));
         visible_monsters++;
       } else if (d->item_map[y][x] &&
            can_see(d,
@@ -306,7 +305,9 @@ void io_display_no_fog(dungeon *d)
   for (y = 0; y < 21; y++) {
     for (x = 0; x < 80; x++) {
       if (d->character_map[y][x]) {
+        attron(COLOR_PAIR(d->character_map[y][x]->color.at(0)));
         mvaddch(y + 1, x, d->character_map[y][x]->symbol);
+        attroff(COLOR_PAIR(d->character_map[y][x]->color.at(0)));
       } else if (d->item_map[y][x]) {
         attron(COLOR_PAIR(d->item_map[y][x]->color));
         mvaddch(y + 1, x, d->item_map[y][x]->symbol);
@@ -397,8 +398,9 @@ uint32_t io_teleport_pc(dungeon *d)
   while ((c = getch()) != 'g' && c != '.' && c != 'r') {
     if (charpair(dest)) {
       actual = character_get_symbol(charpair(dest));
+      attron(COLOR_PAIR(charpair(dest)->color.at(0)));
       mvaddch(dest[dim_y] + 1, dest[dim_x], actual);
-
+      attroff(COLOR_PAIR(charpair(dest)->color.at(0)));
     }else if (itemxy(dest[dim_x], dest[dim_y])) {
       actual = item_get_symbol(itemxy(dest[dim_x], dest[dim_y]));
       attron(COLOR_PAIR(itemxy(dest[dim_x], dest[dim_y])->color));
