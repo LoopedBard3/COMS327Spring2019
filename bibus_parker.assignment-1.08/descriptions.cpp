@@ -954,7 +954,6 @@ static uint32_t parse_monster_descriptions(std::ifstream &f,
   std::string lookahead;
 
   expected << MONSTER_FILE_SEMANTIC << " " << MONSTER_FILE_VERSION;
-  std::cerr << "Got Monsters" << std::endl;
   eat_whitespace(f);
 
   getline(f, s);
@@ -984,7 +983,6 @@ static uint32_t parse_object_descriptions(std::ifstream &f,
   std::string s;
   std::stringstream expected;
   std::string lookahead;
-  std::cerr << "Got Objects" << std::endl;
   expected << OBJECT_FILE_SEMANTIC << " " << OBJECT_FILE_VERSION;
 
   eat_whitespace(f);
@@ -1184,7 +1182,6 @@ void get_item(dungeon_t *d, item *item_hold)
       {
         item_desc.set_is_unspawnable(true);
         d->object_descriptions.erase(d->object_descriptions.begin() + item_to_get);
-        std::cerr << "ITEM: " << item_desc.get_name() << std::endl;
       }
       got_item = true;
     }

@@ -32,7 +32,7 @@ void io_init_terminal(void)
   curs_set(0);
   keypad(stdscr, TRUE);
   start_color();
-  init_pair(COLOR_BLACK, COLOR_BLACK, COLOR_WHITE);
+  
   init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
   init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK);
   init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
