@@ -1,37 +1,50 @@
 Got Monsters
 Got Objects
+3 : 3 : j
+7 : 7 : j
+2 : 2 : j
+2 : 2 : j
+1 : 1 : j
+7 : 7 : j
+6 : 6 : j
+3 : 3 : j
+7 : 7 : j
+3 : 3 : j
 4 : 4 : j
-1 : 1 : j
-2 : 2 : j
-3 : 3 : j
-2 : 2 : j
-3 : 3 : j
-2 : 2 : j
-1 : 1 : j
 3 : 3 : j
 3 : 3 : j
-2 : 2 : j
-6 : 6 : j
-2 : 2 : j
-7 : 7 : j
-7 : 7 : j
-ITEM: the Moon Tiara
-ITEM: Sting
-ITEM: Mjolnir
-ITEM: the Moon Stick
-1 : 1 : j
-5 : 5 : j
-2 : 2 : j
-2 : 2 : j
-2 : 2 : j
-3 : 3 : j
-1 : 1 : j
-7 : 7 : j
-6 : 6 : j
-3 : 3 : j
-7 : 7 : j
-2 : 2 : j
 3 : 3 : j
 3 : 3 : j
-2 : 2 : j
+ITEM: the Heart of the Ocean
 ITEM: The One And Only
+ITEM: Sting
+ITEM: the Moon Stick
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: Casper the Friendly Ghost
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: Casper the Friendly Ghost
+PRINT MON COLOR: 
+PRINT MON COLOR: Casper the Friendly Ghost
+PRINT MON COLOR: 
+PRINT MON COLOR: Slimer
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: Slimer
+PRINT MON COLOR: 
+PRINT MON COLOR: Slimer
+PRINT MON COLOR: 
+PRINT MON COLOR: Slimer
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 
+PRINT MON COLOR: 

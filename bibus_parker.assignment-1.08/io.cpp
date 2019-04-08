@@ -220,7 +220,7 @@ void io_display(dungeon *d)
                   character_get_pos(d->PC),
                   character_get_pos(d->character_map[y][x]),
                   1, 0)) {
-                //std::cout << "PRINT MON COLOR: " << d->character_map[y][x]->color.at(0) <<std::endl;
+                std::cerr << "PRINT MON COLOR: " << d->character_map[y][x]->name <<std::endl;
                  //attron(COLOR_PAIR(d->character_map[y][x]->color.at(0)));
        mvaddch(y + 1, x,
                 d->character_map[y][x]->symbol);
@@ -397,8 +397,13 @@ uint32_t io_teleport_pc(dungeon *d)
   while ((c = getch()) != 'g' && c != '.' && c != 'r') {
     if (charpair(dest)) {
       actual = character_get_symbol(charpair(dest));
+      mvaddch(dest[dim_y] + 1, dest[dim_x], actual);
+
     }else if (itemxy(dest[dim_x], dest[dim_y])) {
       actual = item_get_symbol(itemxy(dest[dim_x], dest[dim_y]));
+      attron(COLOR_PAIR(itemxy(dest[dim_x], dest[dim_y])->color));
+      mvaddch(dest[dim_y] + 1, dest[dim_x], actual);
+      attroff(COLOR_PAIR(itemxy(dest[dim_x], dest[dim_y])->color));
     } else {
       switch (mappair(dest)) {
       case ter_wall:
@@ -424,9 +429,10 @@ uint32_t io_teleport_pc(dungeon *d)
       default:
         break;
       }      
+      mvaddch(dest[dim_y] + 1, dest[dim_x], actual);
     }
 
-    mvaddch(dest[dim_y] + 1, dest[dim_x], actual);
+    //mvaddch(dest[dim_y] + 1, dest[dim_x], actual);
 
     switch (c) {
     case '7':
