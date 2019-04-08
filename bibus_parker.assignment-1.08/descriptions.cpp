@@ -1357,13 +1357,10 @@ std::ostream &operator<<(std::ostream &o, object_description &od)
 
 void remove_monster(dungeon_t *d, character *ch){
     int counter;
-    std::cerr << "Removing Check: " << ch->name << std::endl;
     for(counter = 0; counter < (int) d->monster_descriptions.size(); counter++){
-      std::cerr << "Comparing: " << d->monster_descriptions.at(counter).name << " : " <<ch->name << std::endl;
       if(d->monster_descriptions.at(counter).name.compare(ch->name) == 0){
         d->monster_descriptions.at(counter).unspawnable = true;
         d->monster_descriptions.erase(d->monster_descriptions.begin() + counter);
-        std::cerr << "Removed: " << ch->name << std::endl;
         break;
       }
     }

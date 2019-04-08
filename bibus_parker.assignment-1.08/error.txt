@@ -7,18 +7,72 @@ MONSTER: Bruce Willis : W
 NOT PASSED: c1
 MONSTER: Bruce Willis : W
 NOT PASSED: c1
+ITEM: The One And Only
+ITEM: Sting
+ITEM: the Moon Tiara
+MONSTER: Bruce Willis : W
 MONSTER: Bruce Willis : W
 NOT PASSED: c1
-ITEM: Sting
-ITEM: the Moon Stick
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+ITEM: the Aegis
 ITEM: the Heart of the Ocean
-ITEM: the Vorpal Blade
+ITEM: the cloak of invisibility
+MONSTER: Bruce Willis : W
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+MONSTER: Bruce Willis : W
+NOT PASSED: c1
+ITEM: the Moon Stick
+ITEM: Mjolnir
 Removing Check: Bruce Willis
 Comparing: Junior Barbarian : Bruce Willis
 Comparing: Bruce Willis : Bruce Willis
 Removed: Bruce Willis
-ITEM: Mjolnir
-ITEM: The One And Only
-ITEM: the Aegis
-ITEM: the Moon Tiara
-ITEM: the cloak of invisibility
+ITEM: the Vorpal Blade
