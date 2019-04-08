@@ -1,0 +1,7 @@
+This program meets the specifications for assignment 1.08. This includes generating monsters and items and rendering them with color. The player and monsters are rendered above the items and the items stay on the floor even after being walked over.The monsters and items also have dice rolled where applicable. Finally, unique items only spawn in once by having a flag to keep them from spawning and the unique monsters only spawn once per level until killed, at which point they no longer spawn. This means only one instance of unique monsters and items will exist in the game world. 
+
+In order to run the program you just have to run ./rlg327.
+
+Usage: ./rlg327 [-r|--rand <seed>] [-l|--load [<file>]]
+        [-s|--save [<file>]] [-i|--image <pgm file>]
+        [-n|--nummon <number of monsters min:1>] [-p|--parser parser output only]
