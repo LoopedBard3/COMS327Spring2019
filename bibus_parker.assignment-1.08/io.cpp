@@ -10,6 +10,7 @@
 #include "pc.h"
 #include "utils.h"
 #include "dungeon.h"
+#include "character.h"
 
 /* Same ugly hack we did in path.c */
 static dungeon *thedungeon;
@@ -219,11 +220,11 @@ void io_display(dungeon *d)
                   character_get_pos(d->PC),
                   character_get_pos(d->character_map[y][x]),
                   1, 0)) {
-                //std::cout << d->character_map[y][x]->color[0] <<std::endl;
-                // attron(COLOR_PAIR(d->character_map[y][x]->color[0]));
+                //std::cout << "PRINT MON COLOR: " << d->character_map[y][x]->color.at(0) <<std::endl;
+                 //attron(COLOR_PAIR(d->character_map[y][x]->color.at(0)));
        mvaddch(y + 1, x,
-                character_get_symbol(d->character_map[y][x]));
-                //attroff(COLOR_PAIR(d->character_map[y][x]->color[0]));
+                d->character_map[y][x]->symbol);
+                //attroff(COLOR_PAIR(d->character_map[y][x]->color.at(0)));
         visible_monsters++;
       } else if (d->item_map[y][x] &&
            can_see(d,

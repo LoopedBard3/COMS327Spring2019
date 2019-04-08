@@ -18,9 +18,11 @@ class character {
  public:
  character() : symbol(0), position(), speed(), alive(),
                 sequence_number(1), kills(), damage(), 
-                hitpoints(), color(0), name(), description()
+                hitpoints(), name(), description()
                 
-  {}
+  {
+      color.reserve(4);
+  }
   virtual ~character() {}   
 
   char symbol;

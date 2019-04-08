@@ -54,12 +54,13 @@ void gen_monsters(dungeon *d)
     } while (d->character_map[p[dim_y]][p[dim_x]]);
     m->position[dim_y] = p[dim_y];
     m->position[dim_x] = p[dim_x];
-    d->character_map[p[dim_y]][p[dim_x]] = m;
+    d->character_map[p[dim_y]][p[dim_x]] = (character *) m;
     m->alive = 1;
     m->sequence_number = ++d->character_sequence_number;
     /*    m->npc->characteristics = 0xf;*/
     m->have_seen_pc = 0;
     m->kills[kill_direct] = m->kills[kill_avenged] = 0;
+    std::cerr << m->color.at(0) << " : " << d->character_map[p[dim_y]][p[dim_x]]->color.at(0) << " : " << typeid(d->character_map[p[dim_y]][p[dim_x]]->color.at(0)).name() << std::endl;
     heap_insert(&d->events, new_event(d, event_character_turn, m, 0));
   }
 }

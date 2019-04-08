@@ -1,78 +1,37 @@
 Got Monsters
 Got Objects
-MONSTER: Bruce Willis : W
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-ITEM: The One And Only
-ITEM: Sting
+4 : 4 : j
+1 : 1 : j
+2 : 2 : j
+3 : 3 : j
+2 : 2 : j
+3 : 3 : j
+2 : 2 : j
+1 : 1 : j
+3 : 3 : j
+3 : 3 : j
+2 : 2 : j
+6 : 6 : j
+2 : 2 : j
+7 : 7 : j
+7 : 7 : j
 ITEM: the Moon Tiara
-MONSTER: Bruce Willis : W
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-ITEM: the Aegis
-ITEM: the Heart of the Ocean
-ITEM: the cloak of invisibility
-MONSTER: Bruce Willis : W
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-MONSTER: Bruce Willis : W
-NOT PASSED: c1
-ITEM: the Moon Stick
+ITEM: Sting
 ITEM: Mjolnir
-Removing Check: Bruce Willis
-Comparing: Junior Barbarian : Bruce Willis
-Comparing: Bruce Willis : Bruce Willis
-Removed: Bruce Willis
-ITEM: the Vorpal Blade
+ITEM: the Moon Stick
+1 : 1 : j
+5 : 5 : j
+2 : 2 : j
+2 : 2 : j
+2 : 2 : j
+3 : 3 : j
+1 : 1 : j
+7 : 7 : j
+6 : 6 : j
+3 : 3 : j
+7 : 7 : j
+2 : 2 : j
+3 : 3 : j
+3 : 3 : j
+2 : 2 : j
+ITEM: The One And Only

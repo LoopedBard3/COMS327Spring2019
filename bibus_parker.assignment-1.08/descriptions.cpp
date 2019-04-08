@@ -1218,15 +1218,13 @@ void get_npc(dungeon_t *d, npc *npc_hold)
     }
     if (npc_hold->characteristics & NPC_UNIQ)
     {
-      std::cerr << "MONSTER: " << npc_desc.name << " : " << npc_desc.symbol << std::endl;
       for (counter_y = 0; counter_y < DUNGEON_Y; counter_y++)
       {
         for (counter_x = 0; counter_x < DUNGEON_X; counter_x++)
         {
-          if (d->character_map[counter_y][counter_x] != NULL && d->character_map[counter_y][counter_x]->name == npc_hold->name)
+          if (d->character_map[counter_y][counter_x] != NULL && d->character_map[counter_y][counter_x]->name.compare(npc_hold->name) == 0)
           {
             got_npc = false;
-            std::cerr << "NOT PASSED: " << std::hex << npc_desc.abilities << std::endl;
           }
         }
       }

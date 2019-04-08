@@ -117,6 +117,7 @@ void move_character(dungeon *d, character *c, pair_t next)
     c->position[dim_y] = next[dim_y];
     c->position[dim_x] = next[dim_x];
     d->character_map[c->position[dim_y]][c->position[dim_x]] = c;
+    //std::cerr << "MON COLOR: " << c->color.at(0) <<std::endl; //Error getting color
   }
 
   if (c == d->PC) {
