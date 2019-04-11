@@ -20,5 +20,6 @@ class word {
         int numTopMatches;
 };
 int checkForMatch(word wdArray[], int numWords, std::string currWord);
+int saveLine(word wdArray[], int numWords, std::string currLine);
 
 #endif
