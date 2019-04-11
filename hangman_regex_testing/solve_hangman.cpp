@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
   if (!fileInput.is_open())
   {
     std::cout << "Could not open file at: " << dictionaryPath << std::endl;
+    return 1;
   }
 
   //Ask for the layout of the word
