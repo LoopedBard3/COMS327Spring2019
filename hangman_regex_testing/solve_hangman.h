@@ -14,7 +14,9 @@
 
 class word {
     public:
-        std::string topMatches[10];
+        word() : topMatches(10), wordFormat(""), wordFilled(""), reg(), numTopMatches(0)
+        {}
+        std::vector<std::string> topMatches;
         std::string wordFormat;
         std::string wordFilled;
         std::regex reg;

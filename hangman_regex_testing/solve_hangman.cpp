@@ -111,7 +111,9 @@ int main(int argc, char *argv[])
   //Malloc the word array to the correct size
   //indvWords = (word *)malloc(numWords * sizeof(word));
   for(i = 0; i < numWords; i++){
+    indvWords.push_back(new word);
     indvWords.at(i) = new word();
+    std::cerr << i << std::endl;
   }
 
   //at the starting formats
@@ -136,7 +138,7 @@ int main(int argc, char *argv[])
     printCurrentLine(indvWords, numWords);
     std::cout << "Please enter used character, quit to quit, or skip to re-enter knowns: " << std::endl;
     std::getline(std::cin, lineHold, '\n');
-    if (lineHold == "quit" || lineHold == "q")
+    if (lineHold == "quit")
       break;
     else if (lineHold == "skip")
       ;
@@ -168,8 +170,9 @@ int saveLine(std::vector<word *> & wdArray, int numWords, std::string currLine)
   std::stringstream stream(currLine);
   std::string format;
   int counter = 0;
-  while (stream >> format && counter++ < numWords)
+  while (stream >> format && counter < numWords)
   {
+    std::cerr << counter << std::endl;
     if (wdArray.at(counter)->wordFormat.size() == 0)
     {
       wdArray.at(counter)->wordFormat = std::string(format);
@@ -177,22 +180,23 @@ int saveLine(std::vector<word *> & wdArray, int numWords, std::string currLine)
     }
     else
     {
-      wdArray.at(counter)->wordFilled = format;
+      wdArray.at(counter)->wordFilled = std::string(format);
       std::cerr << "Saving filled format: " << wdArray.at(counter)->wordFilled << std::endl;
     }
+    counter++;
   }
-  return ++counter;
+  return counter;
 }
 
 void printCurrentLine(std::vector<word *> & wdArray, int numWords)
 {
   int count = 0;
-  if (wdArray[count]->wordFilled.length() == 0)
+  if (wdArray.at(count)->wordFilled.size() == 0)
   {
     //Do the format
     while (count < numWords)
     {
-      std::cout << wdArray[count]->wordFormat << " " << wdArray[0]->wordFilled.length();
+      std::cout << wdArray.at(count)->wordFormat << " ";
       count++;
     }
   }
@@ -201,7 +205,7 @@ void printCurrentLine(std::vector<word *> & wdArray, int numWords)
     //Otherwise print the known
     while (count < numWords)
     {
-      std::cout << wdArray[count]->wordFilled << " ";
+      std::cout << wdArray.at(count)->wordFilled << " ";
       count++;
     }
   }
