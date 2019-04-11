@@ -22,8 +22,8 @@ class word {
         std::regex reg;
         int numTopMatches;
 };
-int checkForMatch(std::vector<word *> & wdArray, int numWords, std::string currWord);
-int saveLine(std::vector<word *> & wdArray, int numWords, std::string currLine);
-void printCurrentLine(std::vector<word *> & wdArray, int numWords);
+int checkForMatch(std::vector<word> * wdArray, int numWords, std::string currWord);
+int saveLine(std::vector<word> * wdArray, int numWords, std::string currLine);
+void printCurrentLine(std::vector<word> wdArray, int numWords);
 
 #endif

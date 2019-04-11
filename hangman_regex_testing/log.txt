@@ -2,8 +2,14 @@
 1
 2
 0
-Saving format: ----
+Saving format: -----
 1
-Saving format: ---
+Saving format: -----
 2
 Saving format: ----
+0
+Saving filled format: aa-aa
+1
+Saving filled format: aaa-a-
+2
+Saving filled format: --a-

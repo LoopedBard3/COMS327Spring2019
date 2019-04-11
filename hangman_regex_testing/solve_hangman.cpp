@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   std::ifstream fileInput;
   std::string lineHold;
   std::string triedChars;
-  std::vector<word *> indvWords;
+  std::vector<word> indvWords;
 
   /* Initialize the variables that will be used by the program */
   customDictionary = longArg = i = mostTopOpen = numWords = 0;
@@ -110,9 +110,9 @@ int main(int argc, char *argv[])
 
   //Malloc the word array to the correct size
   //indvWords = (word *)malloc(numWords * sizeof(word));
+  word wd;
   for(i = 0; i < numWords; i++){
-    indvWords.push_back(new word);
-    indvWords.at(i) = new word();
+    indvWords.push_back(wd);
     std::cerr << i << std::endl;
   }
 
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
   std::cout << "Please enter the answer format here with - as unknown" << std::endl
             << "Example: ANS = Hello there, Unknown input = ----- -----" << std::endl;
   std::getline(std::cin, lineHold, '\n');
-  numWords = saveLine(indvWords, numWords, lineHold);
+  numWords = saveLine(&indvWords, numWords, lineHold);
 
   //Start round loop
   while (1)
@@ -148,24 +148,26 @@ int main(int argc, char *argv[])
       triedChars += lineHold;
     std::cout << "Please enter new format with filled knowns: " << std::endl;
     std::getline(std::cin, lineHold, '\n');
-    numWords = saveLine(indvWords, numWords, lineHold);
+    numWords = saveLine(&indvWords, numWords, lineHold);
   }
   //Close everything and print out that we finished it.
   if (fileInput.is_open())
     fileInput.close();
-  //free(indvWords);
+  for(;indvWords.size();){
+    indvWords.pop_back();
+  }
   std::cout << "You made it to the end!!" << std::endl;
   return 0;
 }
 
-int checkForMatch(std::vector<word *> & wdArray, int numWords, std::string currWord)
+int checkForMatch(std::vector<word> * wdArray, int numWords, std::string currWord)
 {
   //Check each word for match and if there is a match add it to the word. Return the number of matches left in the lowest word.
   std::cerr << "Checking " << numWords << " words against " << currWord << std::endl;
   return 0;
 }
 
-int saveLine(std::vector<word *> & wdArray, int numWords, std::string currLine)
+int saveLine(std::vector<word> * wdArray, int numWords, std::string currLine)
 {
   std::stringstream stream(currLine);
   std::string format;
@@ -173,30 +175,30 @@ int saveLine(std::vector<word *> & wdArray, int numWords, std::string currLine)
   while (stream >> format && counter < numWords)
   {
     std::cerr << counter << std::endl;
-    if (wdArray.at(counter)->wordFormat.size() == 0)
+    if (wdArray->at(counter).wordFormat.size() == 0)
     {
-      wdArray.at(counter)->wordFormat = std::string(format);
-      std::cerr << "Saving format: " << wdArray.at(counter)->wordFormat << std::endl;
+      wdArray->at(counter).wordFormat = std::string(format);
+      std::cerr << "Saving format: " << wdArray->at(counter).wordFormat << std::endl;
     }
     else
     {
-      wdArray.at(counter)->wordFilled = std::string(format);
-      std::cerr << "Saving filled format: " << wdArray.at(counter)->wordFilled << std::endl;
+      wdArray->at(counter).wordFilled = std::string(format);
+      std::cerr << "Saving filled format: " << wdArray->at(counter).wordFilled << std::endl;
     }
     counter++;
   }
   return counter;
 }
 
-void printCurrentLine(std::vector<word *> & wdArray, int numWords)
+void printCurrentLine(std::vector<word> wdArray, int numWords)
 {
   int count = 0;
-  if (wdArray.at(count)->wordFilled.size() == 0)
+  if (wdArray.at(count).wordFilled.size() == 0)
   {
     //Do the format
     while (count < numWords)
     {
-      std::cout << wdArray.at(count)->wordFormat << " ";
+      std::cout << wdArray.at(count).wordFormat << " ";
       count++;
     }
   }
@@ -205,7 +207,7 @@ void printCurrentLine(std::vector<word *> & wdArray, int numWords)
     //Otherwise print the known
     while (count < numWords)
     {
-      std::cout << wdArray.at(count)->wordFilled << " ";
+      std::cout << wdArray.at(count).wordFilled << " ";
       count++;
     }
   }
