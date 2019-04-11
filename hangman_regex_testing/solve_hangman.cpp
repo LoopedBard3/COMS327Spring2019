@@ -25,10 +25,12 @@ int main(int argc, char *argv[])
   std::string dictionaryPath;
   std::ifstream fileInput;
   std::string lineHold;
-  word *indvWords;
+  std::string triedChars;
+  std::vector<word *> indvWords;
 
   /* Initialize the variables that will be used by the program */
   customDictionary = longArg = i = mostTopOpen = numWords = 0;
+  freopen("log.txt", "w", stderr);
 
   /* Use the flags -d or --dict to set a custom dictionary *
    * for using custom types of languages.                  */
@@ -98,56 +100,110 @@ int main(int argc, char *argv[])
     numWords = std::stoi(lineHold);
   }
 
-  //Malloc the word array to the correct size
-  indvWords = (word *)malloc(numWords * sizeof(word));
+  if (numWords == 0)
+  {
+    if (fileInput.is_open())
+      fileInput.close();
+    std::cout << "You made it to the end!!" << std::endl;
+    return 0;
+  };
 
-  //Get the starting formats
+  //Malloc the word array to the correct size
+  //indvWords = (word *)malloc(numWords * sizeof(word));
+  for(i = 0; i < numWords; i++){
+    indvWords.at(i) = new word();
+  }
+
+  //at the starting formats
   std::cout << "Please enter the answer format here with - as unknown" << std::endl
             << "Example: ANS = Hello there, Unknown input = ----- -----" << std::endl;
   std::getline(std::cin, lineHold, '\n');
   numWords = saveLine(indvWords, numWords, lineHold);
+
   //Start round loop
-
-  //Print out the dictionary for testing
-  while (std::getline(fileInput, lineHold) && mostTopOpen)
+  while (1)
   {
-    mostTopOpen = checkForMatch(indvWords, numWords, lineHold);
+    //Print out the dictionary for testing
+    // while (std::getline(fileInput, lineHold) && mostTopOpen)
+    // {
+    //   mostTopOpen = checkForMatch(indvWords, numWords, lineHold);
+    // }
+
+    //Print out the top matches for the round
+
+    //Finish the round loop and at new line
+    std::cout << "Currently you have: " << std::endl;
+    printCurrentLine(indvWords, numWords);
+    std::cout << "Please enter used character, quit to quit, or skip to re-enter knowns: " << std::endl;
+    std::getline(std::cin, lineHold, '\n');
+    if (lineHold == "quit" || lineHold == "q")
+      break;
+    else if (lineHold == "skip")
+      ;
+    else if (lineHold.size() > 1)
+      std::cout << "Error atting character, reenter knowns and try again: " << std::endl;
+    else
+      triedChars += lineHold;
+    std::cout << "Please enter new format with filled knowns: " << std::endl;
+    std::getline(std::cin, lineHold, '\n');
+    numWords = saveLine(indvWords, numWords, lineHold);
   }
-
-  //Print out the top matches for the round
-
-  //Finish the round loop
-
   //Close everything and print out that we finished it.
   if (fileInput.is_open())
     fileInput.close();
-  free(indvWords);
+  //free(indvWords);
   std::cout << "You made it to the end!!" << std::endl;
   return 0;
 }
 
-int checkForMatch(word wdArray[], int numWords, std::string currWord)
+int checkForMatch(std::vector<word *> & wdArray, int numWords, std::string currWord)
 {
   //Check each word for match and if there is a match add it to the word. Return the number of matches left in the lowest word.
-  std::cout << "Checking " << numWords << " words against " << currWord << std::endl;
+  std::cerr << "Checking " << numWords << " words against " << currWord << std::endl;
   return 0;
 }
 
-int saveLine(word wdArray[], int numWords, std::string currLine)
+int saveLine(std::vector<word *> & wdArray, int numWords, std::string currLine)
 {
   std::stringstream stream(currLine);
   std::string format;
   int counter = 0;
   while (stream >> format && counter++ < numWords)
   {
-    if (wdArray[counter].wordFormat.size() == 0)
+    if (wdArray.at(counter)->wordFormat.size() == 0)
     {
-      wdArray[counter].wordFormat = format;
-      std::cout << "Saving format: " << wdArray[counter].wordFormat << std::endl;
-    } else {
-      wdArray[counter].wordFilled = format;
-      std::cout << "Saving filled format: " << wdArray[counter].wordFilled << std::endl;    
-    }  
+      wdArray.at(counter)->wordFormat = std::string(format);
+      std::cerr << "Saving format: " << wdArray.at(counter)->wordFormat << std::endl;
+    }
+    else
+    {
+      wdArray.at(counter)->wordFilled = format;
+      std::cerr << "Saving filled format: " << wdArray.at(counter)->wordFilled << std::endl;
+    }
   }
-  return counter;
+  return ++counter;
+}
+
+void printCurrentLine(std::vector<word *> & wdArray, int numWords)
+{
+  int count = 0;
+  if (wdArray[count]->wordFilled.length() == 0)
+  {
+    //Do the format
+    while (count < numWords)
+    {
+      std::cout << wdArray[count]->wordFormat << " " << wdArray[0]->wordFilled.length();
+      count++;
+    }
+  }
+  else
+  {
+    //Otherwise print the known
+    while (count < numWords)
+    {
+      std::cout << wdArray[count]->wordFilled << " ";
+      count++;
+    }
+  }
+  std::cout << std::endl;
 }
