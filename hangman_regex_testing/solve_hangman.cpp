@@ -6,6 +6,8 @@
   _tmp;                          \
 })
 
+#define MAX_MATCHES 1
+
 void usage(char *name)
 {
   fprintf(stderr,
@@ -30,7 +32,6 @@ int main(int argc, char *argv[])
 
   /* Initialize the variables that will be used by the program */
   customDictionary = longArg = i = numWords = 0;
-  mostTopOpen = 10;
   freopen("log.txt", "w", stderr);
 
   /* Use the flags -d or --dict to set a custom dictionary *
@@ -98,7 +99,7 @@ int main(int argc, char *argv[])
   if (numWords == 0)
   {
     std::cout << "How many words are there?: " << std::endl;
-    std::getline(std::cin, lineHold, '\n');
+    std::getline(std::cin, lineHold);
     numWords = std::stoi(lineHold);
   }
 
@@ -116,13 +117,13 @@ int main(int argc, char *argv[])
   for (i = 0; i < numWords; i++)
   {
     indvWords.push_back(wd);
-    std::cerr << i << std::endl;
+    // std::cerr << i << std::endl;
   }
 
   //at the starting formats
   std::cout << "Please enter the answer format here with - as unknown" << std::endl
             << "Example: ANS = Hello there, Unknown input = ----- -----" << std::endl;
-  std::getline(std::cin, lineHold, '\n');
+  std::getline(std::cin, lineHold);
   numWords = saveLine(&indvWords, numWords, lineHold);
 
   //Start round loop
@@ -131,25 +132,34 @@ int main(int argc, char *argv[])
     if (lineHold == "quit")
       break;
 
+    std::cerr << std::endl
+              << std::endl
+              << std::endl
+              << std::endl
+              << std::endl
+              << std::endl
+              << std::endl;
     //Put the regex into the strings
     updateRegex(&indvWords, numWords, triedChars);
+    clearMatches(&indvWords, numWords);
 
     fileInput.clear();
     fileInput.seekg(0, std::ios::beg);
-    //Print out the dictionary for testing
+    //Check for matches
+      mostTopOpen = MAX_MATCHES;
     while (mostTopOpen && std::getline(fileInput, lineHold))
     {
       mostTopOpen = checkForMatch(&indvWords, numWords, lineHold);
     }
 
     //Print out the top matches for the round
-    //printMatches(indvWords, numWords);
+    printMatches(indvWords, numWords);
 
     //Finish the round loop and at new line
     std::cout << "Currently you have: " << std::endl;
     printCurrentLine(indvWords, numWords);
     std::cout << "Please enter used character, quit to quit, or skip to re-enter knowns: " << std::endl;
-    std::getline(std::cin, lineHold, '\n');
+    std::getline(std::cin, lineHold);
     if (lineHold == "quit")
       break;
     else if (lineHold == "skip")
@@ -161,7 +171,7 @@ int main(int argc, char *argv[])
     std::cout << "You have tried: " << triedChars << std::endl;
 
     std::cout << "Please enter new format with filled knowns or quit to quit: " << std::endl;
-    std::getline(std::cin, lineHold, '\n');
+    std::getline(std::cin, lineHold);
     if (lineHold == "quit")
       break;
 
@@ -170,7 +180,7 @@ int main(int argc, char *argv[])
     {
       std::cout << "Not enough words, please try again" << std::endl;
       std::cout << "Please enter new format with filled knowns or quit to quit: " << std::endl;
-      std::getline(std::cin, lineHold, '\n');
+      std::getline(std::cin, lineHold);
       if (lineHold == "quit")
         break;
     }
@@ -190,23 +200,24 @@ int checkForMatch(std::vector<word> *wdArray, int numWords, std::string currWord
 {
   //Check each word for match and if there is a match add it to the word. Return the number of matches left in the lowest word.
   std::cerr << "Checking " << numWords << " words against " << currWord << std::endl;
-  uint32_t smallestSize = 100;
+  uint32_t smallestSize = MAX_MATCHES;
   int wordCount;
   for (wordCount = 0; wordCount < numWords; wordCount++)
   {
-    std::cerr << "Doing Word: " << currWord << std::endl;
-    if (wdArray->at(wordCount).topMatches.size() < 10 && std::regex_match(currWord, wdArray->at(wordCount).reg))
+    // std::cerr << "Doing Word: " << currWord << std::endl;
+    if (wdArray->at(wordCount).topMatches.size() < MAX_MATCHES && std::regex_match(currWord, wdArray->at(wordCount).reg))
     {
       wdArray->at(wordCount).topMatches.push_back(currWord);
-      std::cerr << "Updating regex to: " << currWord << std::endl;
+      std::cerr << "Updating match to: " << currWord << std::endl;
     }
-    if(wdArray->at(wordCount).topMatches.size() < smallestSize){
-      std::cerr << "Setting size: " <<  wdArray->at(wordCount).topMatches.size() << std::endl;
+    if (wdArray->at(wordCount).topMatches.size() < smallestSize)
+    {
+      // std::cerr << "Setting size: " << wdArray->at(wordCount).topMatches.size() << std::endl;
       smallestSize = wdArray->at(wordCount).topMatches.size();
     }
-    std::cerr << "Tested size: " << wdArray->at(wordCount).topMatches.size() << std::endl;    
+    // std::cerr << "Tested size: " << wdArray->at(wordCount).topMatches.size() << std::endl;
   }
-  return 10 - smallestSize;
+  return MAX_MATCHES - smallestSize;
 }
 
 int saveLine(std::vector<word> *wdArray, int numWords, std::string currLine)
@@ -263,8 +274,44 @@ void updateRegex(std::vector<word> *wdArray, int numWords, std::string knownChar
   std::string regString;
   for (wordCount = 0; wordCount < numWords; wordCount++)
   {
-    regString = std::regex_replace(wdArray->at(wordCount).wordFilled, std::regex("-"), std::string("[^" + knownChars + "]"));
-    wdArray->at(wordCount).reg = "^" + regString + "$";
-    std::cerr << "Updating regex to: " << "^" << regString << "$" << std::endl;
+    regString = "^" + std::regex_replace(wdArray->at(wordCount).wordFilled, std::regex("-"), std::string("[^" + knownChars + "]")) + "[^" + knownChars + "]";
+    wdArray->at(wordCount).reg = std::regex(regString);
+    std::cerr << "Updating regex to: "
+              << regString << std::endl;
+    wdArray->at(wordCount).topMatches.clear();
+  }
+}
+
+void printMatches(std::vector<word> wdArray, int numWords)
+{
+  int wordCounter;
+  uint32_t matchCounter;
+  std::string lineHold;
+  std::cout << "Top " << MAX_MATCHES << " Matches By Word" << std::endl;
+  for (matchCounter = 0; matchCounter < MAX_MATCHES; matchCounter++)
+  {
+    lineHold = std::to_string(matchCounter) + std::string(". ");
+    std::cout << lineHold << std::endl;
+    for (wordCounter = 0; wordCounter < numWords; wordCounter++)
+    {
+      if (wdArray.at(wordCounter).topMatches.size() > matchCounter)
+      {
+        std::cout << wdArray.at(wordCounter).topMatches.at(matchCounter)  << std::endl;
+      }
+      else
+      {
+        std::cout << wdArray.at(wordCounter).wordFilled  << std::endl;
+      }
+    }
+    std::cout << std::endl;
+  }
+}
+
+void clearMatches(std::vector<word> * wdArray, int numWords){
+  uint32_t counter;
+  for(counter = 0; counter < wdArray->size(); counter++){
+    while(wdArray->at(counter).topMatches.size()){
+      wdArray->at(counter).topMatches.at(wdArray->at(counter).topMatches.size() - 1).pop_back();
+    }
   }
 }

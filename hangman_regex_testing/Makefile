@@ -7,7 +7,7 @@ RM = rm -f
 CFLAGS = -Wall -Werror -ggdb -funroll-loops
 CXXFLAGS = -Wall -ggdb -funroll-loops
 
-LDFLAGS = 
+LDFLAGS = -std=c++11
 
 BIN = solve_hangman
 OBJS = solve_hangman.o 
