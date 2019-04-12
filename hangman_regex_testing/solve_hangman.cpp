@@ -149,6 +149,7 @@ int main(int argc, char *argv[])
       mostTopOpen = MAX_MATCHES;
     while (mostTopOpen && std::getline(fileInput, lineHold))
     {
+      lineHold = std::regex_replace(lineHold, std::regex("\r"), std::string(""));
       mostTopOpen = checkForMatch(&indvWords, numWords, lineHold);
     }
 
@@ -274,8 +275,8 @@ void updateRegex(std::vector<word> *wdArray, int numWords, std::string knownChar
   std::string regString;
   for (wordCount = 0; wordCount < numWords; wordCount++)
   {
-    regString = "^" + std::regex_replace(wdArray->at(wordCount).wordFilled, std::regex("-"), std::string("[^" + knownChars + "]")) + "[^" + knownChars + "]";
-    wdArray->at(wordCount).reg = std::regex(regString);
+    regString = std::regex_replace(wdArray->at(wordCount).wordFilled, std::regex("-"), std::string("[^" + knownChars + "]")) + "[\r]?";
+    wdArray->at(wordCount).reg = std::regex(regString, std::regex::icase);
     std::cerr << "Updating regex to: "
               << regString << std::endl;
     wdArray->at(wordCount).topMatches.clear();
@@ -290,17 +291,16 @@ void printMatches(std::vector<word> wdArray, int numWords)
   std::cout << "Top " << MAX_MATCHES << " Matches By Word" << std::endl;
   for (matchCounter = 0; matchCounter < MAX_MATCHES; matchCounter++)
   {
-    lineHold = std::to_string(matchCounter) + std::string(". ");
-    std::cout << lineHold << std::endl;
+    std::cout << matchCounter+1 << ". ";
     for (wordCounter = 0; wordCounter < numWords; wordCounter++)
     {
       if (wdArray.at(wordCounter).topMatches.size() > matchCounter)
       {
-        std::cout << wdArray.at(wordCounter).topMatches.at(matchCounter)  << std::endl;
+        std::cout << wdArray.at(wordCounter).topMatches.at(matchCounter) + " ";
       }
       else
       {
-        std::cout << wdArray.at(wordCounter).wordFilled  << std::endl;
+        std::cout << wdArray.at(wordCounter).wordFilled + " ";
       }
     }
     std::cout << std::endl;
