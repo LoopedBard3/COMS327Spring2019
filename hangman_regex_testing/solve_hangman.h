@@ -14,7 +14,7 @@
 
 class word {
     public:
-        word() : topMatches(10), wordFormat(""), wordFilled(""), reg(), numTopMatches(0)
+        word() : topMatches(), wordFormat(""), wordFilled(""), reg("", std::regex_constants::icase), numTopMatches(0)
         {}
         std::vector<std::string> topMatches;
         std::string wordFormat;
@@ -23,6 +23,7 @@ class word {
         int numTopMatches;
 };
 void printCurrentLine(std::vector<word> wdArray, int numWords);
+void printMatches(std::vector<word> wdArray, int numWords);
 void updateRegex(std::vector<word> * wdArray, int numWords, std::string knownChars);
 int checkForMatch(std::vector<word> * wdArray, int numWords, std::string currWord);
 int saveLine(std::vector<word> * wdArray, int numWords, std::string currLine);
