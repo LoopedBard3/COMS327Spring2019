@@ -1,17 +1,0 @@
-0
-Saving format: ---------
-Updating regex to: [^][^][^][^][^][^][^][^][^][]?$
-0
-Saving filled format: a-----a--
-Updating regex to: a[^a][^a][^a][^a][^a]a[^a][^a][]?$
-0
-Saving filled format: a---o-a--
-Updating regex to: a[^ao][^ao][^ao]o[^ao]a[^ao][^ao][]?$
-0
-Saving filled format: a---o-a-e
-Updating regex to: a[^aoe][^aoe][^aoe]o[^aoe]a[^aoe]e[]?$
-Updating regex to: a[^aoei][^aoei][^aoei]o[^aoei]a[^aoei]e[]?$
-Updating regex to: a[^aoeit][^aoeit][^aoeit]o[^aoeit]a[^aoeit]e[]?$
-0
-Saving filled format: an--o-a-e
-Updating regex to: an[^aoeitn][^aoeitn]o[^aoeitn]a[^aoeitn]e[]?$

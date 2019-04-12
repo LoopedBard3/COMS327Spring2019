@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
         case 'n':
           if ((!longArg && argv[i][2]) ||
-              (longArg && strcmp(argv[i], "-numword")) ||
+              (longArg && strcmp(argv[i], "-numwords")) ||
               argc < ++i + 1 /* No more arguments */ ||
               !sscanf(argv[i], "%d", &numWords))
           {
@@ -151,8 +151,6 @@ int main(int argc, char *argv[])
     printMatches(indvWords, numWords);
 
     //Finish the round loop and at new line
-    std::cout << "Currently you have: " << std::endl;
-    printCurrentLine(indvWords, numWords);
     std::cout << "Please enter used character, quit to quit, or skip to re-enter knowns: " << std::endl;
     std::getline(std::cin, lineHold);
     if (lineHold == "quit")
@@ -166,6 +164,8 @@ int main(int argc, char *argv[])
     std::cout << "You have tried: " << triedChars << std::endl;
 
     std::cout << "Please enter new format with filled knowns, SAME for no changes, or quit to quit: " << std::endl;
+    std::cout << "Currently you have: " << std::endl;
+    printCurrentLine(indvWords, numWords);
     std::getline(std::cin, lineHold);
     if (lineHold == "quit")
       break;
