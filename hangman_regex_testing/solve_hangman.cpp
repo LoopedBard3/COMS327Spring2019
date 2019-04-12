@@ -1,11 +1,5 @@
 #include "solve_hangman.h"
 
-#define malloc(size) ({          \
-  void *_tmp;                    \
-  assert((_tmp = malloc(size))); \
-  _tmp;                          \
-})
-
 #define MAX_MATCHES 10
 
 void usage(char *name)
@@ -107,12 +101,11 @@ int main(int argc, char *argv[])
   {
     if (fileInput.is_open())
       fileInput.close();
-    std::cout << "You made it to the end!!" << std::endl;
+    std::cout << "No words to solve!!" << std::endl;
     return 0;
   };
 
-  //Malloc the word array to the correct size
-  //indvWords = (word *)malloc(numWords * sizeof(word));
+  //Initialize the word array
   word wd;
   for (i = 0; i < numWords; i++)
   {
@@ -172,7 +165,7 @@ int main(int argc, char *argv[])
       break;
 
     //Try over and over to get enough lines
-    while (saveLine(&indvWords, numWords, lineHold) < numWords && (lineHold != "SAME" || lineHold != "same"))
+    while (lineHold != "SAME" && lineHold != "same" && saveLine(&indvWords, numWords, lineHold) < numWords)
     {
       std::cout << "Not enough words, please try again" << std::endl;
       std::cout << "Please enter new format with filled knowns or quit to quit: " << std::endl;
