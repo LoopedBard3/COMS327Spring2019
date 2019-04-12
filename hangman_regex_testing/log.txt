@@ -1,133 +1,33 @@
 0
-Saving format: -----
-1
 Saving format: ---------
-
-
-
-
-
-
-
-Updating regex to: [^][^][^][^][^][]?
 Updating regex to: [^][^][^][^][^][^][^][^][^][]?
-Checking 2 words against 2
-Checking 2 words against 1080
-Checking 2 words against &c
-Checking 2 words against 10-point
-Checking 2 words against 10th
-Checking 2 words against 11-point
-Checking 2 words against 12-point
-Checking 2 words against 16-point
-Checking 2 words against 18-point
-Checking 2 words against 1st
-Checking 2 words against 2,4,5-t
-Checking 2 words against 2,4-d
-Updating match to: 2,4-d
-Checking 2 words against 20-point
-Checking 2 words against 2D
-Checking 2 words against 2nd
-Checking 2 words against 30-30
-Checking 2 words against 3D
-Checking 2 words against 3-D
-Checking 2 words against 3M
-Checking 2 words against 3rd
-Checking 2 words against 48-point
-Checking 2 words against 4-D
-Checking 2 words against 4GL
-Checking 2 words against 4H
-Checking 2 words against 4th
-Checking 2 words against 5-point
-Checking 2 words against 5-T
-Checking 2 words against 5th
-Checking 2 words against 6-point
-Checking 2 words against 6th
-Checking 2 words against 7-point
-Checking 2 words against 7th
-Checking 2 words against 8-point
-Checking 2 words against 8th
-Checking 2 words against 9-point
-Checking 2 words against 9th
-Checking 2 words against a
-Checking 2 words against a'
-Checking 2 words against a-
-Checking 2 words against A&M
-Checking 2 words against A&P
-Checking 2 words against A.
-Checking 2 words against A.A.A.
-Checking 2 words against A.B.
-Checking 2 words against A.B.A.
-Checking 2 words against A.C.
-Checking 2 words against A.D.
-Checking 2 words against A.D.C.
-Checking 2 words against A.F.
-Checking 2 words against A.F.A.M.
-Checking 2 words against A.G.
-Checking 2 words against A.H.
-Checking 2 words against A.I.
-Checking 2 words against A.I.A.
-Checking 2 words against A.I.D.
-Checking 2 words against A.L.
-Checking 2 words against A.L.P.
-Checking 2 words against A.M.
-Checking 2 words against A.M.A.
-Checking 2 words against A.M.D.G.
-Checking 2 words against A.N.
-Checking 2 words against a.p.
-Checking 2 words against a.r.
-Checking 2 words against A.R.C.S.
-Checking 2 words against A.U.
-Checking 2 words against A.U.C.
-Checking 2 words against A.V.
-Checking 2 words against a.w.
-Checking 2 words against A.W.O.L.
-Checking 2 words against A/C
-Checking 2 words against A/F
-Checking 2 words against A/O
-Checking 2 words against A/P
-Checking 2 words against A/V
-Checking 2 words against A1
-Checking 2 words against A-1
-Checking 2 words against A4
-Checking 2 words against A5
-Checking 2 words against AA
-Checking 2 words against AAA
-Checking 2 words against AAAA
-Checking 2 words against AAAAAA
-Checking 2 words against AAAL
-Checking 2 words against AAAS
-Checking 2 words against Aaberg
-Checking 2 words against Aachen
-Checking 2 words against AAE
-Checking 2 words against AAEE
-Checking 2 words against AAF
-Checking 2 words against AAG
-Checking 2 words against aah
-Checking 2 words against aahed
-Checking 2 words against aahing
-Checking 2 words against aahs
-Checking 2 words against AAII
-Checking 2 words against aal
-Checking 2 words against Aalborg
-Checking 2 words against Aalesund
-Checking 2 words against aalii
-Checking 2 words against aaliis
-Checking 2 words against aals
-Checking 2 words against Aalst
-Checking 2 words against Aalto
-Checking 2 words against AAM
-Checking 2 words against AAMSI
-Checking 2 words against Aandahl
-Checking 2 words against A-and-R
-Checking 2 words against Aani
-Checking 2 words against AAO
-Checking 2 words against AAP
-Checking 2 words against AAPSS
-Checking 2 words against Aaqbiye
-Checking 2 words against Aar
-Checking 2 words against Aara
-Checking 2 words against Aarau
-Checking 2 words against AARC
-Checking 2 words against aardvark
-Checking 2 words against aardvarks
-Updating match to: aardvarks
+0
+Saving filled format: -a--a----
+Updating regex to: [^a]a[^a][^a]a[^a][^a][^a][^a][]?
+0
+Saving filled format: o
+Updating regex to: o[]?
+0
+Saving filled format: -a--a--o-
+Updating regex to: [^ao]a[^ao][^ao]a[^ao][^ao]o[^ao][]?
+0
+Saving filled format: -a--a-io-
+Updating regex to: [^aoi]a[^aoi][^aoi]a[^aoi]io[^aoi][]?
+0
+Saving filled format: -a--a-ion
+Updating regex to: [^aoin]a[^aoin][^aoin]a[^aoin]ion[]?
+0
+Saving filled format: -a--ation
+Updating regex to: [^aoint]a[^aoint][^aoint]ation[]?
+0
+Saving filled format: -a--ation
+Updating regex to: [^aoints]a[^aoints][^aoints]ation[]?
+0
+Saving filled format: -al-ation
+Updating regex to: [^aointsl]al[^aointsl]ation[]?
+0
+Saving filled format: -al-ation
+Updating regex to: [^aointslp]al[^aointslp]ation[]?
+0
+Saving filled format: -al-ation
+Updating regex to: [^aointslpc]al[^aointslpc]ation[]?

@@ -6,7 +6,7 @@
   _tmp;                          \
 })
 
-#define MAX_MATCHES 1
+#define MAX_MATCHES 10
 
 void usage(char *name)
 {
@@ -117,7 +117,6 @@ int main(int argc, char *argv[])
   for (i = 0; i < numWords; i++)
   {
     indvWords.push_back(wd);
-    // std::cerr << i << std::endl;
   }
 
   //at the starting formats
@@ -126,19 +125,15 @@ int main(int argc, char *argv[])
   std::getline(std::cin, lineHold);
   numWords = saveLine(&indvWords, numWords, lineHold);
 
+  //Destroy carriage returns in the file?
+  //system("sed -i \'s/\\r//g \'" + dictionaryPath); 
+
   //Start round loop
   while (1)
   {
     if (lineHold == "quit")
       break;
 
-    std::cerr << std::endl
-              << std::endl
-              << std::endl
-              << std::endl
-              << std::endl
-              << std::endl
-              << std::endl;
     //Put the regex into the strings
     updateRegex(&indvWords, numWords, triedChars);
     clearMatches(&indvWords, numWords);
@@ -171,13 +166,13 @@ int main(int argc, char *argv[])
       triedChars += lineHold;
     std::cout << "You have tried: " << triedChars << std::endl;
 
-    std::cout << "Please enter new format with filled knowns or quit to quit: " << std::endl;
+    std::cout << "Please enter new format with filled knowns, SAME for no changes, or quit to quit: " << std::endl;
     std::getline(std::cin, lineHold);
     if (lineHold == "quit")
       break;
 
     //Try over and over to get enough lines
-    while (saveLine(&indvWords, numWords, lineHold) < numWords)
+    while (saveLine(&indvWords, numWords, lineHold) < numWords && (lineHold != "SAME" || lineHold != "same"))
     {
       std::cout << "Not enough words, please try again" << std::endl;
       std::cout << "Please enter new format with filled knowns or quit to quit: " << std::endl;
@@ -200,23 +195,18 @@ int main(int argc, char *argv[])
 int checkForMatch(std::vector<word> *wdArray, int numWords, std::string currWord)
 {
   //Check each word for match and if there is a match add it to the word. Return the number of matches left in the lowest word.
-  std::cerr << "Checking " << numWords << " words against " << currWord << std::endl;
   uint32_t smallestSize = MAX_MATCHES;
   int wordCount;
   for (wordCount = 0; wordCount < numWords; wordCount++)
   {
-    // std::cerr << "Doing Word: " << currWord << std::endl;
     if (wdArray->at(wordCount).topMatches.size() < MAX_MATCHES && std::regex_match(currWord, wdArray->at(wordCount).reg))
     {
       wdArray->at(wordCount).topMatches.push_back(currWord);
-      std::cerr << "Updating match to: " << currWord << std::endl;
     }
     if (wdArray->at(wordCount).topMatches.size() < smallestSize)
     {
-      // std::cerr << "Setting size: " << wdArray->at(wordCount).topMatches.size() << std::endl;
       smallestSize = wdArray->at(wordCount).topMatches.size();
     }
-    // std::cerr << "Tested size: " << wdArray->at(wordCount).topMatches.size() << std::endl;
   }
   return MAX_MATCHES - smallestSize;
 }
