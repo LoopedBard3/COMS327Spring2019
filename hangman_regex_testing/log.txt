@@ -2,14 +2,29 @@
 1
 2
 0
-Saving format: -----
-1
-Saving format: -----
-2
 Saving format: ----
-0
-Saving filled format: aa-aa
 1
-Saving filled format: aaa-a-
+Saving format: --
 2
+Saving format: -----
+Updating regex to: [^][^][^][^]
+Updating regex to: [^][^]
+Updating regex to: [^][^][^][^][^]
+0
 Saving filled format: --a-
+1
+Saving filled format: a-
+2
+Saving filled format: aa---
+Updating regex to: [^a][^a]a[^a]
+Updating regex to: a[^a]
+Updating regex to: aa[^a][^a][^a]
+0
+Saving filled format: abab
+1
+Saving filled format: ab
+2
+Saving filled format: aa--
+Updating regex to: abab
+Updating regex to: ab
+Updating regex to: aa[^ab][^ab]

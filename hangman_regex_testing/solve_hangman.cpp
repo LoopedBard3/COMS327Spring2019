@@ -126,11 +126,16 @@ int main(int argc, char *argv[])
   //Start round loop
   while (1)
   {
+    if (lineHold == "quit")
+        break;
+    //Put the regex into the strings
+    updateRegex(&indvWords, numWords, triedChars);
+
     //Print out the dictionary for testing
-    // while (std::getline(fileInput, lineHold) && mostTopOpen)
-    // {
-    //   mostTopOpen = checkForMatch(indvWords, numWords, lineHold);
-    // }
+    while (mostTopOpen && std::getline(fileInput, lineHold))
+    {
+      mostTopOpen = checkForMatch(&indvWords, numWords, lineHold);
+    }
 
     //Print out the top matches for the round
 
@@ -147,17 +152,29 @@ int main(int argc, char *argv[])
       std::cout << "Error atting character, reenter knowns and try again: " << std::endl;
     else
       triedChars += lineHold;
-    std::cout << "Please enter new format with filled knowns: " << std::endl;
+    std::cout << "You have tried: " << triedChars << std::endl;
+    
+    std::cout << "Please enter new format with filled knowns or quit to quit: " << std::endl;
     std::getline(std::cin, lineHold, '\n');
-    numWords = saveLine(&indvWords, numWords, lineHold);
+    if (lineHold == "quit")
+      break;
+
+    //Try over and over to get enough lines
+    while(saveLine(&indvWords, numWords, lineHold) < numWords ){
+      std::cout << "Not enough words, please try again" << std::endl;
+      std::cout << "Please enter new format with filled knowns or quit to quit: " << std::endl;
+      std::getline(std::cin, lineHold, '\n');
+      if (lineHold == "quit")
+        break;
+    }
   }
+
   //Close everything and print out that we finished it.
   if (fileInput.is_open())
     fileInput.close();
   for(;indvWords.size();){
     indvWords.pop_back();
   }
-  std::cout << "You made it to the end!!" << std::endl;
   return 0;
 }
 
@@ -179,6 +196,7 @@ int saveLine(std::vector<word> * wdArray, int numWords, std::string currLine)
     if (wdArray->at(counter).wordFormat.size() == 0)
     {
       wdArray->at(counter).wordFormat = std::string(format);
+      wdArray->at(counter).wordFilled = std::string(format);
       std::cerr << "Saving format: " << wdArray->at(counter).wordFormat << std::endl;
     }
     else
@@ -213,4 +231,14 @@ void printCurrentLine(std::vector<word> wdArray, int numWords)
     }
   }
   std::cout << std::endl;
+}
+
+void updateRegex(std::vector<word> * wdArray, int numWords, std::string knownChars){
+  int wordCount;
+  std::string regString;
+  for(wordCount = 0; wordCount < numWords; wordCount++){
+    regString = std::regex_replace(wdArray->at(wordCount).wordFilled, std::regex("-"), std::string("[^" + knownChars + "]"));
+    wdArray->at(wordCount).reg = regString;
+    std::cerr << "Updating regex to: " << regString << std::endl;
+  }
 }
