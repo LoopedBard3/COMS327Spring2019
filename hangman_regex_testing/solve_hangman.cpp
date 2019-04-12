@@ -4,7 +4,7 @@
 
 void usage(char *name)
 {
-  fprintf(stderr,
+  fprintf(stdout,
           "Usage: %s [-d|--dict <dictionary file>] [-n|--numwords <num words>]\n",
           name);
 
@@ -66,6 +66,15 @@ int main(int argc, char *argv[])
           }
           break;
 
+        case 'h':
+          if ((!longArg && argv[i][2]) ||
+              (longArg && strcmp(argv[i], "-help")))
+          {
+            usage(argv[0]);
+          }
+          usage(argv[0]);
+          break;
+
         default:
           usage(argv[0]);
         }
@@ -118,9 +127,6 @@ int main(int argc, char *argv[])
   std::getline(std::cin, lineHold);
   numWords = saveLine(&indvWords, numWords, lineHold);
 
-  //Destroy carriage returns in the file?
-  //system("sed -i \'s/\\r//g \'" + dictionaryPath); 
-
   //Start round loop
   while (1)
   {
@@ -133,7 +139,7 @@ int main(int argc, char *argv[])
 
     fileInput.clear();
     fileInput.seekg(0, std::ios::beg);
-    //Check for matches
+    //Check for matches but also replace carriage returns
       mostTopOpen = MAX_MATCHES;
     while (mostTopOpen && std::getline(fileInput, lineHold))
     {
@@ -258,7 +264,7 @@ void updateRegex(std::vector<word> *wdArray, int numWords, std::string knownChar
   std::string regString;
   for (wordCount = 0; wordCount < numWords; wordCount++)
   {
-    regString = std::regex_replace(wdArray->at(wordCount).wordFilled, std::regex("-"), std::string("[^" + knownChars + "]")) + "[\r]?";
+    regString = std::regex_replace(wdArray->at(wordCount).wordFilled, std::regex("-"), std::string("[^" + knownChars + "]")) + "[\r]?$";
     wdArray->at(wordCount).reg = std::regex(regString, std::regex::icase);
     std::cerr << "Updating regex to: "
               << regString << std::endl;
