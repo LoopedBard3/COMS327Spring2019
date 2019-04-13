@@ -8,6 +8,8 @@
 # include "object.h" 
 # include "dungeon.h"
 
+#define BACKPACKSIZE 10
+
 typedef enum equipable_location {
   location_WEAPON,
   location_OFFHAND,
@@ -26,12 +28,14 @@ typedef enum equipable_location {
 
 class pc : public character {
  public:
-  pc() {}
+  pc() {
+    
+  }
   ~pc() {}
   terrain_type known_terrain[DUNGEON_Y][DUNGEON_X];
   uint8_t visible[DUNGEON_Y][DUNGEON_X];
-  object* backpack[10];
-  object* equipped_items[10];
+  object* backpack[BACKPACKSIZE];
+  object* equipped_items[TOTAL_EQUIPS];
 };
 
 void pc_delete(pc *pc);
