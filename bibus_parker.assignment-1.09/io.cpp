@@ -14,7 +14,6 @@
 #include "npc.h"
 #include "character.h"
 
-
 /* Same ugly hack we did in path.c */
 static dungeon *thedungeon;
 
@@ -782,7 +781,7 @@ uint32_t io_teleport_pc(dungeon *d)
     } while (charpair(dest) || mappair(dest) < ter_floor);
   }
 
-  if (charpair(dest) && charpair(dest) != d->PC)
+  if ((charpair(dest) && charpair(dest) != d->PC) || objpair(dest))
   {
     io_queue_message("Teleport failed.  Destination occupied.");
   }
@@ -1153,6 +1152,7 @@ void io_handle_input(dungeon *d)
 
 //More assignment 1.09 methods
 //Methods for assignment 1.09
+//TODO MAYBE: Implement scrolling for larger backpacks
 void show_inventory(dungeon *d)
 {
   char *line;
@@ -1207,7 +1207,7 @@ void show_inventory(dungeon *d)
           mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "You are already at the bottom!");
         break;
       case 'I':
-        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the description to view or s for selector description: ");
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter a number or s for the * then press enter to view description: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
@@ -1222,9 +1222,12 @@ void show_inventory(dungeon *d)
           }
           break;
         }
-        try{
+        try
+        {
           input = std::stoi(line);
-        }catch(...){
+        }
+        catch (...)
+        {
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
         }
@@ -1237,7 +1240,7 @@ void show_inventory(dungeon *d)
         }
         break;
       case 'x':
-        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to delete or s for selected object: ");
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter a number or s for * then press enter to expunge the object: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
@@ -1252,9 +1255,12 @@ void show_inventory(dungeon *d)
           }
           break;
         }
-        try{
+        try
+        {
           input = std::stoi(line);
-        }catch(...){
+        }
+        catch (...)
+        {
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
         }
@@ -1267,7 +1273,7 @@ void show_inventory(dungeon *d)
         }
         break;
       case 'd':
-        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to drop or s for selected object: ");
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter a number or s for * then press enter to drop the object: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
@@ -1277,14 +1283,17 @@ void show_inventory(dungeon *d)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           else
           {
-            drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] ,d->PC->backpack, selector);
+            drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]], d->PC->backpack, selector);
             refresh = 1;
           }
           break;
         }
-        try{
+        try
+        {
           input = std::stoi(line);
-        }catch(...){
+        }
+        catch (...)
+        {
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
         }
@@ -1292,12 +1301,12 @@ void show_inventory(dungeon *d)
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
         else
         {
-          drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] ,d->PC->backpack, input);
+          drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]], d->PC->backpack, input);
           refresh = 1;
         }
         break;
-        case 'w':
-        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to equip or s for selected object: ");
+      case 'w':
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter a number or s for * then press enter to equip the object: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
@@ -1312,9 +1321,12 @@ void show_inventory(dungeon *d)
           }
           break;
         }
-        try{
+        try
+        {
           input = std::stoi(line);
-        }catch(...){
+        }
+        catch (...)
+        {
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
         }
@@ -1390,7 +1402,7 @@ void show_equipped(dungeon *d)
           mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "You are already at the bottom!");
         break;
       case 'I':
-        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the description to view or s for selector description: ");
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter a number or s for * then press enter to view description: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
@@ -1405,9 +1417,12 @@ void show_equipped(dungeon *d)
           }
           break;
         }
-        try{
+        try
+        {
           input = line[0] - 97;
-        }catch(...){
+        }
+        catch (...)
+        {
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
         }
@@ -1420,7 +1435,7 @@ void show_equipped(dungeon *d)
         }
         break;
       case 'x':
-        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to delete or s for selected object: ");
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter a number or s for * then press enter to expunge the object: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
@@ -1435,9 +1450,12 @@ void show_equipped(dungeon *d)
           }
           break;
         }
-        try{
+        try
+        {
           input = line[0] - 97;
-        }catch(...){
+        }
+        catch (...)
+        {
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
         }
@@ -1450,7 +1468,7 @@ void show_equipped(dungeon *d)
         }
         break;
       case 'd':
-        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to drop or s for selected object: ");
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter a number or s for * then press enter to drop the object: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
@@ -1460,14 +1478,17 @@ void show_equipped(dungeon *d)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           else
           {
-            drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] ,d->PC->equipped_items, selector);
+            drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]], d->PC->equipped_items, selector);
             refresh = 1;
           }
           break;
         }
-        try{
+        try
+        {
           input = line[0] - 97;
-        }catch(...){
+        }
+        catch (...)
+        {
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
         }
@@ -1475,12 +1496,12 @@ void show_equipped(dungeon *d)
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
         else
         {
-          drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] ,d->PC->equipped_items, input);
+          drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]], d->PC->equipped_items, input);
           refresh = 1;
         }
         break;
       case 't':
-        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to unequip or s for selected object: ");
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter a number or s for * then press enter to unequip the object: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
@@ -1490,15 +1511,21 @@ void show_equipped(dungeon *d)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           else
           {
-          if(d->PC->unequip_object(selector) != 0){
-          mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Unable to unequip, try clearing space in backpack.");
-          }else refresh = 1;
+            if (d->PC->unequip_object(selector) != 0)
+            {
+              mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Unable to unequip, try clearing space in backpack.");
+            }
+            else
+              refresh = 1;
           }
           break;
         }
-        try{
+        try
+        {
           input = line[0] - 97;
-        }catch(...){
+        }
+        catch (...)
+        {
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
         }
@@ -1506,9 +1533,12 @@ void show_equipped(dungeon *d)
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
         else
         {
-          if(d->PC->unequip_object(input) != 0){
-          mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Unable to unequip, try clearing space in backpack.");
-          }else refresh = 1;
+          if (d->PC->unequip_object(input) != 0)
+          {
+            mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Unable to unequip, try clearing space in backpack.");
+          }
+          else
+            refresh = 1;
         }
         break;
       default:
@@ -1540,26 +1570,199 @@ void display_object_desc(object *list[], int pos) //Position must be verified ex
     ;
 }
 
-void delete_object(object* list[], int pos){
+void delete_object(object *list[], int pos)
+{
   if (list[pos] == NULL)
     return;
   delete list[pos];
   list[pos] = NULL;
 }
 
-void drop_object(object **spot,object* list[], int pos){
+void drop_object(object **spot, object *list[], int pos)
+{
   if (list[pos] == NULL)
     return;
-  if(*spot == NULL){
+  if (*spot == NULL)
+  {
     *spot = list[pos];
     list[pos] = NULL;
-  }else{
+  }
+  else
+  {
     object *spot_hold = *spot;
-    while(spot_hold->next != NULL){
+    while (spot_hold->next != NULL)
+    {
       spot_hold = spot_hold->next;
     }
     std::cerr << "At null next " << spot_hold->get_name() << std::endl;
     spot_hold->next = list[pos];
-    list[pos] = NULL; 
+    list[pos] = NULL;
   }
+}
+
+uint32_t io_targeting(dungeon *d)
+{
+  pair_t dest;
+  int c;
+  fd_set readfs;
+  struct timeval tv;
+
+  io_display(d);
+  mvprintw(0, 0,
+           "Choose a monster. 'v' to view description, esc to quit.");
+
+  dest[dim_y] = d->PC->position[dim_y];
+  dest[dim_x] = d->PC->position[dim_x];
+
+  mvaddch(dest[dim_y] + 1, dest[dim_x], '*');
+  refresh();
+
+  do
+  {
+    do
+    {
+      FD_ZERO(&readfs);
+      FD_SET(STDIN_FILENO, &readfs);
+
+      tv.tv_sec = 0;
+      tv.tv_usec = 125000; /* An eigth of a second */
+
+      io_redisplay_non_terrain(d, dest);
+    } while (!select(STDIN_FILENO + 1, &readfs, NULL, NULL, &tv));
+    /* Can simply draw the terrain when we move the cursor away, *
+     * because if it is a character or object, the refresh       *
+     * function will fix it for us.                              */
+    switch (mappair(dest))
+    {
+    case ter_wall:
+    case ter_wall_immutable:
+    case ter_unknown:
+      mvaddch(dest[dim_y] + 1, dest[dim_x], ' ');
+      break;
+    case ter_floor:
+    case ter_floor_room:
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '.');
+      break;
+    case ter_floor_hall:
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '#');
+      break;
+    case ter_debug:
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '*');
+      break;
+    case ter_stairs_up:
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '<');
+      break;
+    case ter_stairs_down:
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '>');
+      break;
+    default:
+      /* Use zero as an error symbol, since it stands out somewhat, and it's *
+  * not otherwise used.                                                 */
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '0');
+    }
+    switch ((c = getch()))
+    {
+    case '7':
+    case 'y':
+    case KEY_HOME:
+      if (dest[dim_y] != 1)
+      {
+        dest[dim_y]--;
+      }
+      if (dest[dim_x] != 1)
+      {
+        dest[dim_x]--;
+      }
+      break;
+    case '8':
+    case 'k':
+    case KEY_UP:
+      if (dest[dim_y] != 1)
+      {
+        dest[dim_y]--;
+      }
+      break;
+    case '9':
+    case 'u':
+    case KEY_PPAGE:
+      if (dest[dim_y] != 1)
+      {
+        dest[dim_y]--;
+      }
+      if (dest[dim_x] != DUNGEON_X - 2)
+      {
+        dest[dim_x]++;
+      }
+      break;
+    case '6':
+    case 'l':
+    case KEY_RIGHT:
+      if (dest[dim_x] != DUNGEON_X - 2)
+      {
+        dest[dim_x]++;
+      }
+      break;
+    case '3':
+    case 'n':
+    case KEY_NPAGE:
+      if (dest[dim_y] != DUNGEON_Y - 2)
+      {
+        dest[dim_y]++;
+      }
+      if (dest[dim_x] != DUNGEON_X - 2)
+      {
+        dest[dim_x]++;
+      }
+      break;
+    case '2':
+    case 'j':
+    case KEY_DOWN:
+      if (dest[dim_y] != DUNGEON_Y - 2)
+      {
+        dest[dim_y]++;
+      }
+      break;
+    case '1':
+    case 'b':
+    case KEY_END:
+      if (dest[dim_y] != DUNGEON_Y - 2)
+      {
+        dest[dim_y]++;
+      }
+      if (dest[dim_x] != 1)
+      {
+        dest[dim_x]--;
+      }
+      break;
+    case '4':
+    case 'h':
+    case KEY_LEFT:
+      if (dest[dim_x] != 1)
+      {
+        dest[dim_x]--;
+      }
+      break;
+    }
+    if (c == 'v')
+    {
+      if (is_illuminated(d->PC, pos[dim_y], pos[dim_x]) && charpair(dest)){
+        display_monster_desc(d, dest);
+      }else if(is_illuminated(d->PC, pos[dim_y], pos[dim_x]) && objpair(dest)){
+        display_object_desc(d, dest);
+      }else
+        io_queue_message("No known entity, cannot show description");
+    }
+  } while (c != 27);
+
+  io_display(d);
+
+  return 0;
+}
+
+void display_monster_desc(dungeon *d, pair_t pos){
+  
+}
+
+void display_object_desc(dungeon *d, pair_t pos){
+
 }

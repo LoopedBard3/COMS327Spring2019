@@ -15,6 +15,9 @@ void io_queue_message(const char *format, ...);
 void show_inventory(dungeon *d);
 void show_equipped(dungeon *d);
 void display_object_desc(object* list[], int pos);
+void display_object_desc(dungeon *d, pair_t pos);
+void display_monster_desc(dungeon *d, pair_t pos);
 void delete_object(object* list[], int pos);
 void drop_object(object **spot,object* list[], int pos);
+uint32_t io_targeting(dungeon *d);
 #endif
