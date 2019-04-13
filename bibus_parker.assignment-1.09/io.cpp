@@ -1157,15 +1157,16 @@ void io_handle_input(dungeon *d)
 //Methods for assignment 1.09
 void show_inventory(dungeon *d)
 {
-  char * line;
+  char *line;
   uint32_t count = 0;
   uint32_t selector = 0;
   int input = 0;
   int refresh = 1;
   /* Get a linear list of monsters */
-  line = (char*) malloc(5 * sizeof(char));
+  line = (char *)malloc(5 * sizeof(char));
   while (input != 27 && refresh)
   {
+    clear();
     for (count = 0, selector = 0; count < PC_BACKPACKSIZE; count++)
     {
       mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-2d. %-60s", count, "");
@@ -1176,7 +1177,7 @@ void show_inventory(dungeon *d)
     mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");
     mvprintw(count + MENU_HEIGHT_OFFSET + 1, MENU_WIDTH_OFFSET, " %-60s ", "Hit escape to continue.");
     refresh = 0;
-    while (!refresh && (input = getch()) != 27 /* escape */ )
+    while (!refresh && (input = getch()) != 27 /* escape */)
     {
       switch (input)
       {
@@ -1210,17 +1211,31 @@ void show_inventory(dungeon *d)
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the description to view or s for selector description: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
-        if(strstr(line, "s") || strstr(line, "S")){
 
-          if(selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL) mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "Invalid location enter new command.");
-          else  display_desc(d, selector);//display_desc(d->PC->backpack, selector);
-          refresh = 1;
+        if (strstr(line, "s") || strstr(line, "S"))
+        {
+          if (selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL)
+            mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          else
+          {
+            display_object_desc(d->PC->backpack, selector);
+            refresh = 1;
+          }
           break;
         }
-        input = std::stoi(line);
-        if(input < 0 || input >= PC_BACKPACKSIZE || d->PC->backpack[input] == NULL) mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "Invalid location enter new command.");
-        else display_desc(d, input);
-        refresh = 1;
+        try{
+          input = std::stoi(line);
+        }catch(...){
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          break;
+        }
+        if (input < 0 || input >= PC_BACKPACKSIZE || d->PC->backpack[input] == NULL)
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+        else
+        {
+          display_object_desc(d->PC->backpack, input);
+          refresh = 1;
+        }
         break;
       default:
         break;
@@ -1235,21 +1250,22 @@ void show_inventory(dungeon *d)
 // static void show_equipment(dungeon *d){
 
 // }
-//void display_desc(object* list[], int pos) 
-void display_desc(dungeon *d, int pos)  //Position must be verified externally
+
+void display_object_desc(object *list[], int pos) //Position must be verified externally
 {
-  if(d->PC->backpack[pos] == NULL) return;
+  if (list[pos] == NULL)
+    return;
   int count = 0, input;
   std::string line;
-  std::stringstream stream(d->PC->backpack[pos]->get_desc_string());
-  // std::stringstream stream(list[pos]->get_desc_string());
-  while(std::getline(stream, line))
+  std::stringstream stream(list[pos]->get_desc_string());
+  clear();
+  while (std::getline(stream, line))
   {
-    mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "%-65s", line.c_str());
+    mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", line.c_str());
     count++;
   }
-  mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "%-65s ", "");
-  mvprintw(count + MENU_HEIGHT_OFFSET + 1, MENU_WIDTH_OFFSET, "%-65s ", "Hit escape to continue.");
+  mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", "");
+  mvprintw(count + MENU_HEIGHT_OFFSET + 1, 0, "%-80s", "Hit escape to continue.");
   while ((input = getch()) != 27 /* escape */)
-  ;
+    ;
 }
