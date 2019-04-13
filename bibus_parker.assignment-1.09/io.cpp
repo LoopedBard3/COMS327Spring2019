@@ -1171,7 +1171,7 @@ void show_inventory(dungeon *d)
     {
       mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-2d. %-60s", count, "");
       if (d->PC->backpack[count])
-        mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET + 5, "%-60s ", d->PC->backpack[count]->get_name());
+        mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET + 5, "(%-5s) %-60s ", d->PC->backpack[count]->get_type_str().c_str(), d->PC->backpack[count]->get_name());
     }
     mvprintw(MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "*");
     mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");

@@ -40,6 +40,7 @@ class object {
   int32_t get_speed();
   int32_t roll_dice();
   int32_t get_type();
+  std::string get_type_str();
   bool have_seen() { return seen; }
   void has_been_seen() { seen = true; }
   int16_t *get_position() { return position; }
@@ -48,6 +49,5 @@ class object {
 void gen_objects(dungeon *d);
 char object_get_symbol(object *o);
 void destroy_objects(dungeon *d);
-void stack_object(object *spot);
 
 #endif

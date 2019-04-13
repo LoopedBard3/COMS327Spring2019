@@ -5,6 +5,33 @@
 #include "dungeon.h"
 #include "utils.h"
 
+#define type_lu_entry(type) { #type, objtype_##type }
+static const struct {
+  const char *name;
+  const object_type_t value;
+} types_lookup[] = {
+  type_lu_entry(WEAPON),
+  type_lu_entry(OFFHAND),
+  type_lu_entry(RANGED),
+  type_lu_entry(LIGHT),
+  type_lu_entry(ARMOR),
+  type_lu_entry(HELMET),
+  type_lu_entry(CLOAK),
+  type_lu_entry(GLOVES),
+  type_lu_entry(BOOTS),
+  type_lu_entry(AMULET),
+  type_lu_entry(RING),
+  type_lu_entry(SCROLL),
+  type_lu_entry(BOOK),
+  type_lu_entry(FLASK),
+  type_lu_entry(GOLD),
+  type_lu_entry(AMMUNITION),
+  type_lu_entry(FOOD),
+  type_lu_entry(WAND),
+  type_lu_entry(CONTAINER),
+  { 0, objtype_no_type }
+};
+
 object::object(object_description &o, pair_t p, object *next) :
   name(o.get_name()),
   description(o.get_description()),
@@ -106,6 +133,16 @@ int32_t object::roll_dice()
   return damage.roll();
 }
 
+std::string object::get_type_str(){
+  int i;
+  for (i = 0; types_lookup[i].name; i++) {
+    if (type == types_lookup[i].value) {
+      return types_lookup[i].name;
+    }
+  }
+  return std::string("Mystical");
+}
+
 void destroy_objects(dungeon *d)
 {
   uint32_t y, x;
@@ -123,8 +160,4 @@ void destroy_objects(dungeon *d)
 int32_t object::get_type()
 {
   return type;
-}
-
-void stack_object(object *spot){
-  
 }
