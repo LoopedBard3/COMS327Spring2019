@@ -16,9 +16,9 @@ class object {
   const dice &damage;
   int32_t hit, dodge, defence, weight, speed, attribute, value;
   bool seen;
+ public:
   object *next;
   object_description &od;
- public:
   object(object_description &o, pair_t p, object *next);
   ~object();
   inline int32_t get_damage_base() const
@@ -48,5 +48,6 @@ class object {
 void gen_objects(dungeon *d);
 char object_get_symbol(object *o);
 void destroy_objects(dungeon *d);
+void stack_object(object *spot);
 
 #endif

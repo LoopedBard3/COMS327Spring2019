@@ -1269,6 +1269,36 @@ void show_inventory(dungeon *d)
           refresh = 1;
         }
         break;
+      case 'd':
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to drop or s for selected object: ");
+        getnstr(line, 5);
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
+
+        if (strstr(line, "s") || strstr(line, "S"))
+        {
+          if (selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL)
+            mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          else
+          {
+            drop_object(d->PC->backpack, selector);
+            refresh = 1;
+          }
+          break;
+        }
+        try{
+          input = std::stoi(line);
+        }catch(...){
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          break;
+        }
+        if (input < 0 || input >= PC_BACKPACKSIZE || d->PC->backpack[input] == NULL)
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+        else
+        {
+          drop_object(d->PC->backpack, input);
+          refresh = 1;
+        }
+        break;
       default:
         break;
       }
@@ -1307,4 +1337,10 @@ void delete_object(object* list[], int pos){
     return;
   delete list[pos];
   list[pos] = NULL;
+}
+
+void drop_object(object* list[], int pos){
+  if (list[pos] == NULL)
+    return;
+  
 }

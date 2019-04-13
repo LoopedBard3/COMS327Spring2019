@@ -124,3 +124,7 @@ int32_t object::get_type()
 {
   return type;
 }
+
+void stack_object(object *spot){
+  
+}

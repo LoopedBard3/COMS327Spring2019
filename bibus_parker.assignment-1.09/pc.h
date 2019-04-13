@@ -32,7 +32,21 @@ class pc : public character {
     for(counter = 0; counter < PC_BACKPACKSIZE; counter++) backpack[counter] = NULL;
     for(counter = 0; counter < TOTAL_EQUIPS; counter++) equipped_items[counter] = NULL;
   }
-  ~pc() {}
+  ~pc() {
+    int counter;
+    for(counter = 0; counter < PC_BACKPACKSIZE; counter++){
+      if(backpack[counter] != NULL){
+        delete backpack[counter];
+        backpack[counter] = NULL;
+      }
+    } 
+    for(counter = 0; counter < TOTAL_EQUIPS; counter++){
+      if(equipped_items[counter] != NULL){
+        delete equipped_items[counter];
+        equipped_items[counter] = NULL;
+      }
+    } 
+  }
   terrain_type known_terrain[DUNGEON_Y][DUNGEON_X];
   uint8_t visible[DUNGEON_Y][DUNGEON_X];
   object* backpack[PC_BACKPACKSIZE];

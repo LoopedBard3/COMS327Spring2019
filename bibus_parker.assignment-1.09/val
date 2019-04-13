@@ -1,21 +1,78 @@
-==14318== Memcheck, a memory error detector
-==14318== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==14318== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
-==14318== Command: ./rlg327 -n 5
-==14318== Parent PID: 12772
-==14318== 
-==14318== 
-==14318== HEAP SUMMARY:
-==14318==     in use at exit: 50,623 bytes in 186 blocks
-==14318==   total heap usage: 88,116 allocs, 87,930 frees, 3,402,622 bytes allocated
-==14318== 
-==14318== LEAK SUMMARY:
-==14318==    definitely lost: 352 bytes in 4 blocks
-==14318==    indirectly lost: 0 bytes in 0 blocks
-==14318==      possibly lost: 0 bytes in 0 blocks
-==14318==    still reachable: 50,271 bytes in 182 blocks
-==14318==         suppressed: 0 bytes in 0 blocks
-==14318== Rerun with --leak-check=full to see details of leaked memory
-==14318== 
-==14318== For counts of detected and suppressed errors, rerun with: -v
-==14318== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==26050== Memcheck, a memory error detector
+==26050== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==26050== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==26050== Command: ./rlg327 -n 5
+==26050== Parent PID: 12772
+==26050== 
+==26050== Invalid read of size 8
+==26050==    at 0x40DFBF: object::~object() (object.cpp:33)
+==26050==    by 0x414A61: pc::~pc() (pc.h:39)
+==26050==    by 0x414B33: pc::~pc() (pc.h:49)
+==26050==    by 0x40D839: character_delete(character*) (character.cpp:11)
+==26050==    by 0x403BE2: main (rlg327.cpp:273)
+==26050==  Address 0x65610b0 is 80 bytes inside a block of size 88 free'd
+==26050==    at 0x4C30706: operator delete(void*, unsigned long) (vg_replace_malloc.c:595)
+==26050==    by 0x40DFF9: object::~object() (object.cpp:35)
+==26050==    by 0x414A61: pc::~pc() (pc.h:39)
+==26050==    by 0x414B33: pc::~pc() (pc.h:49)
+==26050==    by 0x40D839: character_delete(character*) (character.cpp:11)
+==26050==    by 0x403BE2: main (rlg327.cpp:273)
+==26050==  Block was alloc'd at
+==26050==    at 0x4C2F4B6: operator new(unsigned long) (vg_replace_malloc.c:344)
+==26050==    by 0x40E1A1: gen_object(dungeon*) (object.cpp:61)
+==26050==    by 0x40E298: gen_objects(dungeon*) (object.cpp:74)
+==26050==    by 0x403996: main (rlg327.cpp:226)
+==26050== 
+==26050== Invalid read of size 8
+==26050==    at 0x40DFCF: object::~object() (object.cpp:34)
+==26050==    by 0x414A61: pc::~pc() (pc.h:39)
+==26050==    by 0x414B33: pc::~pc() (pc.h:49)
+==26050==    by 0x40D839: character_delete(character*) (character.cpp:11)
+==26050==    by 0x403BE2: main (rlg327.cpp:273)
+==26050==  Address 0x65610a8 is 72 bytes inside a block of size 88 free'd
+==26050==    at 0x4C30706: operator delete(void*, unsigned long) (vg_replace_malloc.c:595)
+==26050==    by 0x40DFF9: object::~object() (object.cpp:35)
+==26050==    by 0x414A61: pc::~pc() (pc.h:39)
+==26050==    by 0x414B33: pc::~pc() (pc.h:49)
+==26050==    by 0x40D839: character_delete(character*) (character.cpp:11)
+==26050==    by 0x403BE2: main (rlg327.cpp:273)
+==26050==  Block was alloc'd at
+==26050==    at 0x4C2F4B6: operator new(unsigned long) (vg_replace_malloc.c:344)
+==26050==    by 0x40E1A1: gen_object(dungeon*) (object.cpp:61)
+==26050==    by 0x40E298: gen_objects(dungeon*) (object.cpp:74)
+==26050==    by 0x403996: main (rlg327.cpp:226)
+==26050== 
+==26050== Invalid free() / delete / delete[] / realloc()
+==26050==    at 0x4C30706: operator delete(void*, unsigned long) (vg_replace_malloc.c:595)
+==26050==    by 0x414A6E: pc::~pc() (pc.h:39)
+==26050==    by 0x414B33: pc::~pc() (pc.h:49)
+==26050==    by 0x40D839: character_delete(character*) (character.cpp:11)
+==26050==    by 0x403BE2: main (rlg327.cpp:273)
+==26050==  Address 0x6561060 is 0 bytes inside a block of size 88 free'd
+==26050==    at 0x4C30706: operator delete(void*, unsigned long) (vg_replace_malloc.c:595)
+==26050==    by 0x40DFF9: object::~object() (object.cpp:35)
+==26050==    by 0x414A61: pc::~pc() (pc.h:39)
+==26050==    by 0x414B33: pc::~pc() (pc.h:49)
+==26050==    by 0x40D839: character_delete(character*) (character.cpp:11)
+==26050==    by 0x403BE2: main (rlg327.cpp:273)
+==26050==  Block was alloc'd at
+==26050==    at 0x4C2F4B6: operator new(unsigned long) (vg_replace_malloc.c:344)
+==26050==    by 0x40E1A1: gen_object(dungeon*) (object.cpp:61)
+==26050==    by 0x40E298: gen_objects(dungeon*) (object.cpp:74)
+==26050==    by 0x403996: main (rlg327.cpp:226)
+==26050== 
+==26050== 
+==26050== HEAP SUMMARY:
+==26050==     in use at exit: 50,271 bytes in 182 blocks
+==26050==   total heap usage: 48,539 allocs, 48,358 frees, 1,502,861 bytes allocated
+==26050== 
+==26050== LEAK SUMMARY:
+==26050==    definitely lost: 0 bytes in 0 blocks
+==26050==    indirectly lost: 0 bytes in 0 blocks
+==26050==      possibly lost: 0 bytes in 0 blocks
+==26050==    still reachable: 50,271 bytes in 182 blocks
+==26050==         suppressed: 0 bytes in 0 blocks
+==26050== Rerun with --leak-check=full to see details of leaked memory
+==26050== 
+==26050== For counts of detected and suppressed errors, rerun with: -v
+==26050== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)
