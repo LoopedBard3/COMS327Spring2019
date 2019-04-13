@@ -1,0 +1,3 @@
+Spot found: 0
+Spot found: 1
+Spot found: 2

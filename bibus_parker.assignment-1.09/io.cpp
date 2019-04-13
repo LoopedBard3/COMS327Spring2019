@@ -1634,13 +1634,20 @@ void display_object_desc(object *list[], int pos) //Position must be verified ex
   std::string line;
   std::stringstream stream(list[pos]->get_desc_string());
   clear();
+  mvprintw(count, 0, "%-80s", list[pos]->get_name());
+  count++;
+  count++;
   while (std::getline(stream, line))
   {
-    mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", line.c_str());
+    mvprintw(count, 0, "%-80s", line.c_str());
     count++;
   }
-  mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", "");
-  mvprintw(count + MENU_HEIGHT_OFFSET + 1, 0, "%-80s", "Hit escape to continue.");
+  mvprintw(count, 0, "Speed: %-80d", list[pos]->get_speed());
+  count++;
+  mvprintw(count, 0, "Damage: %d+%dd%-70d", list[pos]->get_damage_base(), list[pos]->get_damage_number(), list[pos]->get_damage_sides());
+  count++;
+  mvprintw(count, 0, "%-80s", "");
+  mvprintw(count + 1, 0, "%-80s", "Hit escape to continue.");
   while ((input = getch()) != 27 /* escape */)
     ;
 }
@@ -1859,9 +1866,9 @@ void display_monster_desc(dungeon *d, pair_t pos)
   int count = 0, input;
   if (charpair(pos) == d->PC)
   {
-    mvprintw(MENU_HEIGHT_OFFSET, 0, "%-80s", "This is you silly!");
-    mvprintw(1 + MENU_HEIGHT_OFFSET, 0, "%-80s", "");
-    mvprintw(1 + MENU_HEIGHT_OFFSET + 1, 0, "%-80s", "Hit escape to continue.");
+    mvprintw(0, 0, "%-80s", "This is you silly!");
+    mvprintw(1, 0, "%-80s", "");
+    mvprintw(2, 0, "%-80s", "Hit escape to continue.");
     while ((input = getch()) != 27 /* escape */)
       ;
     return;
@@ -1869,13 +1876,20 @@ void display_monster_desc(dungeon *d, pair_t pos)
   std::string line;
   std::stringstream stream(dynamic_cast<npc *>(charpair(pos))->description);
   clear();
+  mvprintw(count, 0, "%-80s", charpair(pos)->name);
+  count++;
+  count++;
   while (std::getline(stream, line))
   {
-    mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", line.c_str());
+    mvprintw(count, 0, "%-80s", line.c_str());
     count++;
   }
-  mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", "");
-  mvprintw(count + MENU_HEIGHT_OFFSET + 1, 0, "%-80s", "Hit escape to continue.");
+  mvprintw(count, 0, "Speed: %-80d", charpair(pos)->speed);
+  count++;
+  mvprintw(count, 0, "Damage: %d+%dd%-70d", charpair(pos)->damage->get_base(), charpair(pos)->damage->get_number(), charpair(pos)->damage->get_sides());
+  count++;
+  mvprintw(count, 0, "%-80s", "");
+  mvprintw(count + 1, 0, "%-80s", "Hit escape to continue.");
   while ((input = getch()) != 27 /* escape */)
     ;
 }
@@ -1888,13 +1902,20 @@ void display_object_desc(dungeon *d, pair_t pos)
   std::string line;
   std::stringstream stream(objpair(pos)->get_desc_string());
   clear();
+  mvprintw(count, 0, "%-80s", objpair(pos)->get_name());
+  count++;
+  count++;
   while (std::getline(stream, line))
   {
-    mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", line.c_str());
+    mvprintw(count, 0, "%-80s", line.c_str());
     count++;
   }
-  mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", "");
-  mvprintw(count + MENU_HEIGHT_OFFSET + 1, 0, "%-80s", "Hit escape to continue.");
+  mvprintw(count, 0, "Speed: %-80d", objpair(pos)->get_speed());
+  count++;
+  mvprintw(count, 0, "Damage: %d+%dd%-70d", objpair(pos)->get_damage_base(), objpair(pos)->get_damage_number(), objpair(pos)->get_damage_sides());
+  count++;
+  mvprintw(count, 0, "%-80s", "");
+  mvprintw(count + 1, 0, "%-80s", "Hit escape to continue.");
   while ((input = getch()) != 27 /* escape */)
     ;
 }
