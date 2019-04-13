@@ -328,7 +328,6 @@ int pc::pickup_object(dungeon *d)
   }
   for (counter = 0; counter < PC_BACKPACKSIZE; counter++)
   {
-    std::cerr << "Checking spot: " << counter << std::endl;
     if (backpack[counter] == NULL)
     {
       std::cerr << "Spot found: " << counter << std::endl;
@@ -337,5 +336,6 @@ int pc::pickup_object(dungeon *d)
       return 0;
     }
   }
+  std::cerr << "No Spot Found" << std::endl;
   return 2;
 }
