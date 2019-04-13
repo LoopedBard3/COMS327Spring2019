@@ -67,5 +67,6 @@ void pc_init_known_terrain(pc *p);
 void pc_observe_terrain(pc *p, dungeon *d);
 int32_t is_illuminated(pc *p, int16_t y, int16_t x);
 void pc_reset_visibility(pc *p);
+const char * get_equipable_loc_str(int pos);
 
 #endif

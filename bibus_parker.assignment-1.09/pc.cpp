@@ -340,3 +340,8 @@ int pc::pickup_object(dungeon *d)
   std::cerr << "Not enough spots" << std::endl;
   return 2;
 }
+
+const char * get_equipable_loc_str(int pos){
+  if(pos > TOTAL_EQUIPS) return "Out of range";
+  return equipable_lookup[pos].name;
+}
