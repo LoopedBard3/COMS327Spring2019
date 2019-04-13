@@ -1678,7 +1678,7 @@ void drop_object(object **spot, object *list[], int pos)
 uint32_t io_targeting(dungeon *d)
 {
   pair_t dest;
-  int c, illuminated;
+  int c, illuminated, badSpot;
   fd_set readfs;
   struct timeval tv;
 
@@ -1691,7 +1691,7 @@ uint32_t io_targeting(dungeon *d)
 
   mvaddch(dest[dim_y] + 1, dest[dim_x], '*');
   refresh();
-
+  badSpot = 0;
   do
   {
     do
@@ -1703,8 +1703,8 @@ uint32_t io_targeting(dungeon *d)
       tv.tv_usec = 125000; /* An eigth of a second */
 
       io_redisplay_visible(d, dest);
-      mvprintw(0, 0,
-           "Choose a monster. 'v' to view description, esc to quit.");
+      if(!badSpot) mvprintw(0, 0,"Choose an entity. 'v' to view description, esc to quit.");
+      else mvprintw(0, 0, "Choose an ACTUAL entity. 'v' to view description, esc to quit.");
     } while (!select(STDIN_FILENO + 1, &readfs, NULL, NULL, &tv));
     /* CanNOT simply draw the terrain when we move the cursor away, *
      * because if it is a character or object, the refresh       *
@@ -1833,13 +1833,15 @@ uint32_t io_targeting(dungeon *d)
       if (illuminated && charpair(dest))
       {
         display_monster_desc(d, dest);
+        badSpot = 0;
       }
       else if (objpair(dest) && objpair(dest)->have_seen())
       {
         display_object_desc(d, dest);
+        badSpot = 0;
       }
-      else
-        mvprintw(1, 0, "%-80s", "No known entity, cannot show description");
+      else badSpot = 1;
+        
       io_display(d);
     }
   } while (c != 27);
