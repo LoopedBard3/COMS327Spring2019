@@ -86,6 +86,7 @@ void do_combat(dungeon *d, character *atk, character *def)
 
   if (atk == d->PC) {
     io_queue_message("You smite %s%s!", is_unique(def) ? "" : "the ", def->name);
+    if(dynamic_cast<npc *>(def)->characteristics & NPC_BOSS && def->alive != 1) d->quit = 1;
   }
 
   can_see_atk = can_see(d, character_get_pos(d->PC),
