@@ -36,7 +36,7 @@ class object {
   char get_symbol();
   uint32_t get_color();
   const char *get_name();
-  const std::string get_desc_string();
+  std::string get_desc_string();
   int32_t get_speed();
   int32_t roll_dice();
   int32_t get_type();

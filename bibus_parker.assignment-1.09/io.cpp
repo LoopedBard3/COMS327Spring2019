@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <sstream>
+#include <cstring>
 
 #include "io.h"
 #include "move.h"
@@ -1208,9 +1209,17 @@ void show_inventory(dungeon *d)
       case 'I':
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the description to view or s for selector description: ");
         getnstr(line, 5);
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
+        if(strstr(line, "s") || strstr(line, "S")){
+
+          if(selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL) mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "Invalid location enter new command.");
+          else  display_desc(d, selector);//display_desc(d->PC->backpack, selector);
+          refresh = 1;
+          break;
+        }
         input = std::stoi(line);
-        if(input < 0 || input >= PC_BACKPACKSIZE) mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "Invalid location enter new command.");
-        else display_desc(d->PC.backpack, input);
+        if(input < 0 || input >= PC_BACKPACKSIZE || d->PC->backpack[input] == NULL) mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "Invalid location enter new command.");
+        else display_desc(d, input);
         refresh = 1;
         break;
       default:
@@ -1226,16 +1235,17 @@ void show_inventory(dungeon *d)
 // static void show_equipment(dungeon *d){
 
 // }
-
-void display_desc(object* list[], int pos)  //Position must be verified externally
+//void display_desc(object* list[], int pos) 
+void display_desc(dungeon *d, int pos)  //Position must be verified externally
 {
-  if(list[pos] == NULL) return;
+  if(d->PC->backpack[pos] == NULL) return;
   int count = 0, input;
   std::string line;
-  std::stringstream stream(list[pos]->get_desc_string());
+  std::stringstream stream(d->PC->backpack[pos]->get_desc_string());
+  // std::stringstream stream(list[pos]->get_desc_string());
   while(std::getline(stream, line))
   {
-    mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "%-65s", line);
+    mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "%-65s", line.c_str());
     count++;
   }
   mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "%-65s ", "");

@@ -332,6 +332,7 @@ int pc::pickup_object(dungeon *d)
     {
       std::cerr << "Spot found: " << counter << std::endl;
       backpack[counter] = obj_ptr;
+      std::cerr << backpack[counter]->get_desc_string() << std::endl;
       d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] = NULL;
       return 0;
     }

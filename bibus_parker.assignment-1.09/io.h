@@ -13,5 +13,6 @@ void io_queue_message(const char *format, ...);
 
 //Assignment 1.09 methods
 void show_inventory(dungeon *d);
-void display_desc(object* list[], int pos);
+void display_desc(dungeon *d, int pos);
+// void display_desc(object* list[], int pos);
 #endif
