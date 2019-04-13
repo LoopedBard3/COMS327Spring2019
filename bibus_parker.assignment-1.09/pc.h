@@ -5,13 +5,33 @@
 
 # include "dims.h"
 # include "character.h"
+# include "object.h" 
 # include "dungeon.h"
+
+typedef enum equipable_location {
+  location_WEAPON,
+  location_OFFHAND,
+  location_RANGED,
+  location_ARMOR,
+  location_HELMET,
+  location_CLOAK,
+  location_GLOVES,
+  location_BOOTS,
+  location_AMULET,
+  location_LIGHT,
+  location_LRING,
+  location_RRING,
+  TOTAL_EQUIPS
+} equipable_location_t;
 
 class pc : public character {
  public:
+  pc() {}
   ~pc() {}
   terrain_type known_terrain[DUNGEON_Y][DUNGEON_X];
   uint8_t visible[DUNGEON_Y][DUNGEON_X];
+  object* backpack[10];
+  object* equipped_items[10];
 };
 
 void pc_delete(pc *pc);

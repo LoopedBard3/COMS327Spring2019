@@ -10,6 +10,27 @@
 #include "io.h"
 #include "object.h"
 
+//Setup enums for finding the items in the players equipped slots
+#define equipable_lu_entry(name) { #name, location_##name }
+static const struct {
+  const char *name;
+  const uint32_t value;
+} equipable_lookup[] = {
+  equipable_lu_entry(WEAPON),
+  equipable_lu_entry(OFFHAND),
+  equipable_lu_entry(RANGED),
+  equipable_lu_entry(ARMOR),
+  equipable_lu_entry(HELMET),
+  equipable_lu_entry(CLOAK),
+  equipable_lu_entry(GLOVES),
+  equipable_lu_entry(BOOTS),
+  equipable_lu_entry(AMULET),
+  equipable_lu_entry(LIGHT),
+  equipable_lu_entry(LRING),
+  equipable_lu_entry(RRING),  
+  { 0, 0 }
+};
+
 uint32_t pc_is_alive(dungeon *d)
 {
   return d->PC->alive;
