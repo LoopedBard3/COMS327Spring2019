@@ -1280,7 +1280,7 @@ void show_inventory(dungeon *d)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           else
           {
-            drop_object(d->PC->backpack, selector);
+            drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] ,d->PC->backpack, selector);
             refresh = 1;
           }
           break;
@@ -1295,7 +1295,7 @@ void show_inventory(dungeon *d)
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
         else
         {
-          drop_object(d->PC->backpack, input);
+          drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] ,d->PC->backpack, input);
           refresh = 1;
         }
         break;
@@ -1339,8 +1339,19 @@ void delete_object(object* list[], int pos){
   list[pos] = NULL;
 }
 
-void drop_object(object* list[], int pos){
+void drop_object(object **spot,object* list[], int pos){
   if (list[pos] == NULL)
     return;
-  
+  if(*spot == NULL){
+    *spot = list[pos];
+    list[pos] = NULL;
+  }else{
+    object *spot_hold = *spot;
+    while(spot_hold->next != NULL){
+      spot_hold = spot_hold->next;
+    }
+    std::cerr << "At null next " << spot_hold->get_name() << std::endl;
+    spot_hold->next = list[pos];
+    list[pos] = NULL; 
+  }
 }
