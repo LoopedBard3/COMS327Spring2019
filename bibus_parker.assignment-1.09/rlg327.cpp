@@ -95,6 +95,7 @@ int main(int argc, char *argv[])
   d.max_monsters = MAX_MONSTERS;
   d.max_objects = MAX_MONSTERS;
 
+  freopen( "log.txt", "w", stderr );
   /* The project spec requires '--load' and '--save'.  It's common  *
    * to have short and long forms of most switches (assuming you    *
    * don't run out of letters).  For now, we've got plenty.  Long   *

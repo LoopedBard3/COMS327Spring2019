@@ -319,16 +319,23 @@ void pc_see_object(character *the_pc, object *o)
   }
 }
 
-int pc::pickup_object(object *obj_ptr)
+int pc::pickup_object(dungeon *d)
 {
   int counter;
+  object *obj_ptr;
+  if((obj_ptr = d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]]) == NULL){
+    return 1;
+  }
   for (counter = 0; counter < PC_BACKPACKSIZE; counter++)
   {
+    std::cerr << "Checking spot: " << counter << std::endl;
     if (backpack[counter] == NULL)
     {
+      std::cerr << "Spot found: " << counter << std::endl;
       backpack[counter] = obj_ptr;
+      d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] = NULL;
       return 0;
     }
   }
-  return 1;
+  return 2;
 }

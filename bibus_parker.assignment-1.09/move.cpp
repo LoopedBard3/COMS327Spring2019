@@ -128,6 +128,7 @@ void move_character(dungeon *d, character *c, pair_t next)
   }
 
   if (c == d->PC) {
+    d->PC->pickup_object(d);
     pc_reset_visibility(d->PC);
     pc_observe_terrain(d->PC, d);
   }

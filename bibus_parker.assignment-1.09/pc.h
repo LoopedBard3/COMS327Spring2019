@@ -28,7 +28,9 @@ typedef enum equipable_location {
 class pc : public character {
  public:
   pc() {
-    
+    int counter;
+    for(counter = 0; counter < PC_BACKPACKSIZE; counter++) backpack[counter] = NULL;
+    for(counter = 0; counter < TOTAL_EQUIPS; counter++) equipped_items[counter] = NULL;
   }
   ~pc() {}
   terrain_type known_terrain[DUNGEON_Y][DUNGEON_X];
@@ -36,7 +38,7 @@ class pc : public character {
   object* backpack[PC_BACKPACKSIZE];
   object* equipped_items[TOTAL_EQUIPS];
 
-  int pickup_object(object *obj_ptr);
+  int pickup_object(dungeon *d);
 };
 
 void pc_delete(pc *pc);
