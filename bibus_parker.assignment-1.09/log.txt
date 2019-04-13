@@ -6,28 +6,13 @@ Spot found: 4
 Spot found: 5
 Spot found: 6
 Spot found: 7
-Spot found: 1
 Spot found: 8
 Spot found: 9
 Not enough spots
 Not enough spots
-At null next Mjolnir
-At null next a chainmail coif
-At null next The One And Only
-At null next a chainmail coif
-At null next a chainmail coif
 Spot found: 0
-Spot found: 1
-Spot found: 2
-Spot found: 3
-Spot found: 0
-Spot found: 1
-Spot found: 3
-Spot found: 4
-Spot found: 5
-Spot found: 6
-Spot found: 7
-Spot found: 8
-Spot found: 9
+Not enough spots
+Not enough spots
+Not enough spots
 Not enough spots
 Not enough spots

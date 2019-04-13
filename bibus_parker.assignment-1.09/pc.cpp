@@ -379,6 +379,26 @@ int pc::equip_object(int item_pos)
   return 2;
 }
 
+int pc::unequip_object(int item_pos)
+{
+int counter;
+  if (equipped_items[item_pos] == NULL)
+  {
+    return 1;
+  }
+  for (counter = 0; counter < PC_BACKPACKSIZE; counter++)
+  {
+    if (backpack[counter] == NULL)
+    {
+      std::cerr << "Spot found: " << counter << std::endl;
+      backpack[counter] = equipped_items[item_pos];
+      equipped_items[item_pos] = NULL;
+      return 0;
+    }
+  }
+  return 2;
+}
+
 int pc::equip_ring(int item_pos)
 {
   char *line;

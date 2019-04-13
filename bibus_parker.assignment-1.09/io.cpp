@@ -1297,7 +1297,7 @@ void show_inventory(dungeon *d)
         }
         break;
         case 'w':
-        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to delete or s for selected object: ");
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to equip or s for selected object: ");
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
@@ -1477,6 +1477,38 @@ void show_equipped(dungeon *d)
         {
           drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] ,d->PC->equipped_items, input);
           refresh = 1;
+        }
+        break;
+      case 't':
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to unequip or s for selected object: ");
+        getnstr(line, 5);
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
+
+        if (strstr(line, "s") || strstr(line, "S"))
+        {
+          if (selector < 0 || selector >= TOTAL_EQUIPS || d->PC->equipped_items[selector] == NULL)
+            mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          else
+          {
+          if(d->PC->unequip_object(selector) != 0){
+          mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Unable to unequip, try clearing space in backpack.");
+          }else refresh = 1;
+          }
+          break;
+        }
+        try{
+          input = line[0] - 97;
+        }catch(...){
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          break;
+        }
+        if (input < 0 || input >= TOTAL_EQUIPS || d->PC->equipped_items[input] == NULL)
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+        else
+        {
+          if(d->PC->unequip_object(input) != 0){
+          mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Unable to unequip, try clearing space in backpack.");
+          }else refresh = 1;
         }
         break;
       default:
