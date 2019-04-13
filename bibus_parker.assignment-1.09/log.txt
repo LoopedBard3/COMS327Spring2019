@@ -1,4 +1,8 @@
 Spot found: 0
 Spot found: 1
-Spot found: 0
-Spot found: 0
+Spot found: 2
+Spot found: 3
+Spot found: 4
+Spot found: 5
+Spot found: 6
+Spot found: 7
