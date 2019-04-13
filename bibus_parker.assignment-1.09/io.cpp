@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <sstream>
 
 #include "io.h"
 #include "move.h"
@@ -9,7 +10,6 @@
 #include "pc.h"
 #include "utils.h"
 #include "dungeon.h"
-#include "object.h"
 #include "npc.h"
 #include "character.h"
 
@@ -836,7 +836,7 @@ static const char *adjectives[] = {
     "A kawaii ",      /* For our otaku */
     "Hao ke ai de ",  /* And for our Chinese */
     "Eine liebliche " /* For our Deutch */
-    /* And there's one special case (see below) */
+                      /* And there's one special case (see below) */
 };
 
 static void io_scroll_monster_list(char (*s)[60], uint32_t count)
@@ -978,61 +978,6 @@ static void io_list_monsters(dungeon *d)
   /* And redraw the dungeon */
   io_display(d);
 }
-
-//Methods for assignment 1.09
-static void show_inventory(dungeon *d)
-{
-
-  uint32_t count;
-  uint32_t selector;
-  int input;
-  /* Get a linear list of monsters */
-  
-  for (count = 0, selector = 0; count < PC_BACKPACKSIZE; count++)
-  {
-    mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-2d. %-60s", count, "");
-    if (d->PC->backpack[count])
-      mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET + 5, "%-60s ", d->PC->backpack[count]->get_name());
-  }
-  mvprintw(MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "*");
-  mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");
-  mvprintw(count + MENU_HEIGHT_OFFSET + 1, MENU_WIDTH_OFFSET, " %-60s ", "Hit escape to continue.");
-  while ((input = getch()) != 27 /* escape */)
-  {
-    switch (input)
-    {
-    case '8':
-    case 'k':
-    case KEY_UP:
-      if(selector > 0) {
-        mvprintw(selector + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " ");
-        selector--;
-        mvprintw(selector + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "*");
-        mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");
-      }else mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "You are already at the top!");
-      break;
-    case '2':
-    case 'j':
-    case KEY_DOWN:
-      if(selector < PC_BACKPACKSIZE - 1){ 
-        mvprintw(selector + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " ");
-        selector++;
-        mvprintw(selector + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "*");
-        mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");
-      }else mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "You are already at the bottom!");
-      break;
-    default:
-      break;
-    }
-  };
-
-  /* And redraw the dungeon */
-  io_display(d);
-}
-
-// static void show_equipment(dungeon *d){
-
-// }
 
 void io_handle_input(dungeon *d)
 {
@@ -1205,4 +1150,96 @@ void io_handle_input(dungeon *d)
       fail_code = 1;
     }
   } while (fail_code);
+}
+
+//More assignment 1.09 methods
+//Methods for assignment 1.09
+void show_inventory(dungeon *d)
+{
+  char * line;
+  uint32_t count = 0;
+  uint32_t selector = 0;
+  int input = 0;
+  int refresh = 1;
+  /* Get a linear list of monsters */
+  line = (char*) malloc(5 * sizeof(char));
+  while (input != 27 && refresh)
+  {
+    for (count = 0, selector = 0; count < PC_BACKPACKSIZE; count++)
+    {
+      mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-2d. %-60s", count, "");
+      if (d->PC->backpack[count])
+        mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET + 5, "%-60s ", d->PC->backpack[count]->get_name());
+    }
+    mvprintw(MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "*");
+    mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");
+    mvprintw(count + MENU_HEIGHT_OFFSET + 1, MENU_WIDTH_OFFSET, " %-60s ", "Hit escape to continue.");
+    refresh = 0;
+    while (!refresh && (input = getch()) != 27 /* escape */ )
+    {
+      switch (input)
+      {
+      case '8':
+      case 'k':
+      case KEY_UP:
+        if (selector > 0)
+        {
+          mvprintw(selector + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " ");
+          selector--;
+          mvprintw(selector + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "*");
+          mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");
+        }
+        else
+          mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "You are already at the top!");
+        break;
+      case '2':
+      case 'j':
+      case KEY_DOWN:
+        if (selector < PC_BACKPACKSIZE - 1)
+        {
+          mvprintw(selector + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " ");
+          selector++;
+          mvprintw(selector + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "*");
+          mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");
+        }
+        else
+          mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "You are already at the bottom!");
+        break;
+      case 'I':
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the description to view or s for selector description: ");
+        getnstr(line, 5);
+        input = std::stoi(line);
+        if(input < 0 || input >= PC_BACKPACKSIZE) mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "Invalid location enter new command.");
+        else display_desc(d->PC.backpack, input);
+        refresh = 1;
+        break;
+      default:
+        break;
+      }
+    };
+  }
+  free(line);
+  /* And redraw the dungeon */
+  io_display(d);
+}
+
+// static void show_equipment(dungeon *d){
+
+// }
+
+void display_desc(object* list[], int pos)  //Position must be verified externally
+{
+  if(list[pos] == NULL) return;
+  int count = 0, input;
+  std::string line;
+  std::stringstream stream(list[pos]->get_desc_string());
+  while(std::getline(stream, line))
+  {
+    mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "%-65s", line);
+    count++;
+  }
+  mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "%-65s ", "");
+  mvprintw(count + MENU_HEIGHT_OFFSET + 1, MENU_WIDTH_OFFSET, "%-65s ", "Hit escape to continue.");
+  while ((input = getch()) != 27 /* escape */)
+  ;
 }

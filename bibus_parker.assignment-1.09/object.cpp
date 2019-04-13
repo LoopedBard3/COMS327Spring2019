@@ -92,6 +92,10 @@ const char *object::get_name()
   return name.c_str();
 }
 
+const std::string object::get_desc_string(){
+  return description;
+}
+
 int32_t object::get_speed()
 {
   return speed;
