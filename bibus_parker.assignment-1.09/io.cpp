@@ -532,6 +532,81 @@ static void io_redisplay_non_terrain(dungeon *d, pair_t cursor)
   refresh();
 }
 
+static void io_redisplay_visible(dungeon *d, pair_t cursor)
+{
+  /* For the wiz-mode teleport, in order to see color-changing effects. */
+  pair_t pos;
+  uint32_t color;
+  uint32_t illuminated;
+
+  for (pos[dim_y] = 0; pos[dim_y] < DUNGEON_Y; pos[dim_y]++)
+  {
+    for (pos[dim_x] = 0; pos[dim_x] < DUNGEON_X; pos[dim_x]++)
+    {
+      if ((illuminated = is_illuminated(d->PC,
+                                        pos[dim_y],
+                                        pos[dim_x])))
+      {
+        attron(A_BOLD);
+      }
+      if (cursor[dim_y] == pos[dim_y] && cursor[dim_x] == pos[dim_x])
+      {
+        mvaddch(pos[dim_y] + 1, pos[dim_x], '*');
+      }
+      else if (illuminated && d->character_map[pos[dim_y]][pos[dim_x]])
+      {
+        attron(COLOR_PAIR((color = d->character_map[pos[dim_y]]
+                                                   [pos[dim_x]]
+                                                       ->get_color())));
+        mvaddch(pos[dim_y] + 1, pos[dim_x],
+                character_get_symbol(d->character_map[pos[dim_y]][pos[dim_x]]));
+        attroff(COLOR_PAIR(color));
+      }
+      else if (objxy(pos[dim_x], pos[dim_y]) && objxy(pos[dim_x], pos[dim_y])->have_seen())
+      {
+        attron(COLOR_PAIR(d->objmap[pos[dim_y]][pos[dim_x]]->get_color()));
+        mvaddch(pos[dim_y] + 1, pos[dim_x],
+                d->objmap[pos[dim_y]][pos[dim_x]]->get_symbol());
+        attroff(COLOR_PAIR(d->objmap[pos[dim_y]][pos[dim_x]]->get_color()));
+      }else{
+        switch (pc_learned_terrain(d->PC,
+                                   pos[dim_y],
+                                   pos[dim_x]))
+        {
+        case ter_wall:
+        case ter_wall_immutable:
+        case ter_unknown:
+          mvaddch(pos[dim_y] + 1, pos[dim_x], ' ');
+          break;
+        case ter_floor:
+        case ter_floor_room:
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '.');
+          break;
+        case ter_floor_hall:
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '#');
+          break;
+        case ter_debug:
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '*');
+          break;
+        case ter_stairs_up:
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '<');
+          break;
+        case ter_stairs_down:
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '>');
+          break;
+        default:
+          /* Use zero as an error symbol, since it stands out somewhat, and it's *
+  * not otherwise used.                                                 */
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '0');
+        }
+      }
+      attroff(A_BOLD);
+    }
+  }
+
+  refresh();
+}
+
 void io_display_no_fog(dungeon *d)
 {
   uint32_t y, x;
@@ -1130,7 +1205,7 @@ void io_handle_input(dungeon *d)
       fail_code = 1;
       break;
     case 'L':
-      //Activate Targeting
+      io_targeting(d);
       fail_code = 1;
       break;
 
@@ -1603,7 +1678,7 @@ void drop_object(object **spot, object *list[], int pos)
 uint32_t io_targeting(dungeon *d)
 {
   pair_t dest;
-  int c;
+  int c, illuminated;
   fd_set readfs;
   struct timeval tv;
 
@@ -1627,38 +1702,48 @@ uint32_t io_targeting(dungeon *d)
       tv.tv_sec = 0;
       tv.tv_usec = 125000; /* An eigth of a second */
 
-      io_redisplay_non_terrain(d, dest);
+      io_redisplay_visible(d, dest);
+      mvprintw(0, 0,
+           "Choose a monster. 'v' to view description, esc to quit.");
     } while (!select(STDIN_FILENO + 1, &readfs, NULL, NULL, &tv));
-    /* Can simply draw the terrain when we move the cursor away, *
+    /* CanNOT simply draw the terrain when we move the cursor away, *
      * because if it is a character or object, the refresh       *
      * function will fix it for us.                              */
-    switch (mappair(dest))
+    illuminated = is_illuminated(d->PC, dest[dim_y], dest[dim_x]);
+    if (illuminated)
     {
-    case ter_wall:
-    case ter_wall_immutable:
-    case ter_unknown:
-      mvaddch(dest[dim_y] + 1, dest[dim_x], ' ');
-      break;
-    case ter_floor:
-    case ter_floor_room:
-      mvaddch(dest[dim_y] + 1, dest[dim_x], '.');
-      break;
-    case ter_floor_hall:
-      mvaddch(dest[dim_y] + 1, dest[dim_x], '#');
-      break;
-    case ter_debug:
-      mvaddch(dest[dim_y] + 1, dest[dim_x], '*');
-      break;
-    case ter_stairs_up:
-      mvaddch(dest[dim_y] + 1, dest[dim_x], '<');
-      break;
-    case ter_stairs_down:
-      mvaddch(dest[dim_y] + 1, dest[dim_x], '>');
-      break;
-    default:
-      /* Use zero as an error symbol, since it stands out somewhat, and it's *
+      switch (mappair(dest))
+      {
+      case ter_wall:
+      case ter_wall_immutable:
+      case ter_unknown:
+        mvaddch(dest[dim_y] + 1, dest[dim_x], ' ');
+        break;
+      case ter_floor:
+      case ter_floor_room:
+        mvaddch(dest[dim_y] + 1, dest[dim_x], '.');
+        break;
+      case ter_floor_hall:
+        mvaddch(dest[dim_y] + 1, dest[dim_x], '#');
+        break;
+      case ter_debug:
+        mvaddch(dest[dim_y] + 1, dest[dim_x], '*');
+        break;
+      case ter_stairs_up:
+        mvaddch(dest[dim_y] + 1, dest[dim_x], '<');
+        break;
+      case ter_stairs_down:
+        mvaddch(dest[dim_y] + 1, dest[dim_x], '>');
+        break;
+      default:
+        /* Use zero as an error symbol, since it stands out somewhat, and it's *
   * not otherwise used.                                                 */
-      mvaddch(dest[dim_y] + 1, dest[dim_x], '0');
+        mvaddch(dest[dim_y] + 1, dest[dim_x], '0');
+      }
+    }
+    else
+    {
+      mvaddch(dest[dim_y] + 1, dest[dim_x], ' ');
     }
     switch ((c = getch()))
     {
@@ -1745,12 +1830,17 @@ uint32_t io_targeting(dungeon *d)
     }
     if (c == 'v')
     {
-      if (is_illuminated(d->PC, pos[dim_y], pos[dim_x]) && charpair(dest)){
+      if (illuminated && charpair(dest))
+      {
         display_monster_desc(d, dest);
-      }else if(is_illuminated(d->PC, pos[dim_y], pos[dim_x]) && objpair(dest)){
+      }
+      else if (objpair(dest) && objpair(dest)->have_seen())
+      {
         display_object_desc(d, dest);
-      }else
-        io_queue_message("No known entity, cannot show description");
+      }
+      else
+        mvprintw(1, 0, "%-80s", "No known entity, cannot show description");
+      io_display(d);
     }
   } while (c != 27);
 
@@ -1759,10 +1849,50 @@ uint32_t io_targeting(dungeon *d)
   return 0;
 }
 
-void display_monster_desc(dungeon *d, pair_t pos){
-  
+void display_monster_desc(dungeon *d, pair_t pos)
+{
+  if (charpair(pos) == NULL)
+    return;
+
+  int count = 0, input;
+  if (charpair(pos) == d->PC)
+  {
+    mvprintw(MENU_HEIGHT_OFFSET, 0, "%-80s", "This is you silly!");
+    mvprintw(1 + MENU_HEIGHT_OFFSET, 0, "%-80s", "");
+    mvprintw(1 + MENU_HEIGHT_OFFSET + 1, 0, "%-80s", "Hit escape to continue.");
+    while ((input = getch()) != 27 /* escape */)
+      ;
+    return;
+  }
+  std::string line;
+  std::stringstream stream(dynamic_cast<npc *>(charpair(pos))->description);
+  clear();
+  while (std::getline(stream, line))
+  {
+    mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", line.c_str());
+    count++;
+  }
+  mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", "");
+  mvprintw(count + MENU_HEIGHT_OFFSET + 1, 0, "%-80s", "Hit escape to continue.");
+  while ((input = getch()) != 27 /* escape */)
+    ;
 }
 
-void display_object_desc(dungeon *d, pair_t pos){
-
+void display_object_desc(dungeon *d, pair_t pos)
+{
+  if (objpair(pos) == NULL)
+    return;
+  int count = 0, input;
+  std::string line;
+  std::stringstream stream(objpair(pos)->get_desc_string());
+  clear();
+  while (std::getline(stream, line))
+  {
+    mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", line.c_str());
+    count++;
+  }
+  mvprintw(count + MENU_HEIGHT_OFFSET, 0, "%-80s", "");
+  mvprintw(count + MENU_HEIGHT_OFFSET + 1, 0, "%-80s", "Hit escape to continue.");
+  while ((input = getch()) != 27 /* escape */)
+    ;
 }
