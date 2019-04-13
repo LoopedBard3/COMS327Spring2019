@@ -14,8 +14,6 @@
 #include "npc.h"
 #include "character.h"
 
-#define MENU_HEIGHT_OFFSET 2
-#define MENU_WIDTH_OFFSET 4
 
 /* Same ugly hack we did in path.c */
 static dungeon *thedungeon;

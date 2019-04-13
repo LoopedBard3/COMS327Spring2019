@@ -54,6 +54,9 @@ class pc : public character {
 
   int pickup_object(dungeon *d);
   int equip_object(int item_pos);
+
+  //Special Equip Cases
+  int equip_ring(int item_pos);
 };
 
 void pc_delete(pc *pc);

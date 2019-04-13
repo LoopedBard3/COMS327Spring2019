@@ -351,22 +351,84 @@ int pc::equip_object(int item_pos)
   {
     return 1;
   }
+  if (backpack[item_pos]->get_type_str().find("RING") != std::string::npos)
+  {
+    return equip_ring(item_pos);
+  }
+
   //Equip the item based on attr
   for (counter = 0; counter < TOTAL_EQUIPS; counter++)
   {
+    //Special case for RING
     if (backpack[item_pos]->get_type_str().compare(equipable_lookup[counter].name) == 0)
     {
-     if(equipped_items[counter] == NULL){
-       equipped_items[counter] = backpack[item_pos];
-       backpack[item_pos] = NULL;
-     }else{
-       obj_hold = equipped_items[counter];
-       equipped_items[counter] = backpack[item_pos];
-       backpack[item_pos] = obj_hold;
-     }
-     return 0;
+      if (equipped_items[counter] == NULL)
+      {
+        equipped_items[counter] = backpack[item_pos];
+        backpack[item_pos] = NULL;
+      }
+      else
+      {
+        obj_hold = equipped_items[counter];
+        equipped_items[counter] = backpack[item_pos];
+        backpack[item_pos] = obj_hold;
+      }
+      return 0;
     }
   }
+  return 2;
+}
+
+int pc::equip_ring(int item_pos)
+{
+  char *line;
+  int input;
+  object *obj_hold;
+  line = (char *)malloc(5 * sizeof(char));
+  mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter 0 for Left Ring and 1 for Right Ring: ");
+  getnstr(line, 5);
+  try
+  {
+    input = std::stoi(line);
+  }
+  catch (...)
+  {
+    mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location start new command.");
+    free(line);
+    return 2;
+  }
+  free(line);
+  if (input == 0)
+  {
+    if (equipped_items[location_LRING] == NULL)
+    {
+      equipped_items[location_LRING] = backpack[item_pos];
+      backpack[item_pos] = NULL;
+    }
+    else
+    {
+      obj_hold = equipped_items[location_LRING];
+      equipped_items[location_LRING] = backpack[item_pos];
+      backpack[item_pos] = obj_hold;
+    }
+    return 0;
+  }
+  else if (input == 1)
+  {
+    if (equipped_items[location_RRING] == NULL)
+    {
+      equipped_items[location_RRING] = backpack[item_pos];
+      backpack[item_pos] = NULL;
+    }
+    else
+    {
+      obj_hold = equipped_items[location_RRING];
+      equipped_items[location_RRING] = backpack[item_pos];
+      backpack[item_pos] = obj_hold;
+    }
+    return 0;
+  }
+  mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
   return 2;
 }
 
