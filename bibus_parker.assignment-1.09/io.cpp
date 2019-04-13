@@ -1298,6 +1298,36 @@ void show_inventory(dungeon *d)
           refresh = 1;
         }
         break;
+        case 'w':
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to delete or s for selected object: ");
+        getnstr(line, 5);
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
+
+        if (strstr(line, "s") || strstr(line, "S"))
+        {
+          if (selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL)
+            mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          else
+          {
+            d->PC->equip_object(selector);
+            refresh = 1;
+          }
+          break;
+        }
+        try{
+          input = std::stoi(line);
+        }catch(...){
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          break;
+        }
+        if (input < 0 || input >= PC_BACKPACKSIZE || d->PC->backpack[input] == NULL)
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+        else
+        {
+          d->PC->equip_object(input);
+          refresh = 1;
+        }
+        break;
       default:
         break;
       }
@@ -1321,9 +1351,9 @@ void show_equipped(dungeon *d)
     clear();
     for (count = 0, selector = 0; count < TOTAL_EQUIPS; count++)
     {
-      mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-2c. %-60s", 97 + count, "");
+      mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-2c. (%-7s) ", 97 + count, get_equipable_loc_str(count));
       if (d->PC->equipped_items[count])
-        mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET + 5, "(%-5s) %-60s ", get_equipable_loc_str(count), d->PC->equipped_items[count]->get_name());
+        mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET + 15, "%-60s ", d->PC->equipped_items[count]->get_name());
     }
     mvprintw(MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "*");
     mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");
@@ -1378,7 +1408,7 @@ void show_equipped(dungeon *d)
           break;
         }
         try{
-          input = std::stoi(line);
+          input = line[0] - 97;
         }catch(...){
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
@@ -1408,7 +1438,7 @@ void show_equipped(dungeon *d)
           break;
         }
         try{
-          input = std::stoi(line);
+          input = line[0] - 97;
         }catch(...){
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;
@@ -1438,7 +1468,7 @@ void show_equipped(dungeon *d)
           break;
         }
         try{
-          input = std::stoi(line);
+          input = line[0] - 97;
         }catch(...){
           mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
           break;

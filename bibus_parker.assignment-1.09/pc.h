@@ -53,6 +53,7 @@ class pc : public character {
   object* equipped_items[TOTAL_EQUIPS];
 
   int pickup_object(dungeon *d);
+  int equip_object(int item_pos);
 };
 
 void pc_delete(pc *pc);

@@ -323,7 +323,8 @@ int pc::pickup_object(dungeon *d)
 {
   int counter;
   object *obj_ptr;
-  if((obj_ptr = d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]]) == NULL){
+  if ((obj_ptr = d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]]) == NULL)
+  {
     return 1;
   }
   for (counter = 0; counter < PC_BACKPACKSIZE; counter++)
@@ -334,14 +335,44 @@ int pc::pickup_object(dungeon *d)
       backpack[counter] = obj_ptr;
       d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] = d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]]->next;
       backpack[counter]->next = NULL;
-      if((obj_ptr = d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]]) == NULL) return 0;
+      if ((obj_ptr = d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]]) == NULL)
+        return 0;
     }
   }
   std::cerr << "Not enough spots" << std::endl;
   return 2;
 }
 
-const char * get_equipable_loc_str(int pos){
-  if(pos > TOTAL_EQUIPS) return "Out of range";
+int pc::equip_object(int item_pos)
+{
+  int counter;
+  object *obj_hold;
+  if (backpack[item_pos] == NULL)
+  {
+    return 1;
+  }
+  //Equip the item based on attr
+  for (counter = 0; counter < TOTAL_EQUIPS; counter++)
+  {
+    if (backpack[item_pos]->get_type_str().compare(equipable_lookup[counter].name) == 0)
+    {
+     if(equipped_items[counter] == NULL){
+       equipped_items[counter] = backpack[item_pos];
+       backpack[item_pos] = NULL;
+     }else{
+       obj_hold = equipped_items[counter];
+       equipped_items[counter] = backpack[item_pos];
+       backpack[item_pos] = obj_hold;
+     }
+     return 0;
+    }
+  }
+  return 2;
+}
+
+const char *get_equipable_loc_str(int pos)
+{
+  if (pos > TOTAL_EQUIPS)
+    return "Out of range";
   return equipable_lookup[pos].name;
 }
