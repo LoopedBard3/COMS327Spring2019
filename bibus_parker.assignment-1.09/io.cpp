@@ -1176,6 +1176,8 @@ void show_inventory(dungeon *d)
     mvprintw(MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, "*");
     mvprintw(count + MENU_HEIGHT_OFFSET, MENU_WIDTH_OFFSET, " %-60s ", "");
     mvprintw(count + MENU_HEIGHT_OFFSET + 1, MENU_WIDTH_OFFSET, " %-60s ", "Hit escape to continue.");
+    mvprintw(count + MENU_HEIGHT_OFFSET + 4, MENU_WIDTH_OFFSET, " %-60s ", "Commands: x to expunge an item    d to drop an item");
+    mvprintw(count + MENU_HEIGHT_OFFSET + 5, MENU_WIDTH_OFFSET, " %-60s ", "I to view an item description     w to equip/switch item");
     refresh = 0;
     while (!refresh && (input = getch()) != 27 /* escape */)
     {
@@ -1237,6 +1239,36 @@ void show_inventory(dungeon *d)
           refresh = 1;
         }
         break;
+      case 'x':
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "Please enter the object to delete or s for selected object: ");
+        getnstr(line, 5);
+        mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
+
+        if (strstr(line, "s") || strstr(line, "S"))
+        {
+          if (selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL)
+            mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          else
+          {
+            delete_object(d->PC->backpack, selector);
+            refresh = 1;
+          }
+          break;
+        }
+        try{
+          input = std::stoi(line);
+        }catch(...){
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+          break;
+        }
+        if (input < 0 || input >= PC_BACKPACKSIZE || d->PC->backpack[input] == NULL)
+          mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
+        else
+        {
+          delete_object(d->PC->backpack, input);
+          refresh = 1;
+        }
+        break;
       default:
         break;
       }
@@ -1268,4 +1300,11 @@ void display_object_desc(object *list[], int pos) //Position must be verified ex
   mvprintw(count + MENU_HEIGHT_OFFSET + 1, 0, "%-80s", "Hit escape to continue.");
   while ((input = getch()) != 27 /* escape */)
     ;
+}
+
+void delete_object(object* list[], int pos){
+  if (list[pos] == NULL)
+    return;
+  delete list[pos];
+  list[pos] = NULL;
 }
