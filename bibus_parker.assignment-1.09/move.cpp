@@ -59,6 +59,7 @@ void do_combat(dungeon *d, character *atk, character *def)
     {
       damage = dynamic_cast<pc *>(atk)->get_atk_damage();
       def->hp -= damage;
+      io_queue_message("You dealt %d damage!", damage);
       if (def->hp <= 0)
       {
         def->alive = 0;

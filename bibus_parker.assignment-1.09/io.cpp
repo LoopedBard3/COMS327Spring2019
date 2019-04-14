@@ -1208,6 +1208,10 @@ void io_handle_input(dungeon *d)
       io_targeting(d);
       fail_code = 1;
       break;
+    case 'P':
+      show_player_hp(d);
+      fail_code = 1;
+      break;
 
     default:
       /* Also not in the spec.  It's not always easy to figure out what *
@@ -1887,6 +1891,8 @@ void display_monster_desc(dungeon *d, pair_t pos)
     mvprintw(count, 0, "%-80s", line.c_str());
     count++;
   }
+  mvprintw(count, 0, "HP: %-80d", charpair(pos)->hp);
+  count++;
   mvprintw(count, 0, "Speed: %-80d", charpair(pos)->speed);
   count++;
   mvprintw(count, 0, "Damage: %d+%dd%-70d", charpair(pos)->damage->get_base(), charpair(pos)->damage->get_number(), charpair(pos)->damage->get_sides());
@@ -1921,4 +1927,13 @@ void display_object_desc(dungeon *d, pair_t pos)
   mvprintw(count + 1, 0, "%-80s", "Hit escape to continue.");
   while ((input = getch()) != 27 /* escape */)
     ;
+}
+
+void show_player_hp(dungeon *d){
+  int input = 0;
+  mvprintw(0, 0, "Your HP: %-70d", d->PC->hp);
+  mvprintw(1, 0, "%-80s", "Hit escape to continue.");
+  while ((input = getch()) != 27 /* escape */)
+    ;
+  io_display(d);
 }

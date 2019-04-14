@@ -14,6 +14,7 @@ void io_queue_message(const char *format, ...);
 //Assignment 1.09 methods
 void show_inventory(dungeon *d);
 void show_equipped(dungeon *d);
+void show_player_hp(dungeon *d);
 void display_object_desc(object* list[], int pos);
 void display_object_desc(dungeon *d, pair_t pos);
 void display_monster_desc(dungeon *d, pair_t pos);
