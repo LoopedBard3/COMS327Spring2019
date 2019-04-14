@@ -88,11 +88,13 @@ void npc_next_pos_rand_tunnel(dungeon *d, npc *c, pair_t next)
 void npc_next_pos_rand(dungeon *d, npc *c, pair_t next)
 {
   pair_t n;
+  int fail_safe;
   union {
     uint32_t i;
     uint8_t a[4];
   } r;
 
+  fail_safe = 0;
   do {
     n[dim_y] = next[dim_y];
     n[dim_x] = next[dim_x];
@@ -111,7 +113,8 @@ void npc_next_pos_rand(dungeon *d, npc *c, pair_t next)
         n[dim_x]++;
       }
     }
-  } while (mappair(n) < ter_floor);
+    fail_safe++;
+  } while (mappair(n) < ter_floor && fail_safe < 10000);
 
   next[dim_y] = n[dim_y];
   next[dim_x] = n[dim_x];

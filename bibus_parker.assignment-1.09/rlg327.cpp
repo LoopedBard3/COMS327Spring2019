@@ -196,8 +196,8 @@ int main(int argc, char *argv[])
       }
     }
   }
-
-  freopen( "log.txt", "w", stderr );
+  //Useful for debugging.
+  // freopen( "log.txt", "w", stderr );
   
   if (do_seed) {
     /* Allows me to generate more than one dungeon *
