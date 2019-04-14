@@ -374,56 +374,56 @@ void displace_char(dungeon *d, character *c, pair_t next)
   }
 
   character *displaced_char = d->character_map[next[dim_y]][next[dim_x]];
-  if (!d->character_map[next[dim_y] + 1][next[dim_x]] && mapxy(next[dim_y] + 1, next[dim_x]) < ter_floor)
+  if (!d->character_map[next[dim_y] + 1][next[dim_x]] && mapxy(next[dim_y] + 1, next[dim_x]) > ter_floor)
   {
     d->character_map[next[dim_y]][next[dim_x]] = NULL;
     displaced_char->position[dim_y] = next[dim_y] + 1;
     displaced_char->position[dim_x] = next[dim_x];
     d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
   }
-  else if (!d->character_map[next[dim_y] + 1][next[dim_x] + 1] && mapxy(next[dim_y] + 1, next[dim_x] + 1) < ter_floor)
+  else if (!d->character_map[next[dim_y] + 1][next[dim_x] + 1] && mapxy(next[dim_y] + 1, next[dim_x] + 1) > ter_floor)
   {
     d->character_map[next[dim_y]][next[dim_x]] = NULL;
     displaced_char->position[dim_y] = next[dim_y] + 1;
     displaced_char->position[dim_x] = next[dim_x] + 1;
     d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
   }
-  else if (!d->character_map[next[dim_y]][next[dim_x] + 1] && mapxy(next[dim_y], next[dim_x] + 1) < ter_floor)
+  else if (!d->character_map[next[dim_y]][next[dim_x] + 1] && mapxy(next[dim_y], next[dim_x] + 1) > ter_floor)
   {
     d->character_map[next[dim_y]][next[dim_x]] = NULL;
     displaced_char->position[dim_y] = next[dim_y];
     displaced_char->position[dim_x] = next[dim_x] + 1;
     d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
   }
-  else if (!d->character_map[next[dim_y] - 1][next[dim_x] + 1] && mapxy(next[dim_y] - 1, next[dim_x] + 1) < ter_floor)
+  else if (!d->character_map[next[dim_y] - 1][next[dim_x] + 1] && mapxy(next[dim_y] - 1, next[dim_x] + 1) > ter_floor)
   {
     d->character_map[next[dim_y]][next[dim_x]] = NULL;
     displaced_char->position[dim_y] = next[dim_y] - 1;
     displaced_char->position[dim_x] = next[dim_x] + 1;
     d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
   }
-  else if (!d->character_map[next[dim_y] - 1][next[dim_x]] && mapxy(next[dim_y] - 1, next[dim_x]) < ter_floor)
+  else if (!d->character_map[next[dim_y] - 1][next[dim_x]] && mapxy(next[dim_y] - 1, next[dim_x]) > ter_floor)
   {
     d->character_map[next[dim_y]][next[dim_x]] = NULL;
     displaced_char->position[dim_y] = next[dim_y] - 1;
     displaced_char->position[dim_x] = next[dim_x];
     d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
   }
-  else if (!d->character_map[next[dim_y] - 1][next[dim_x] - 1] && mapxy(next[dim_y] - 1, next[dim_x] - 1) < ter_floor)
+  else if (!d->character_map[next[dim_y] - 1][next[dim_x] - 1] && mapxy(next[dim_y] - 1, next[dim_x] - 1) > ter_floor)
   {
     d->character_map[next[dim_y]][next[dim_x]] = NULL;
     displaced_char->position[dim_y] = next[dim_y] - 1;
     displaced_char->position[dim_x] = next[dim_x] - 1;
     d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
   }
-  else if (!d->character_map[next[dim_y]][next[dim_x] - 1] && mapxy(next[dim_y], next[dim_x] - 1) < ter_floor)
+  else if (!d->character_map[next[dim_y]][next[dim_x] - 1] && mapxy(next[dim_y], next[dim_x] - 1) > ter_floor)
   {
     d->character_map[next[dim_y]][next[dim_x]] = NULL;
     displaced_char->position[dim_y] = next[dim_y];
     displaced_char->position[dim_x] = next[dim_x] - 1;
     d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
   }
-  else if (!d->character_map[next[dim_y] + 1][next[dim_x] - 1] && mapxy(next[dim_y] + 1, next[dim_x] - 1) < ter_floor)
+  else if (!d->character_map[next[dim_y] + 1][next[dim_x] - 1] && mapxy(next[dim_y] + 1, next[dim_x] - 1) > ter_floor)
   {
     d->character_map[next[dim_y]][next[dim_x]] = NULL;
     displaced_char->position[dim_y] = next[dim_y] + 1;
