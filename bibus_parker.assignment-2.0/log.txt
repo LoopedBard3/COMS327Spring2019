@@ -1,0 +1,60 @@
+0
+Saving format: ------
+1
+Saving format: --------
+Updating regex to: [^][^][^][^][^][^][]?$
+Updating regex to: [^][^][^][^][^][^][^][^][]?$
+0
+Saving filled format: a-----
+1
+Saving filled format: --------
+Updating regex to: a[^a][^a][^a][^a][^a][]?$
+Updating regex to: [^a][^a][^a][^a][^a][^a][^a][^a][]?$
+Updating regex to: a[^ao][^ao][^ao][^ao][^ao][]?$
+Updating regex to: [^ao][^ao][^ao][^ao][^ao][^ao][^ao][^ao][]?$
+0
+Saving filled format: a---e-
+1
+Saving filled format: --e-----
+Updating regex to: a[^aoe][^aoe][^aoe]e[^aoe][]?$
+Updating regex to: [^aoe][^aoe]e[^aoe][^aoe][^aoe][^aoe][^aoe][]?$
+Updating regex to: a[^aoeu][^aoeu][^aoeu]e[^aoeu][]?$
+Updating regex to: [^aoeu][^aoeu]e[^aoeu][^aoeu][^aoeu][^aoeu][^aoeu][]?$
+0
+Saving filled format: a---e-
+1
+Saving filled format: --e--i--
+Updating regex to: a[^aoeui][^aoeui][^aoeui]e[^aoeui][]?$
+Updating regex to: [^aoeui][^aoeui]e[^aoeui][^aoeui]i[^aoeui][^aoeui][]?$
+Updating regex to: a[^aoeuin][^aoeuin][^aoeuin]e[^aoeuin][]?$
+Updating regex to: [^aoeuin][^aoeuin]e[^aoeuin][^aoeuin]i[^aoeuin][^aoeuin][]?$
+0
+Saving filled format: a-h-e-
+1
+Saving filled format: --e--i--
+Updating regex to: a[^aoeuinh]h[^aoeuinh]e[^aoeuinh][]?$
+Updating regex to: [^aoeuinh][^aoeuinh]e[^aoeuinh][^aoeuinh]i[^aoeuinh][^aoeuinh][]?$
+0
+Saving filled format: ash-e-
+1
+Saving filled format: --e--i--
+Updating regex to: ash[^aoeuinhs]e[^aoeuinhs][]?$
+Updating regex to: [^aoeuinhs][^aoeuinhs]e[^aoeuinhs][^aoeuinhs]i[^aoeuinhs][^aoeuinhs][]?$
+0
+Saving filled format: ashle-
+1
+Saving filled format: --e--i--
+Updating regex to: ashle[^aoeuinhsl][]?$
+Updating regex to: [^aoeuinhsl][^aoeuinhsl]e[^aoeuinhsl][^aoeuinhsl]i[^aoeuinhsl][^aoeuinhsl][]?$
+0
+Saving filled format: ashley
+1
+Saving filled format: --e--i--
+Updating regex to: ashley[]?$
+Updating regex to: [^aoeuinhsly][^aoeuinhsly]e[^aoeuinhsly][^aoeuinhsly]i[^aoeuinhsly][^aoeuinhsly][]?$
+0
+Saving filled format: ashley
+1
+Saving filled format: -re-ri--
+Updating regex to: ashley[]?$
+Updating regex to: [^aoeuinhslyr]re[^aoeuinhslyr]ri[^aoeuinhslyr][^aoeuinhslyr][]?$
