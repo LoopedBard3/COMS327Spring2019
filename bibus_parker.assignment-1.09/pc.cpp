@@ -476,11 +476,12 @@ int pc::update_speed(){
 int pc::get_atk_damage(){
   int damage = 0;
   int count;
-  damage = this->damage->roll();
+  //If there is no weapon, use default damage dice and calculate rest of buff items.
+  if(equipped_items[0] == NULL) damage = this->damage->roll();
   for (count = 0; count < TOTAL_EQUIPS; count++)
     {
       if (equipped_items[count]){
-        damage += this->damage->roll();;
+        damage += equipped_items[count]->roll_dice();;
       }
     }
   return damage;

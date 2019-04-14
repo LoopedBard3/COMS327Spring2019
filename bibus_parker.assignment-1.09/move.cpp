@@ -342,7 +342,7 @@ uint32_t move_pc(dungeon *d, uint32_t dir)
     return 0;
   }
 
-  if ((dir != '>') && (dir != '<') && (mappair(next) >= ter_floor))
+  if((dir != '>') && (dir != '<') && ((mappair(next) >= ter_floor) || charpair(next)))
   {
     move_character(d, d->PC, next);
     dijkstra(d);

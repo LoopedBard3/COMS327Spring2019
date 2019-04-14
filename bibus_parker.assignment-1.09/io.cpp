@@ -1290,7 +1290,7 @@ void show_inventory(dungeon *d)
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
-        if (strstr(line, "s") || strstr(line, "S"))
+        if (line[0] == 's' || line[0] == 'S')
         {
           if (selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
@@ -1323,7 +1323,7 @@ void show_inventory(dungeon *d)
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
-        if (strstr(line, "s") || strstr(line, "S"))
+        if (line[0] == 's' || line[0] == 'S')
         {
           if (selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
@@ -1356,7 +1356,7 @@ void show_inventory(dungeon *d)
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
-        if (strstr(line, "s") || strstr(line, "S"))
+        if (line[0] == 's' || line[0] == 'S')
         {
           if (selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
@@ -1389,7 +1389,7 @@ void show_inventory(dungeon *d)
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
-        if (strstr(line, "s") || strstr(line, "S"))
+        if (line[0] == 's' || line[0] == 'S')
         {
           if (selector < 0 || selector >= PC_BACKPACKSIZE || d->PC->backpack[selector] == NULL)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
@@ -1485,7 +1485,7 @@ void show_equipped(dungeon *d)
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
-        if (strstr(line, "s") || strstr(line, "S"))
+        if (line[0] == 's' || line[0] == 'S')
         {
           if (selector < 0 || selector >= TOTAL_EQUIPS || d->PC->equipped_items[selector] == NULL)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
@@ -1518,7 +1518,7 @@ void show_equipped(dungeon *d)
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
-        if (strstr(line, "s") || strstr(line, "S"))
+        if (line[0] == 's' || line[0] == 'S')
         {
           if (selector < 0 || selector >= TOTAL_EQUIPS || d->PC->equipped_items[selector] == NULL)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
@@ -1553,7 +1553,7 @@ void show_equipped(dungeon *d)
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
-        if (strstr(line, "s") || strstr(line, "S"))
+        if (line[0] == 's' || line[0] == 'S')
         {
           if (selector < 0 || selector >= TOTAL_EQUIPS || d->PC->equipped_items[selector] == NULL)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
@@ -1588,7 +1588,7 @@ void show_equipped(dungeon *d)
         getnstr(line, 5);
         mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
 
-        if (strstr(line, "s") || strstr(line, "S"))
+        if (line[0] == 's' || line[0] == 'S')
         {
           if (selector < 0 || selector >= TOTAL_EQUIPS || d->PC->equipped_items[selector] == NULL)
             mvprintw(count + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-80s ", "Invalid location enter new command.");
