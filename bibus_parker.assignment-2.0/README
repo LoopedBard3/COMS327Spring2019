@@ -1,0 +1,9 @@
+This program meets the specifications for assignment 2.0. I chose to implement the idea of a hangman solver that Prof. Schaeffer gave as an option. To implement this solver, I decided that users would input the words each turn with - (dash's) representing unknowns. From here I decided that it would use this input to generate the regex for each word and then find and print the first 10 matches in the dictionary. After this the user enters the character they chose to try and reinput the strings. This process repeats until users decide to quit the game.
+
+To play the game, start the program and enter the number of words. Next enter the format of the strings with a space between each word. With that it will find the first 10 matches and start the game loop. Each loop it will print out matches, ask for the character you tried, and ask for an updated string format. It does allow for string sizes to change if you accidently put in the incorrect size, but the number of strings has to match. Other failures will either ask for reinput or just do the loop again allowing for the mistake to be fixed. 
+
+In order to run the program you just have to run ./solve_hangman after making the files.
+There is already a dictionary of approximately 480k words found at https://github.com/dwyl/english-words.
+
+Usage: ./solve_hangman [-d|--dict <dictionary file>] [-n|--numwords <num words>]
+                        [-h|--help]

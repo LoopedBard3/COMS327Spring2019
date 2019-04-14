@@ -5,7 +5,7 @@
 void usage(char *name)
 {
   fprintf(stdout,
-          "Usage: %s [-d|--dict <dictionary file>] [-n|--numwords <num words>]\n",
+          "Usage: %s [-d|--dict <dictionary file>] [-n|--numwords <num words>]\n[-h|--help]",
           name);
 
   exit(-1);
@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
 
   /* Initialize the variables that will be used by the program */
   customDictionary = longArg = i = numWords = 0;
-  freopen("log.txt", "w", stderr);
 
   /* Use the flags -d or --dict to set a custom dictionary *
    * for using custom types of languages.                  */
@@ -217,17 +216,14 @@ int saveLine(std::vector<word> *wdArray, int numWords, std::string currLine)
   int counter = 0;
   while (stream >> format && counter < numWords)
   {
-    std::cerr << counter << std::endl;
     if (wdArray->at(counter).wordFormat.size() == 0)
     {
       wdArray->at(counter).wordFormat = std::string(format);
       wdArray->at(counter).wordFilled = std::string(format);
-      std::cerr << "Saving format: " << wdArray->at(counter).wordFormat << std::endl;
     }
     else
     {
       wdArray->at(counter).wordFilled = std::string(format);
-      std::cerr << "Saving filled format: " << wdArray->at(counter).wordFilled << std::endl;
     }
     counter++;
   }
@@ -266,8 +262,6 @@ void updateRegex(std::vector<word> *wdArray, int numWords, std::string knownChar
   {
     regString = std::regex_replace(wdArray->at(wordCount).wordFilled, std::regex("-"), std::string("[^" + knownChars + "]")) + "[\r]?$";
     wdArray->at(wordCount).reg = std::regex(regString, std::regex::icase);
-    std::cerr << "Updating regex to: "
-              << regString << std::endl;
     wdArray->at(wordCount).topMatches.clear();
   }
 }
