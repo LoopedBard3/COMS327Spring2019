@@ -469,7 +469,8 @@ int pc::update_speed(){
         spd += equipped_items[count]->get_speed();
       }
     }
-    this->speed = spd;
+    if(spd > 0) this->speed = spd;
+    else this->speed = 1;
     return this->speed;
 }
 
@@ -484,5 +485,6 @@ int pc::get_atk_damage(){
         damage += equipped_items[count]->roll_dice();;
       }
     }
+    if(damage <= 0) damage = 0;
   return damage;
 }
