@@ -62,6 +62,7 @@ void do_combat(dungeon *d, character *atk, character *def)
       def->hp -= dynamic_cast<pc *>(atk)->get_atk_damage();
       if (def->hp <= 0)
       {
+        def->alive = 0;
         d->num_monsters--;
         io_queue_message("You smite %s%s!", is_unique(def) ? "" : "the ", def->name);
         if (dynamic_cast<npc *>(def)->characteristics & NPC_BOSS && def->alive != 1)
@@ -73,6 +74,7 @@ void do_combat(dungeon *d, character *atk, character *def)
       def->hp -= atk->damage->roll();
       if (def->hp <= 0)
       {
+        def->alive = 0;
         if ((part = rand() % (sizeof(organs) / sizeof(organs[0]))) < 26)
         {
           io_queue_message("As %s%s eats your %s,", is_unique(atk) ? "" : "the ",
