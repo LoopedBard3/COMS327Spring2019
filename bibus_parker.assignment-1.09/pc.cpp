@@ -483,6 +483,5 @@ int pc::get_atk_damage(){
         damage += this->damage->roll();;
       }
     }
-  std::cerr << "DAMAGE: " << damage << std::endl;
   return damage;
 }

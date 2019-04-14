@@ -52,12 +52,13 @@ void do_combat(dungeon *d, character *atk, character *def)
       "brain",        /* 29 */
   };
   int part;
-
+  int damage;
   if (def->alive)
   {
     if (atk == d->PC)
     {
-      def->hp -= dynamic_cast<pc *>(atk)->get_atk_damage();
+      damage = dynamic_cast<pc *>(atk)->get_atk_damage();
+      def->hp -= damage;
       if (def->hp <= 0)
       {
         def->alive = 0;
@@ -70,7 +71,8 @@ void do_combat(dungeon *d, character *atk, character *def)
     }
     else if (def == d->PC)
     {
-      def->hp -= atk->damage->roll();
+      damage = atk->damage->roll();
+      def->hp -= damage;
       if (def->hp <= 0)
       {
         def->alive = 0;
