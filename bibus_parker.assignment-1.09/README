@@ -1,0 +1,10 @@
+This program meets the specifications for assignment 1.09. This includes making speed and damage applied to gameplay, giving the PC a useable backpack and equipment slots with the specified interaction commands, and the updated combat system. I also addeda command to view current HP with the P key.
+
+Inorder to use the object commands, open the inventory or equipment menus with i or e, then press the corresponding command key. Once the key is pressed, it will ask for the item number or s for the selector spot. Enter the desired selection then press enter to confirm the command. The reason you have to press enter is to allow for multi-character input in the future like if backpacks are larger or there are many more nuanced equipment slots.
+
+In order to run the program you just have to run ./rlg327 after making the files.
+
+Usage: ./rlg327 [-r|--rand <seed>] [-l|--load [<file>]]
+        [-s|--save [<file>]] [-i|--image <pgm file>]
+        [-n|--nummon <number of monsters min:1>] 
+		[-p|--parser parser output only]
