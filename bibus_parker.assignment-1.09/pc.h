@@ -55,6 +55,8 @@ class pc : public character {
   int pickup_object(dungeon *d);
   int equip_object(int item_pos);
   int unequip_object(int item_pos);
+  int update_speed();
+  int get_atk_damage();
 
   //Special Equip Cases
   int equip_ring(int item_pos);

@@ -373,6 +373,7 @@ int pc::equip_object(int item_pos)
         equipped_items[counter] = backpack[item_pos];
         backpack[item_pos] = obj_hold;
       }
+      update_speed();
       return 0;
     }
   }
@@ -393,6 +394,7 @@ int counter;
       std::cerr << "Spot found: " << counter << std::endl;
       backpack[counter] = equipped_items[item_pos];
       equipped_items[item_pos] = NULL;
+      update_speed();
       return 0;
     }
   }
@@ -431,6 +433,7 @@ int pc::equip_ring(int item_pos)
       equipped_items[location_LRING] = backpack[item_pos];
       backpack[item_pos] = obj_hold;
     }
+    update_speed();
     return 0;
   }
   else if (input == 1)
@@ -446,6 +449,7 @@ int pc::equip_ring(int item_pos)
       equipped_items[location_RRING] = backpack[item_pos];
       backpack[item_pos] = obj_hold;
     }
+    update_speed();
     return 0;
   }
   mvprintw(PC_BACKPACKSIZE + MENU_HEIGHT_OFFSET + 2, MENU_WIDTH_OFFSET, " %-60s ", "");
@@ -457,4 +461,25 @@ const char *get_equipable_loc_str(int pos)
   if (pos > TOTAL_EQUIPS)
     return "Out of range";
   return equipable_lookup[pos].name;
+}
+
+int pc::update_speed(){
+  int spd = PC_SPEED;
+  int count;
+ for (count = 0; count < TOTAL_EQUIPS; count++)
+    {
+      if (equipped_items[count]){
+        spd += equipped_items[count]->get_speed();
+        std::cerr << "SPEED CHANGE: " << equipped_items[count]->get_speed() << std::endl;
+      }
+    }
+    this->speed = spd;
+    std::cerr << "SPEED: " << this->speed << std::endl;
+    return this->speed;
+}
+
+int pc::get_atk_damage(){
+  int damage = 0;
+  std::cerr << "DAMAGE: " << damage << std::endl;
+  return 0;
 }

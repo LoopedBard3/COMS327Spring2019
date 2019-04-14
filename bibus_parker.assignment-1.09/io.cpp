@@ -1521,6 +1521,7 @@ void show_equipped(dungeon *d)
           else
           {
             delete_object(d->PC->equipped_items, selector);
+            d->PC->update_speed();
             refresh = 1;
           }
           break;
@@ -1539,6 +1540,7 @@ void show_equipped(dungeon *d)
         else
         {
           delete_object(d->PC->equipped_items, input);
+          d->PC->update_speed();
           refresh = 1;
         }
         break;
@@ -1554,6 +1556,7 @@ void show_equipped(dungeon *d)
           else
           {
             drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]], d->PC->equipped_items, selector);
+            d->PC->update_speed();
             refresh = 1;
           }
           break;
@@ -1572,6 +1575,7 @@ void show_equipped(dungeon *d)
         else
         {
           drop_object(&d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]], d->PC->equipped_items, input);
+          d->PC->update_speed();
           refresh = 1;
         }
         break;
