@@ -1680,7 +1680,6 @@ void drop_object(object **spot, object *list[], int pos)
     {
       spot_hold = spot_hold->next;
     }
-    std::cerr << "At null next " << spot_hold->get_name() << std::endl;
     spot_hold->next = list[pos];
     list[pos] = NULL;
   }

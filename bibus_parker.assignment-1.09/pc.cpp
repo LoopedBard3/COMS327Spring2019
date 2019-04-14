@@ -331,7 +331,6 @@ int pc::pickup_object(dungeon *d)
   {
     if (backpack[counter] == NULL)
     {
-      std::cerr << "Spot found: " << counter << std::endl;
       backpack[counter] = obj_ptr;
       d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] = d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]]->next;
       backpack[counter]->next = NULL;
@@ -339,7 +338,6 @@ int pc::pickup_object(dungeon *d)
         return 0;
     }
   }
-  std::cerr << "Not enough spots" << std::endl;
   return 2;
 }
 
@@ -391,7 +389,6 @@ int counter;
   {
     if (backpack[counter] == NULL)
     {
-      std::cerr << "Spot found: " << counter << std::endl;
       backpack[counter] = equipped_items[item_pos];
       equipped_items[item_pos] = NULL;
       update_speed();
@@ -470,16 +467,22 @@ int pc::update_speed(){
     {
       if (equipped_items[count]){
         spd += equipped_items[count]->get_speed();
-        std::cerr << "SPEED CHANGE: " << equipped_items[count]->get_speed() << std::endl;
       }
     }
     this->speed = spd;
-    std::cerr << "SPEED: " << this->speed << std::endl;
     return this->speed;
 }
 
 int pc::get_atk_damage(){
   int damage = 0;
+  int count;
+  damage = this->damage->roll();
+  for (count = 0; count < TOTAL_EQUIPS; count++)
+    {
+      if (equipped_items[count]){
+        damage += this->damage->roll();;
+      }
+    }
   std::cerr << "DAMAGE: " << damage << std::endl;
-  return 0;
+  return damage;
 }

@@ -118,10 +118,13 @@ void move_character(dungeon *d, character *c, pair_t next)
   if (charpair(next) &&
       ((next[dim_y] != c->position[dim_y]) ||
        (next[dim_x] != c->position[dim_x]))) {
-    do_combat(d, c, charpair(next));
+    if(c == d->PC || charpair(next) == d->PC){
+      do_combat(d, c, charpair(next));
+    }else{
+      //NPC's don't fight
+      displace_char(d, c, next);
+    }
   } else {
-    /* No character in new position. */
-
     d->character_map[c->position[dim_y]][c->position[dim_x]] = NULL;
     c->position[dim_y] = next[dim_y];
     c->position[dim_x] = next[dim_x];
@@ -338,4 +341,75 @@ uint32_t move_pc(dungeon *d, uint32_t dir)
   }
 
   return 1;
+}
+
+void displace_char(dungeon *d, character *c, pair_t next){
+  //Check each side then swap if nothing else
+  //Starts at top and goes clockwise
+  if(charpair(next) == NULL){
+    //Move the character to the new position
+    d->character_map[c->position[dim_y]][c->position[dim_x]] = NULL;
+    c->position[dim_y] = next[dim_y];
+    c->position[dim_x] = next[dim_x];
+    d->character_map[c->position[dim_y]][c->position[dim_x]] = c;
+    return;
+  }
+
+  character *displaced_char = d->character_map[next[dim_y]][next[dim_x]];
+  if(!d->character_map[next[dim_y] + 1][next[dim_x]] && mapxy(next[dim_y] + 1,next[dim_x]) < ter_floor){
+    d->character_map[next[dim_y]][next[dim_x]] = NULL;
+    displaced_char->position[dim_y] = next[dim_y] + 1;
+    displaced_char->position[dim_x] = next[dim_x];
+    d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
+  }else if(!d->character_map[next[dim_y] + 1][next[dim_x] + 1] && mapxy(next[dim_y] + 1,next[dim_x] + 1) < ter_floor){
+    d->character_map[next[dim_y]][next[dim_x]] = NULL;
+    displaced_char->position[dim_y] = next[dim_y] + 1;
+    displaced_char->position[dim_x] = next[dim_x] + 1;
+    d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;  
+  }else if(!d->character_map[next[dim_y]][next[dim_x] + 1] && mapxy(next[dim_y],next[dim_x] + 1) < ter_floor){
+    d->character_map[next[dim_y]][next[dim_x]] = NULL;
+    displaced_char->position[dim_y] = next[dim_y];
+    displaced_char->position[dim_x] = next[dim_x] + 1;
+    d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
+  }else if(!d->character_map[next[dim_y] - 1][next[dim_x] + 1] && mapxy(next[dim_y] - 1,next[dim_x] + 1) < ter_floor){
+    d->character_map[next[dim_y]][next[dim_x]] = NULL;
+    displaced_char->position[dim_y] = next[dim_y] - 1;
+    displaced_char->position[dim_x] = next[dim_x] + 1;
+    d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;  
+  }else if(!d->character_map[next[dim_y] - 1][next[dim_x]] && mapxy(next[dim_y] - 1,next[dim_x]) < ter_floor){
+    d->character_map[next[dim_y]][next[dim_x]] = NULL;
+    displaced_char->position[dim_y] = next[dim_y] - 1;
+    displaced_char->position[dim_x] = next[dim_x];
+    d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
+  }else if(!d->character_map[next[dim_y] - 1][next[dim_x] - 1] && mapxy(next[dim_y] - 1,next[dim_x] - 1) < ter_floor){
+    d->character_map[next[dim_y]][next[dim_x]] = NULL;
+    displaced_char->position[dim_y] = next[dim_y] - 1;
+    displaced_char->position[dim_x] = next[dim_x] - 1;
+    d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
+  }else if(!d->character_map[next[dim_y]][next[dim_x] - 1] && mapxy(next[dim_y],next[dim_x] - 1) < ter_floor){
+    d->character_map[next[dim_y]][next[dim_x]] = NULL;
+    displaced_char->position[dim_y] = next[dim_y];
+    displaced_char->position[dim_x] = next[dim_x] - 1;
+    d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
+  }else if(!d->character_map[next[dim_y] + 1][next[dim_x] - 1] && mapxy(next[dim_y] + 1,next[dim_x] - 1) < ter_floor){
+    d->character_map[next[dim_y]][next[dim_x]] = NULL;
+    displaced_char->position[dim_y] = next[dim_y] + 1;
+    displaced_char->position[dim_x] = next[dim_x] - 1;
+    d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
+  }else{
+    //Swap the characters
+    displaced_char->position[dim_y] = c->position[dim_y];
+    displaced_char->position[dim_x] = c->position[dim_x];
+    c->position[dim_y] = next[dim_y];
+    c->position[dim_x] = next[dim_x];
+    d->character_map[displaced_char->position[dim_y]][displaced_char->position[dim_x]] = displaced_char;
+    d->character_map[c->position[dim_y]][c->position[dim_x]] = c;
+    return;
+  }
+
+  //Move the character to the new position
+  d->character_map[c->position[dim_y]][c->position[dim_x]] = NULL;
+  c->position[dim_y] = next[dim_y];
+  c->position[dim_x] = next[dim_x];
+  d->character_map[c->position[dim_y]][c->position[dim_x]] = c;
 }
